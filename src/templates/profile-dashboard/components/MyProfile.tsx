@@ -43,10 +43,18 @@ export default function MyProfile() {
   const [profileData, setProfileData] = useState('')
   console.log('id', id);
   const userId = id;
-  const [nameInput, setNameInput] = useState('')
-  const [surnameInput, setSurnameInput] = useState('')
-  const [phoneInput, setPhoneInput] = useState('')
-
+  const [nameInput, setNameInput] = useState(profileData.name)
+  const [surnameInput, setSurnameInput] = useState(profileData.surname)
+  const [phoneInput, setPhoneInput] = useState(profileData.phone)
+  console.log('Profile', profileData);
+  
+  useEffect(() => {
+    if (profileData?.phone) {
+      setPhoneInput(profileData.phone);
+      setSurnameInput(profileData.surname);
+      setNameInput(profileData.name);
+    }
+  }, [profileData]);
   
 
   const onProfile = async (userId: string) => {
@@ -186,8 +194,8 @@ export default function MyProfile() {
                 sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                  src={profileData.avatar}
+            
                   loading="lazy"
                   alt=""
                 />
@@ -277,8 +285,8 @@ export default function MyProfile() {
                   sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                    src={profileData.avatar}
+              
                     loading="lazy"
                     alt=""
                   />
@@ -312,14 +320,14 @@ export default function MyProfile() {
                     gap: 2,
                   }}
                 >
-                  <Input size="sm" defaultValue={profileData?.name} value={nameInput} onChange={e => setNameInput(e.target.value)}/>
-                  <Input size="sm" sx={{ flexGrow: 1 }} defaultValue={profileData?.surname} value={surnameInput} onChange={e => setSurnameInput(e.target.value)}/>
+                  <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)}/>
+                  <Input size="sm" sx={{ flexGrow: 1 }} placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)}/>
                 </FormControl>
               </Stack>
             </Stack>
             <FormControl>
               <FormLabel>Phone</FormLabel>
-              <Input size="sm" defaultValue={profileData?.phone} value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
+              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
             </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
@@ -364,7 +372,7 @@ export default function MyProfile() {
               <Button size="sm" variant="outlined" color="neutral">
                 Cancel
               </Button>
-              <Button size="sm" variant="solid">
+              <Button onClick={()=> UpdateProfile(userId)} size="sm" variant="solid">
                 Save
               </Button>
             </CardActions>
@@ -478,8 +486,8 @@ export default function MyProfile() {
                     sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
                   >
                     <img
-                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                      srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                      src={profileData.avatar}
+                
                       loading="lazy"
                       alt=""
                     />
@@ -572,8 +580,8 @@ export default function MyProfile() {
                       sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
                     >
                       <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                        src={profileData.avatar}
+                  
                         loading="lazy"
                         alt=""
                       />
