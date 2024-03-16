@@ -18,6 +18,7 @@ function App() {
   const isAuth = useAppSelector(state => state.user.user) || sessionStorage.user
   console.log(isAuth,'isAuth');
   
+  
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -35,6 +36,7 @@ function App() {
                 {/* <Route path="/message/" element={<JoyMessagesTemplate />} /> */}
                 {/* <Route path="/message/:id" element={<JoyMessagesTemplate />} /> */}
                 <Route path="/profile" element={<JoyOrderDashboardTemplate />} />
+                <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/feed" element={<FeedList />} />
                 <Route path="/" element={<MessagesList />} />
               </Route>

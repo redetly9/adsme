@@ -34,9 +34,68 @@ import DropZone from './DropZone';
 import FileUpload from './FileUpload';
 import CountrySelector from './CountrySelector';
 import EditorToolbar from './EditorToolbar';
+import { api } from '../../../api';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function MyProfile() {
-  const isOwn = false
+  const { id } = useParams();
+  const [profileData, setProfileData] = useState('')
+  console.log('id', id);
+  const userId = id;
+  const [nameInput, setNameInput] = useState('')
+  const [surnameInput, setSurnameInput] = useState('')
+  const [phoneInput, setPhoneInput] = useState('')
+
+  
+
+  const onProfile = async (userId: string) => {
+    try {
+    
+      const response = await api.get(`/v2/users/${userId}`);
+      setProfileData(response.data)
+      console.log(response.data);
+      
+    } catch (error) {
+      if ((error)) {
+        console.error('Ошибка запроса:', error || error);
+      } else {
+        console.error('Непредвиденная ошибка:', error);
+      }
+    }
+  };
+
+  const UpdateProfile = async (userId: string) => {
+    try {
+    
+      const data = {
+        name: nameInput,
+        surname:surnameInput,
+        phone:phoneInput,
+      };
+
+  
+      await api.patch(`v2/users/${userId}`, {
+        ...data
+      })
+
+      // navigate('/confirm')
+    } catch (error) {
+      if ((error)) {
+        console.error('Ошибка запроса:', error || error);
+      } else {
+        console.error('Непредвиденная ошибка:', error);
+      }
+    }
+  };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  useEffect(()=> { //@ts-ignore
+    onProfile(id);
+  },[])
+  let isOwn = false
+  if (userId === sessionStorage.user) {
+    isOwn = true
+  }
   return (
       <>
       { isOwn ? (
@@ -50,34 +109,7 @@ export default function MyProfile() {
         }}
       >
         <Box sx={{ px: { xs: 2, md: 6 } }}>
-          {/* <Breadcrumbs
-            size="sm"
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            aria-label="breadcrumbs" //@ts-expect-error
-            separator={<ChevronRightRoundedIcon fontSize="sm" />}
-            sx={{ pl: 0 }}
-          >
-            <Link
-              underline="none"
-              color="neutral"
-              href="#some-link"
-              aria-label="Home"
-            >
-              <HomeRoundedIcon />
-            </Link>
-            <Link
-              underline="hover"
-              color="neutral"
-              href="#some-link"
-              fontSize={12}
-              fontWeight={500}
-            >
-              Users
-            </Link>
-            <Typography color="primary" fontWeight={500} fontSize={12}>
-              My profile
-            </Typography>
-          </Breadcrumbs> */}
+          
           <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
             My profile
           </Typography>
@@ -112,7 +144,7 @@ export default function MyProfile() {
             <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
               Settings
             </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
+            {/* <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
               Team
             </Tab>
             <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
@@ -120,7 +152,7 @@ export default function MyProfile() {
             </Tab>
             <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
               Billing
-            </Tab>
+            </Tab> */}
           </TabList>
         </Tabs>
       </Box>
@@ -184,13 +216,12 @@ export default function MyProfile() {
                 <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
+                  
                 </FormControl>
               </Stack>
               <Stack direction="row" spacing={2}>
                 <FormControl>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Phone</FormLabel>
                   <Input size="sm" defaultValue="UI Developer" />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
@@ -281,14 +312,14 @@ export default function MyProfile() {
                     gap: 2,
                   }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
+                  <Input size="sm" defaultValue={profileData?.name} value={nameInput} onChange={e => setNameInput(e.target.value)}/>
+                  <Input size="sm" sx={{ flexGrow: 1 }} defaultValue={profileData?.surname} value={surnameInput} onChange={e => setSurnameInput(e.target.value)}/>
                 </FormControl>
               </Stack>
             </Stack>
             <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
+              <FormLabel>Phone</FormLabel>
+              <Input size="sm" defaultValue={profileData?.phone} value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
             </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
@@ -302,10 +333,10 @@ export default function MyProfile() {
               />
             </FormControl>
             <div>
-              <CountrySelector />
+              {/* <CountrySelector /> */}
             </div>
             <div>
-              <FormControl sx={{ display: { sm: 'contents' } }}>
+              {/* <FormControl sx={{ display: { sm: 'contents' } }}>
                 <FormLabel>Timezone</FormLabel>
                 <Select
                   size="sm"
@@ -325,7 +356,7 @@ export default function MyProfile() {
                     </Typography>
                   </Option>
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </div>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
@@ -418,79 +449,11 @@ export default function MyProfile() {
             }}
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
-              {/* <Breadcrumbs
-                size="sm"
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                aria-label="breadcrumbs" //@ts-expect-error
-                separator={<ChevronRightRoundedIcon fontSize="sm" />}
-                sx={{ pl: 0 }}
-              >
-                <Link
-                  underline="none"
-                  color="neutral"
-                  href="#some-link"
-                  aria-label="Home"
-                >
-                  <HomeRoundedIcon />
-                </Link>
-                <Link
-                  underline="hover"
-                  color="neutral"
-                  href="#some-link"
-                  fontSize={12}
-                  fontWeight={500}
-                >
-                  Users
-                </Link>
-                <Typography color="primary" fontWeight={500} fontSize={12}>
-                  My profile
-                </Typography>
-              </Breadcrumbs> */}
+
               <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
                  Profile
               </Typography>
             </Box>
-            {/* <Tabs
-              defaultValue={0}
-              sx={{
-                bgcolor: 'transparent',
-              }}
-            >
-              <TabList
-                tabFlex={1}
-                size="sm"
-                sx={{
-                  pl: { xs: 0, md: 4 },
-                  justifyContent: 'left',
-                  [`&& .${tabClasses.root}`]: {
-                    fontWeight: '600',
-                    flex: 'initial',
-                    color: 'text.tertiary',
-                    [`&.${tabClasses.selected}`]: {
-                      bgcolor: 'transparent',
-                      color: 'text.primary',
-                      '&::after': {
-                        height: '2px',
-                        bgcolor: 'primary.500',
-                      },
-                    },
-                  },
-                }}
-              >
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
-                  Settings
-                </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
-                  Team
-                </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-                  Plan
-                </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-                  Billing
-                </Tab>
-              </TabList>
-            </Tabs> */}
           </Box>
           <Stack
             spacing={4}
@@ -503,13 +466,6 @@ export default function MyProfile() {
             }}
           >
             <Card>
-              {/* <Box sx={{ mb: 1 }}>
-                <Typography level="title-md">Personal info</Typography>
-                <Typography level="body-sm">
-                  Customize how your profile information will apper to the networks.
-                </Typography>
-              </Box> */}
-              {/* <Divider /> */}
               <Stack
                 direction="row"
                 spacing={3}
@@ -552,16 +508,16 @@ export default function MyProfile() {
                     <FormControl
                       sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                     >
-                      <Input size="sm" placeholder="First name" />
-                      <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
+                      <Input size="sm" defaultValue={profileData?.name} />
+                      <Input size="sm"  defaultValue={profileData?.surname} sx={{ flexGrow: 1 }} />
                       
                       
                     </FormControl>
                   </Stack>
                   <Stack direction="row" spacing={2}>
                     <FormControl>
-                      <FormLabel>Role</FormLabel>
-                      <Input size="sm" defaultValue="UI Developer" />
+                      <FormLabel>Phone</FormLabel>
+                      <Input size="sm" defaultValue={profileData?.phone} />
                     </FormControl>
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>Email</FormLabel>
@@ -622,23 +578,7 @@ export default function MyProfile() {
                         alt=""
                       />
                     </AspectRatio>
-                    {/* <IconButton
-                      aria-label="upload new picture"
-                      size="sm"
-                      variant="outlined"
-                      color="neutral"
-                      sx={{
-                        bgcolor: 'background.body',
-                        position: 'absolute',
-                        zIndex: 2,
-                        borderRadius: '50%',
-                        left: 85,
-                        top: 180,
-                        boxShadow: 'sm',
-                      }}
-                    >
-                      <EditRoundedIcon />
-                    </IconButton> */}
+
                   </Stack>
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
                     <FormLabel>Name</FormLabel>
@@ -654,8 +594,6 @@ export default function MyProfile() {
                       <Input size="sm" placeholder="First name" defaultValue="Alex" />
                       <Input size="sm" placeholder="Last name" defaultValue="Alex" />
                       
-                      {/* <Input size="sm" placeholder="First name" />
-                      <Input size="sm" placeholder="Last name" /> */}
                     </FormControl>
                   </Stack>
                 </Stack>
@@ -675,10 +613,10 @@ export default function MyProfile() {
                   />
                 </FormControl>
                 <div>
-                  <CountrySelector />
+                  {/* <CountrySelector /> */}
                 </div>
                 <div>
-                  <FormControl sx={{ display: { sm: 'contents' } }}>
+                  {/* <FormControl sx={{ display: { sm: 'contents' } }}>
                     <FormLabel>Timezone</FormLabel>
                     <Select
                       size="sm"
@@ -698,90 +636,29 @@ export default function MyProfile() {
                         </Typography>
                       </Option>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
               </Stack>
-              {/* <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                  <Button size="sm" variant="outlined" color="neutral">
-                    Cancel
-                  </Button>
-                  <Button size="sm" variant="solid">
-                    Save
-                  </Button>
-                </CardActions>
-              </CardOverflow> */}
             </Card>
             <Card>
               <Box sx={{ mb: 1 }}>
                 <Typography level="title-md">Bio</Typography>
-                {/* <Typography level="body-sm">
-                  Write a short introduction to be displayed on your profile
-                </Typography> */}
               </Box>
               <Divider />
               <Stack spacing={2} sx={{ my: 1 }}>
-                {/* <EditorToolbar /> */}
                 <Textarea
                   size="sm"
                   minRows={4}
                   sx={{ mt: 1.5 }}
                   defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
                 />
-                {/* <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-                  275 characters left
-                </FormHelperText> */}
+
               </Stack>
-              {/* <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                  <Button size="sm" variant="outlined" color="neutral">
-                    Cancel
-                  </Button>
-                  <Button size="sm" variant="solid">
-                    Save
-                  </Button>
-                </CardActions>
-              </CardOverflow> */}
             </Card>
-            
-            {/* <Card>
-              <Box sx={{ mb: 1 }}>
-                <Typography level="title-md">Portfolio projects</Typography>
-                <Typography level="body-sm">
-                  Share a few snippets of your work.
-                </Typography>
-              </Box>
-              <Divider />
-              <Stack spacing={2} sx={{ my: 1 }}>
-                <DropZone />
-                <FileUpload
-                  icon={<InsertDriveFileRoundedIcon />}
-                  fileName="Tech design requirements.pdf"
-                  fileSize="200 kB"
-                  progress={100}
-                />
-                <FileUpload
-                  icon={<VideocamRoundedIcon />}
-                  fileName="Dashboard prototype recording.mp4"
-                  fileSize="16 MB"
-                  progress={40}
-                />
-              </Stack>
-              <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                  <Button size="sm" variant="outlined" color="neutral">
-                    Cancel
-                  </Button>
-                  <Button size="sm" variant="solid">
-                    Save
-                  </Button>
-                </CardActions>
-              </CardOverflow>
-            </Card> */}
-            
+
           </Stack>
         </Box>
-    ) }
+ ) } 
     </>
   );
 }

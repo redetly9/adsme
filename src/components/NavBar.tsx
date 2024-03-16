@@ -12,6 +12,7 @@ import { MessageRounded } from '@mui/icons-material';
 
 export default function NavBar() {
   const [index, setIndex] = React.useState(1);
+  const id = sessionStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   return (
     <Box>
@@ -45,7 +46,7 @@ export default function NavBar() {
           disableUnderline
           sx={{ borderRadius: 'lg', p: 0 }}
         >
-                        <Link to='profile'>
+                        <Link to={`profile/${id}`}>
           <Tab
             disableIndicator
             orientation="vertical"

@@ -95,7 +95,9 @@ export default function JoySignInSideTemplate() {
     })
     
     dispatch(add(response?.data?.user))
-    sessionStorage.user = response?.data?.user
+    sessionStorage.user = response?.data?.user._id
+    sessionStorage.phone = response?.data?.user.phone
+    
   }
 
   return (
