@@ -13,7 +13,6 @@ export const MessagesList = () => {
   console.log(userId);
   const navigate = useNavigate();
 
-  console.log(chats);
 
   const getChats = async () => {
     const { data } = await api.get(`v2/chats/${userId}`)
@@ -26,13 +25,10 @@ export const MessagesList = () => {
     }
   }, [userId])
 
-  console.log(chats);
-  
-  
 
   useEffect(() => {
     if (selectedChat) {
-      navigate(`/message/${selectedChat.sender._id}`);
+      navigate(`/message/${selectedChat._id}`);
     }
   }, [selectedChat, navigate]);
 

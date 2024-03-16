@@ -28,7 +28,7 @@ export default function ChatListItem(props: ChatListItemProps) {
         <ListItemButton
           onClick={() => {
             toggleMessagesPane();
-            setSelectedChat({ id, sender, messages });
+            setSelectedChat(props);
           }}
           selected={selected}
           color="neutral"

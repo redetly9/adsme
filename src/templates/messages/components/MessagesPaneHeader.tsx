@@ -19,6 +19,8 @@ type MessagesPaneHeaderProps = {
 
 export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
   const { sender } = props;
+  console.log(sender);
+  
   const navigate = useNavigate();
   return (
     <Stack
@@ -49,7 +51,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <Avatar size="lg" src={sender.avatar} />
+        <Avatar size="lg" src={sender?.avatar} />
         <div>
           <Typography
             fontWeight="lg"
@@ -57,9 +59,9 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
             component="h2"
             noWrap
           >
-            {sender.name}
+            {sender?.name}
           </Typography>
-          <Typography level="body-sm">{sender.username}</Typography>
+          <Typography level="body-sm">{sender?.username}</Typography>
         </div>
       </Stack>
       <Stack spacing={1} direction="row" alignItems="center">

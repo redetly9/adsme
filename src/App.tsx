@@ -46,12 +46,12 @@ function App() {
             <Routes>
               <Route element={<Main />}>
                 <Route path="/messages" element={<MessagesList />} />
-                <Route path="/message/:id" element={<JoyMessagesTemplate />} />
                 <Route path="/profile" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/" element={<FeedList />} />
               </Route>
               <Route>
+                <Route path="/message/:id" element={<JoyMessagesTemplate />} />
               </Route>
             </Routes>
           )

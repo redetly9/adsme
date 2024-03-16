@@ -22,7 +22,7 @@ export default function MessageInput(props: MessageInputProps) {
   const textAreaRef = React.useRef<HTMLDivElement>(null);
   const handleClick = () => {
     if (textAreaValue.trim() !== '') {
-      onSubmit();
+      onSubmit(textAreaValue);
       setTextAreaValue('');
     }
   };

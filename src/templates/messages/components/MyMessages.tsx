@@ -1,15 +1,11 @@
 import * as React from 'react';
 import Sheet from '@mui/joy/Sheet';
-
 import MessagesPane from './MessagesPane';
-// import ChatsPane from './ChatsPane';
-// import { ChatProps } from '../types';
-import { chats } from '../data';
 import { useParams } from 'react-router-dom';
 
 export default function MyMessages() {
-  const { id: senderId } = useParams();
-  const selectedChat = chats.find(chat => chat.id === id);
+  const { id: chatId } = useParams();
+
   return (
     <Sheet
       sx={{
@@ -24,7 +20,7 @@ export default function MyMessages() {
         },
       }}
     >
-      <MessagesPane chat={selectedChat} />
+      <MessagesPane chatId={chatId} />
     </Sheet>
   );
 }

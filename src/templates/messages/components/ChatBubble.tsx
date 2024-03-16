@@ -9,17 +9,21 @@ import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import { MessageProps } from '../types';
+import moment from 'moment';
+import { useAppSelector } from '../../../store';
 
 type ChatBubbleProps = MessageProps & {
   variant: 'sent' | 'received';
 };
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { content, variant, timestamp, attachment = undefined, sender } = props;
+  const { text, variant, createdAt, sender } = props;
+  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
   const isSent = variant === 'sent';
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
   const [isLiked, setIsLiked] = React.useState<boolean>(false);
   const [isCelebrated, setIsCelebrated] = React.useState<boolean>(false);
+
   return (
     <Box sx={{ maxWidth: '60%', minWidth: 'auto' }}>
       <Stack
@@ -29,32 +33,11 @@ export default function ChatBubble(props: ChatBubbleProps) {
         sx={{ mb: 0.25 }}
       >
         <Typography level="body-xs">
-          {sender === 'You' ? sender : sender.name}
+          {sender._id !== userId ? sender.name : 'You'}
         </Typography>
-        <Typography level="body-xs">{timestamp}</Typography>
+        <Typography level="body-xs">{moment(createdAt).fromNow()}</Typography>
       </Stack>
-      {attachment ? (
-        <Sheet
-          variant="outlined"
-          sx={{
-            px: 1.75,
-            py: 1.25,
-            borderRadius: 'lg',
-            borderTopRightRadius: isSent ? 0 : 'lg',
-            borderTopLeftRadius: isSent ? 'lg' : 0,
-          }}
-        >
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <Avatar color="primary" size="lg">
-              <InsertDriveFileRoundedIcon />
-            </Avatar>
-            <div>
-              <Typography fontSize="sm">{attachment.fileName}</Typography>
-              <Typography level="body-sm">{attachment.size}</Typography>
-            </div>
-          </Stack>
-        </Sheet>
-      ) : (
+      
         <Box
           sx={{ position: 'relative' }}
           onMouseEnter={() => setIsHovered(true)}
@@ -81,7 +64,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
                   : 'var(--joy-palette-text-primary)',
               }}
             >
-              {content}
+              {text}
             </Typography>
           </Sheet>
           {(isHovered || isLiked || isCelebrated) && (
@@ -123,7 +106,6 @@ export default function ChatBubble(props: ChatBubbleProps) {
             </Stack>
           )}
         </Box>
-      )}
     </Box>
   );
 }
