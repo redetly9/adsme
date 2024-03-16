@@ -18,7 +18,7 @@ export default function FeedList() {
       }
     })
 
-    setPosts(data)
+    setPosts(data.slice().reverse())
   }
 
   React.useEffect(() => {
@@ -28,9 +28,6 @@ export default function FeedList() {
   }, [latitude, longitude])
 
   
-  console.log(posts);
-  
-
   return (
     <Sheet
       sx={{
@@ -44,7 +41,7 @@ export default function FeedList() {
       }}
     >
       {
-        posts?.map(p => <Feed post={p} />)
+        posts?.map(p => <Feed post={p} key={p._id} />)
       }
       
     </Sheet>

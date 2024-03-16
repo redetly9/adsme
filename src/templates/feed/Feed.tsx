@@ -1,24 +1,21 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
 import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import Snackbar from '@mui/joy/Snackbar';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Divider from '@mui/joy/Divider';
 import Avatar from '@mui/joy/Avatar';
-import Tooltip from '@mui/joy/Tooltip';
 
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
-import FolderIcon from '@mui/icons-material/Folder';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
-export default function Feed({ post: any }) {
+import moment from 'moment'
+
+
+export default function Feed({ post }) {
   const [open, setOpen] = React.useState([false, false, false]);
 
   const handleSnackbarOpen = (index: number) => {
@@ -37,7 +34,6 @@ export default function Feed({ post: any }) {
     <Sheet
       variant="outlined"
       sx={{
-        minHeight: 500,
         borderRadius: 'sm',
         p: 2,
         mb: 3,
@@ -54,15 +50,20 @@ export default function Feed({ post: any }) {
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Avatar
-            src="https://i.pravatar.cc/40?img=3"
-            srcSet="https://i.pravatar.cc/80?img=3"
+            src={post?.author?.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JYrktZNYfJ7k1QFk-hL3v6J9fiTAvsZeWRTybV0hSv_-wwPli_IJBB16Y8Tepi5U0Qg&usqp=CAU'}
           />
           <Box sx={{ ml: 2 }}>
             <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-              Alex Jonnold
+            {post?.author?.surname}{' '}
+            {post?.author?.name}{' '}
+            {post?.author?.lastname}
+
+            {
+              !post?.author?.surname && !post?.author?.name && !post?.author?.lastname && 'User'
+            }
             </Typography>
             <Typography level="body-xs" textColor="text.tertiary">
-              21 Oct 2022
+              { moment(post.createdAt).fromNow() }
             </Typography>
           </Box>
         </Box>
@@ -162,17 +163,18 @@ export default function Feed({ post: any }) {
       >
         <Card variant="outlined" sx={{ minWidth: '100%' }}>
             <img
-              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36"
-              srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&h=160 2x"
+              src={post.images?.[0]}
               alt="Yosemite National Park"
-              style={{ minWidth: '100%', transform: '' }}
+              style={{ minWidth: '100%', maxWidth: '100%' }}
             />
         </Card>
       </Box>
 
       <Divider />
       <Typography level="body-sm" mt={2} mb={2}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae voluptatibus, libero obcaecati voluptatum cumque in voluptate tenetur magni, eum ipsam beatae laboriosam commodi quis alias deserunt mollitia veritatis veniam, a aperiam! Voluptate animi quae rem, laboriosam deserunt illo repudiandae libero voluptatum dolore omnis esse alias repellendus veniam ullam debitis! Repellat?
+        {
+          post.title
+        }
       </Typography>
 
 
