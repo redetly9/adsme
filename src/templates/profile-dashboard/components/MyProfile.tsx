@@ -102,7 +102,7 @@ export default function MyProfile() {
   },[])
   let isOwn = false
   if (userId === sessionStorage.user) {
-    isOwn = true
+    isOwn = false
   }
   return (
       <>
@@ -516,8 +516,8 @@ export default function MyProfile() {
                     <FormControl
                       sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                     >
-                      <Input size="sm" defaultValue={profileData?.name} />
-                      <Input size="sm"  defaultValue={profileData?.surname} sx={{ flexGrow: 1 }} />
+                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} />
+                      <Input size="sm"  placeholder='Name' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} sx={{ flexGrow: 1 }} />
                       
                       
                     </FormControl>
@@ -525,7 +525,7 @@ export default function MyProfile() {
                   <Stack direction="row" spacing={2}>
                     <FormControl>
                       <FormLabel>Phone</FormLabel>
-                      <Input size="sm" defaultValue={profileData?.phone} />
+                      <Input size="sm" placeholder='Name' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
                     </FormControl>
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>Email</FormLabel>
@@ -599,52 +599,26 @@ export default function MyProfile() {
                         gap: 2,
                       }}
                     >
-                      <Input size="sm" placeholder="First name" defaultValue="Alex" />
-                      <Input size="sm" placeholder="Last name" defaultValue="Alex" />
+                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} />
+                      <Input size="sm" placeholder='Name' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} />
                       
                     </FormControl>
                   </Stack>
                 </Stack>
                 <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
+                  <FormLabel>Phone</FormLabel>
+                  <Input size="sm" placeholder='Name' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="email@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
+                  <FormLabel>Написать сообщение</FormLabel>
+  {/* <EmailRoundedIcon /> */}
+
+
                 </FormControl>
                 <div>
-                  {/* <CountrySelector /> */}
                 </div>
                 <div>
-                  {/* <FormControl sx={{ display: { sm: 'contents' } }}>
-                    <FormLabel>Timezone</FormLabel>
-                    <Select
-                      size="sm"
-                      startDecorator={<AccessTimeFilledRoundedIcon />}
-                      defaultValue="1"
-                    >
-                      <Option value="1">
-                        Indochina Time (Bangkok){' '}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                      <Option value="2">
-                        Indochina Time (Ho Chi Minh City){' '}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                    </Select>
-                  </FormControl> */}
+
                 </div>
               </Stack>
             </Card>
