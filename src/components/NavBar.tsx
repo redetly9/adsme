@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom';
 import { MessageRounded } from '@mui/icons-material';
 
 export default function NavBar() {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
+  const id = sessionStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   return (
     <Box>
@@ -45,7 +46,6 @@ export default function NavBar() {
           disableUnderline
           sx={{ borderRadius: 'lg', p: 0 }}
         >
-
 
           <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
             <Tab
@@ -89,7 +89,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/profile'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to={`/profile/${id}`}>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
