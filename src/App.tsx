@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     // axios.get
   }, [])
-  const isAuth = useAppSelector(state => state.user.token) || sessionStorage.token
+  const isAuth = useAppSelector(state => state.user.user) || sessionStorage.user
   console.log(isAuth,'isAuth');
   
   return (

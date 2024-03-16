@@ -54,6 +54,7 @@ export default function ChatsPane(props: ChatsPaneProps) {
         >
           Messages
         </Typography>
+        
         <IconButton
           variant="plain"
           aria-label="edit"

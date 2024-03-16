@@ -37,6 +37,8 @@ export default function MessagesPane(props: MessagesPaneProps) {
           flex: 1,
           minHeight: 0,
           minWidth: '100dvw',
+          maxHeight: '100vh',
+          marginTop: '80px',
           px: 2,
           py: 3,
           overflowY: 'scroll',

@@ -74,7 +74,7 @@ export default function JoySignInSideTemplate() {
     };
     console.log('phoneInput', phoneInput);
 
-    await api.post('sms/send/registration/user', {
+    await api.post('v2/register', {
       ...data
     })
     setCode(true)
@@ -85,17 +85,17 @@ export default function JoySignInSideTemplate() {
     // const formElements = event.currentTarget.elements;
     const data = {
       phone: phoneInput,
-      smsCode: codeInput,
+      code: codeInput,
     };
     console.log('phoneInput', phoneInput);
     console.log('codeInput', codeInput);
 
-    const response = await api.post('register/user/sms', {
+    const response = await api.post('v2/verify', {
       ...data
     })
     
-    dispatch(add(response?.data?.token))
-    sessionStorage.token = response?.data?.token
+    dispatch(add(response?.data?.user))
+    sessionStorage.user = response?.data?.user
   }
 
   return (

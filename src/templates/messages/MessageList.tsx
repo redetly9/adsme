@@ -16,7 +16,8 @@ export const MessagesList = () => {
           navigate(`/message/${selectedChat.id}`);
         }
       }, [selectedChat, navigate]);
-  
+      console.log('sessionStorage.user',sessionStorage.user);
+      
     return (
 
         <Sheet

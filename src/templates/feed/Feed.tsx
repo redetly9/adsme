@@ -210,6 +210,58 @@ export default function Feed() {
         </Box>
       </Box>
       <Divider />
+
+      <Typography level="title-sm" mt={2} mb={2}>
+        Attachments
+      </Typography>
+      <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 2,
+          '& > div': {
+            boxShadow: 'none',
+            '--Card-padding': '0px',
+            '--Card-radius': theme.vars.radius.sm,
+          },
+        })}
+      >
+        {/* <Card variant="outlined">
+          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
+            <img
+              src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=300"
+              srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=160 2x"
+              alt="Yosemite National Park"
+            />
+          </AspectRatio>
+        </Card> */}
+        <Card variant="outlined">
+          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
+            <img
+              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36"
+              srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&h=160 2x"
+              alt="Yosemite National Park"
+            />
+          </AspectRatio>
+        </Card>
+        {/* <Card variant="outlined" orientation="horizontal">
+          <CardOverflow>
+            <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
+              <div>
+                <FolderIcon />
+              </div>
+            </AspectRatio>
+          </CardOverflow>
+          <Box sx={{ py: { xs: 1, sm: 2 }, pr: 2 }}>
+            <Typography level="title-sm" color="primary">
+              videos-hike.zip
+            </Typography>
+            <Typography level="body-xs">100 MB</Typography>
+          </Box>
+        </Card> */}
+      </Box>
+
+      <Divider />
       <Typography level="body-sm" mt={2} mb={2}>
         Hello, my friend!
         <br />
@@ -234,56 +286,8 @@ export default function Feed() {
         <br />
         See you soon, Alex Jonnold
       </Typography>
-      <Divider />
-      <Typography level="title-sm" mt={2} mb={2}>
-        Attachments
-      </Typography>
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 2,
-          '& > div': {
-            boxShadow: 'none',
-            '--Card-padding': '0px',
-            '--Card-radius': theme.vars.radius.sm,
-          },
-        })}
-      >
-        <Card variant="outlined">
-          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-            <img
-              src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=80"
-              srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=160 2x"
-              alt="Yosemite National Park"
-            />
-          </AspectRatio>
-        </Card>
-        <Card variant="outlined">
-          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-            <img
-              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&h=80"
-              srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&h=160 2x"
-              alt="Yosemite National Park"
-            />
-          </AspectRatio>
-        </Card>
-        <Card variant="outlined" orientation="horizontal">
-          <CardOverflow>
-            <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-              <div>
-                <FolderIcon />
-              </div>
-            </AspectRatio>
-          </CardOverflow>
-          <Box sx={{ py: { xs: 1, sm: 2 }, pr: 2 }}>
-            <Typography level="title-sm" color="primary">
-              videos-hike.zip
-            </Typography>
-            <Typography level="body-xs">100 MB</Typography>
-          </Box>
-        </Card>
-      </Box>
+
+
     </Sheet>
   );
 }
