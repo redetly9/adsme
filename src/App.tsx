@@ -8,15 +8,28 @@ import { MessagesList } from './templates/messages/MessageList';
 import { CssBaseline, CssVarsProvider } from '@mui/joy';
 import { useEffect } from 'react';
 import Confirm from './templates/sign-in/Confirm';
-import { useAppSelector } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import FeedList from './templates/feed/App';
+import { getCurrentLocation } from './utils/geo';
+import { addGeo } from './slices';
 
 function App() {
   useEffect(() => {
     // axios.get
   }, [])
   const isAuth = useAppSelector(state => state.user.user) || sessionStorage.user
+  const dispatch = useAppDispatch()
   console.log(isAuth,'isAuth');
+
+  useEffect(() => {
+    getCurrentLocation().then(location => {
+      console.log('Your current location:', location);
+      dispatch(addGeo(location))
+    }).catch(error => {
+      console.error(error);
+    });
+    
+  }, [])
   
   
   return (
@@ -36,9 +49,14 @@ function App() {
                 {/* <Route path="/message/" element={<JoyMessagesTemplate />} /> */}
                 {/* <Route path="/message/:id" element={<JoyMessagesTemplate />} /> */}
                 <Route path="/profile" element={<JoyOrderDashboardTemplate />} />
+<<<<<<< HEAD
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/feed" element={<FeedList />} />
                 <Route path="/" element={<MessagesList />} />
+=======
+                <Route path="/" element={<FeedList />} />
+                {/* <Route path="/" element={<MessagesList />} /> */}
+>>>>>>> 8333b76ae6b270d7fba3be3b3cc307b7c5d372ae
               </Route>
               <Route>
               <Route path="/message/:id" element={<JoyMessagesTemplate />} />

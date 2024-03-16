@@ -11,8 +11,7 @@ import { Link } from 'react-router-dom';
 import { MessageRounded } from '@mui/icons-material';
 
 export default function NavBar() {
-  const [index, setIndex] = React.useState(1);
-  const id = sessionStorage.user
+  const [index, setIndex] = React.useState(0);
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   return (
     <Box>
@@ -46,61 +45,64 @@ export default function NavBar() {
           disableUnderline
           sx={{ borderRadius: 'lg', p: 0 }}
         >
-                        <Link to={`profile/${id}`}>
-          <Tab
-            disableIndicator
-            orientation="vertical"
-            {...(index === 0 && { color: colors[0] })}
-          >
-            <ListItemDecorator>
 
-            <Person />
-            </ListItemDecorator>
-            Profile
-          </Tab>
+
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation="vertical"
+            >
+              <ListItemDecorator>
+                <HomeRoundedIcon />
+              </ListItemDecorator>
+              Feed
+            </Tab>
           </Link>
 
-          <Link to='/messages'>
-          <Tab
-            disableIndicator
-            orientation="vertical"
-            {...(index === 1 && { color: colors[1] })}
-          >
-            <ListItemDecorator>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/messages'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation="vertical"
+              {...(index === 1 && { color: colors[1] })}
+            >
+              <ListItemDecorator>
 
                 <MessageRounded />
 
-            </ListItemDecorator>
-            Messages
-          </Tab>
+              </ListItemDecorator>
+              Messages
+            </Tab>
           </Link>
 
-          <Link to='/feed'>
-          <Tab
-            disableIndicator
-            orientation="vertical"
-            {...(index === 2 && { color: colors[2] })}
-          >
-            <ListItemDecorator>
-            <HomeRoundedIcon />
-            </ListItemDecorator>
-            Feed
-          </Tab>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation="vertical"
+            >
+              <ListItemDecorator>
+                <Search />
+              </ListItemDecorator>
+              Search
+            </Tab>
           </Link>
 
-          <Link to=''>
-          <Tab
-            disableIndicator
-            orientation="vertical"
-            {...(index === 3 && { color: colors[3] })}
-          >
-            <ListItemDecorator>
-            <Search />
-            </ListItemDecorator>
-            Search
-          </Tab>
-          
-          </Link> 
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/profile'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation="vertical"
+            >
+              <ListItemDecorator>
+
+                <Person />
+              </ListItemDecorator>
+              Profile
+            </Tab>
+          </Link>
+
         </TabList>
       </Tabs>
     </Box>
