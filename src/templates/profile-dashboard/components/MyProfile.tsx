@@ -102,7 +102,7 @@ export default function MyProfile() {
   },[])
   let isOwn = false
   if (userId === sessionStorage.user) {
-    isOwn = false
+    isOwn = true
   }
   return (
       <>

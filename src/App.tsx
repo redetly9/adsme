@@ -46,10 +46,8 @@ function App() {
             <Routes>
               <Route element={<Main />}>
                 <Route path="/messages" element={<MessagesList />} />
-                <Route path="/message/:id" element={<JoyMessagesTemplate />} />
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
-                <Route path="/feed" element={<FeedList />} />
-                <Route path="/" element={<MessagesList />} />
+                <Route path="/" element={<FeedList />} />
               </Route>
               <Route>
                 <Route path="/message/:id" element={<JoyMessagesTemplate />} />
