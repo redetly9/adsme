@@ -8,15 +8,28 @@ import { MessagesList } from './templates/messages/MessageList';
 import { CssBaseline, CssVarsProvider } from '@mui/joy';
 import { useEffect } from 'react';
 import Confirm from './templates/sign-in/Confirm';
-import { useAppSelector } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import FeedList from './templates/feed/App';
+import { getCurrentLocation } from './utils/geo';
+import { addGeo } from './slices';
 
 function App() {
   useEffect(() => {
     // axios.get
   }, [])
   const isAuth = useAppSelector(state => state.user.user) || sessionStorage.user
+  const dispatch = useAppDispatch()
   console.log(isAuth,'isAuth');
+
+  useEffect(() => {
+    getCurrentLocation().then(location => {
+      console.log('Your current location:', location);
+      dispatch(addGeo(location))
+    }).catch(error => {
+      console.error(error);
+    });
+    
+  }, [])
   
   return (
     <CssVarsProvider disableTransitionOnChange>

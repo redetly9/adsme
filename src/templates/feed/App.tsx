@@ -1,9 +1,35 @@
 import * as React from 'react';
 import Feed from './Feed';
 import { Sheet } from "@mui/joy"
+import { api } from '../../api';
+import { getCurrentLocation } from '../../utils/geo';
+import { useAppSelector } from '../../store';
 
 
 export default function FeedList() {
+  const [posts, setPosts] = React.useState(null)
+  const { latitude, longitude } = useAppSelector(state => state.user.geo)
+
+  const getPosts = async () => {
+    const { data } = await api.get('v2/posts', {
+      params: {
+        latitude,
+        longitude
+      }
+    })
+
+    setPosts(data)
+  }
+
+  React.useEffect(() => {
+    if (latitude && longitude) {
+      getPosts()
+    }
+  }, [latitude, longitude])
+
+  
+  console.log(posts);
+  
 
   return (
     <Sheet
@@ -17,7 +43,10 @@ export default function FeedList() {
         overflow: 'auto',
       }}
     >
-      <Feed />
+      {
+        posts?.map(p => <Feed post={p} />)
+      }
+      
     </Sheet>
 
   );

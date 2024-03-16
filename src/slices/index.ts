@@ -3,10 +3,18 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface UserState {
   user: string
+  geo: {
+    latitude: number
+    longitude: number
+  }
 }
 
 const initialState: UserState = {
-  user: ''
+  user: '',
+  geo: {
+    latitude: 0,
+    longitude: 0
+  }
 }
 
 export const userSlice = createSlice({
@@ -14,15 +22,18 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<string>) => {
-
       state.user = action.payload
     },
     remove: (state) => {
       state.user = ''
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addGeo: (state, action: PayloadAction<any>) => {
+      state.geo = action.payload
+    },
   },
 })
 
-export const { add, remove } = userSlice.actions
+export const { add, remove, addGeo } = userSlice.actions
 
 export default userSlice.reducer

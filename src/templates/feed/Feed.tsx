@@ -18,7 +18,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
-export default function Feed() {
+export default function Feed({ post: any }) {
   const [open, setOpen] = React.useState([false, false, false]);
 
   const handleSnackbarOpen = (index: number) => {
