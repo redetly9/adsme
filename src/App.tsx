@@ -17,9 +17,9 @@ function App() {
   useEffect(() => {
     // axios.get
   }, [])
-  const isAuth = useAppSelector(state => state.user.user) || sessionStorage.user
+  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
   const dispatch = useAppDispatch()
-  console.log(isAuth,'isAuth');
+  console.log(userId,'userId');
 
   useEffect(() => {
     getCurrentLocation().then(location => {
@@ -37,29 +37,21 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         {
-          !isAuth ? (
+          !userId ? (
             <Routes>
-              <Route path="/" element={<JoySignInSideTemplate />} />
               <Route path="/confirm" element={<Confirm />} />
+              <Route path="*" element={<JoySignInSideTemplate />} />
             </Routes>
           ) : (
             <Routes>
               <Route element={<Main />}>
                 <Route path="/messages" element={<MessagesList />} />
-                {/* <Route path="/message/" element={<JoyMessagesTemplate />} /> */}
-                {/* <Route path="/message/:id" element={<JoyMessagesTemplate />} /> */}
+                <Route path="/message/:id" element={<JoyMessagesTemplate />} />
                 <Route path="/profile" element={<JoyOrderDashboardTemplate />} />
-<<<<<<< HEAD
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
-                <Route path="/feed" element={<FeedList />} />
-                <Route path="/" element={<MessagesList />} />
-=======
                 <Route path="/" element={<FeedList />} />
-                {/* <Route path="/" element={<MessagesList />} /> */}
->>>>>>> 8333b76ae6b270d7fba3be3b3cc307b7c5d372ae
               </Route>
               <Route>
-              <Route path="/message/:id" element={<JoyMessagesTemplate />} />
               </Route>
             </Routes>
           )

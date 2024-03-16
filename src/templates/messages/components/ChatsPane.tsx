@@ -40,51 +40,12 @@ export default function ChatsPane(props: ChatsPaneProps) {
           fontSize={{ xs: 'md', md: 'lg' }}
           component="h1"
           fontWeight="lg"
-          endDecorator={
-            <Chip
-              variant="soft"
-              color="primary"
-              size="md"
-              slotProps={{ root: { component: 'span' } }}
-            >
-              4
-            </Chip>
-          }
           sx={{ mr: 'auto' }}
         >
           Messages
         </Typography>
-        
-        <IconButton
-          variant="plain"
-          aria-label="edit"
-          color="neutral"
-          size="sm"
-          sx={{ display: { xs: 'none', sm: 'unset' } }}
-        >
-          <EditNoteRoundedIcon />
-        </IconButton>
-        <IconButton
-          variant="plain"
-          aria-label="edit"
-          color="neutral"
-          size="sm"
-          onClick={() => {
-            toggleMessagesPane();
-          }}
-          sx={{ display: { sm: 'none' } }}
-        >
-          {/* <CloseRoundedIcon /> */}
-        </IconButton>
       </Stack>
-      <Box sx={{ px: 2, pb: 1.5 }}>
-        <Input
-          size="sm"
-          startDecorator={<SearchRoundedIcon />}
-          placeholder="Search"
-          aria-label="Search"
-        />
-      </Box>
+
       <List
         sx={{
           py: 0,
@@ -94,7 +55,7 @@ export default function ChatsPane(props: ChatsPaneProps) {
       >
         {chats?.map((chat) => (
           <ChatListItem
-            key={chat.id}
+            key={chat._id}
             {...chat}
             setSelectedChat={setSelectedChat}
             selectedChatId={selectedChatId}

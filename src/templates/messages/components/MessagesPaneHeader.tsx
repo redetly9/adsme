@@ -56,24 +56,6 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
             fontSize="lg"
             component="h2"
             noWrap
-            endDecorator={
-              sender.online ? (
-                <Chip
-                  variant="outlined"
-                  size="sm"
-                  color="neutral"
-                  sx={{
-                    borderRadius: 'sm',
-                  }}
-                  startDecorator={
-                    <CircleIcon sx={{ fontSize: 8 }} color="success" />
-                  }
-                  slotProps={{ root: { component: 'span' } }}
-                >
-                  Online
-                </Chip>
-              ) : undefined
-            }
           >
             {sender.name}
           </Typography>

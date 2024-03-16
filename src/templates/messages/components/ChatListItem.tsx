@@ -39,10 +39,10 @@ export default function ChatListItem(props: ChatListItemProps) {
           }}
         >
           <Stack direction="row" spacing={1.5}>
-            <AvatarWithStatus online={sender.online} src={sender.avatar} />
+            <AvatarWithStatus online={false} src={sender?.avatar} />
             <Box sx={{ flex: 1 }}>
-              <Typography level="title-sm">{sender.name}</Typography>
-              <Typography level="body-sm">{sender.username}</Typography>
+              <Typography level="title-sm">{sender?.name}</Typography>
+              <Typography level="body-sm">{sender?.username}</Typography>
             </Box>
             <Box
               sx={{
@@ -50,7 +50,7 @@ export default function ChatListItem(props: ChatListItemProps) {
                 textAlign: 'right',
               }}
             >
-              {messages[0].unread && (
+              {messages[0]?.unread && (
                 <CircleIcon sx={{ fontSize: 12 }} color="primary" />
               )}
               <Typography
@@ -72,7 +72,7 @@ export default function ChatListItem(props: ChatListItemProps) {
               textOverflow: 'ellipsis',
             }}
           >
-            {messages[0].content}
+            {messages[0]?.content}
           </Typography>
         </ListItemButton>
       </ListItem>

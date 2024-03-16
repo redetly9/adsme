@@ -8,7 +8,7 @@ import { chats } from '../data';
 import { useParams } from 'react-router-dom';
 
 export default function MyMessages() {
-  const { id } = useParams();
+  const { id: senderId } = useParams();
   const selectedChat = chats.find(chat => chat.id === id);
   return (
     <Sheet

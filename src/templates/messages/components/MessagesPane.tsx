@@ -58,7 +58,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
               >
                 {message.sender !== 'You' && (
                   <AvatarWithStatus
-                    online={message.sender.online}
+                    online={false}
                     src={message.sender.avatar}
                   />
                 )}
