@@ -35,8 +35,8 @@ function App() {
                 {/* <Route path="/message/" element={<JoyMessagesTemplate />} /> */}
                 {/* <Route path="/message/:id" element={<JoyMessagesTemplate />} /> */}
                 <Route path="/profile" element={<JoyOrderDashboardTemplate />} />
-                <Route path="/feed" element={<FeedList />} />
-                <Route path="/" element={<MessagesList />} />
+                <Route path="/" element={<FeedList />} />
+                {/* <Route path="/" element={<MessagesList />} /> */}
               </Route>
               <Route>
               <Route path="/message/:id" element={<JoyMessagesTemplate />} />

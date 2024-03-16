@@ -125,15 +125,6 @@ export default function Feed() {
           >
             Your message has been forwarded.
           </Snackbar>
-          <Button
-            size="sm"
-            variant="plain"
-            color="danger"
-            startDecorator={<DeleteRoundedIcon />}
-            onClick={() => handleSnackbarOpen(2)}
-          >
-            Delete
-          </Button>
           <Snackbar
             color="danger"
             open={open[2]}
@@ -156,64 +147,7 @@ export default function Feed() {
         </Box>
       </Box>
       <Divider sx={{ mt: 2 }} />
-      <Box
-        sx={{ py: 2, display: 'flex', flexDirection: 'column', alignItems: 'start' }}
-      >
-        <Typography
-          level="title-lg"
-          textColor="text.primary"
-          endDecorator={
-            <Chip component="span" size="sm" variant="outlined" color="warning">
-              Personal
-            </Chip>
-          }
-        >
-          Details for our Yosemite Park hike
-        </Typography>
-        <Box
-          sx={{
-            mt: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            flexWrap: 'wrap',
-          }}
-        >
-          <div>
-            <Typography
-              component="span"
-              level="body-sm"
-              sx={{ mr: 1, display: 'inline-block' }}
-            >
-              From
-            </Typography>
-            <Tooltip size="sm" title="Copy email" variant="outlined">
-              <Chip size="sm" variant="soft" color="primary" onClick={() => {}}>
-                alex.jonnold@hike.com
-              </Chip>
-            </Tooltip>
-          </div>
-          <div>
-            <Typography
-              component="span"
-              level="body-sm"
-              sx={{ mr: 1, display: 'inline-block' }}
-            >
-              to
-            </Typography>
-            <Tooltip size="sm" title="Copy email" variant="outlined">
-              <Chip size="sm" variant="soft" color="primary" onClick={() => {}}>
-                steve@mail.com
-              </Chip>
-            </Tooltip>
-          </div>
-        </Box>
-      </Box>
       <Divider />
-
-      <Typography level="title-sm" mt={2} mb={2}>
-        Attachments
-      </Typography>
       <Box
         sx={(theme) => ({
           display: 'flex',
@@ -226,65 +160,19 @@ export default function Feed() {
           },
         })}
       >
-        {/* <Card variant="outlined">
-          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-            <img
-              src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=300"
-              srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&h=160 2x"
-              alt="Yosemite National Park"
-            />
-          </AspectRatio>
-        </Card> */}
-        <Card variant="outlined">
-          <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
+        <Card variant="outlined" sx={{ minWidth: '100%' }}>
             <img
               src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36"
               srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&h=160 2x"
               alt="Yosemite National Park"
+              style={{ minWidth: '100%', transform: '' }}
             />
-          </AspectRatio>
         </Card>
-        {/* <Card variant="outlined" orientation="horizontal">
-          <CardOverflow>
-            <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-              <div>
-                <FolderIcon />
-              </div>
-            </AspectRatio>
-          </CardOverflow>
-          <Box sx={{ py: { xs: 1, sm: 2 }, pr: 2 }}>
-            <Typography level="title-sm" color="primary">
-              videos-hike.zip
-            </Typography>
-            <Typography level="body-xs">100 MB</Typography>
-          </Box>
-        </Card> */}
       </Box>
 
       <Divider />
       <Typography level="body-sm" mt={2} mb={2}>
-        Hello, my friend!
-        <br />
-        <br />
-        So, it seems we are getting there! Our trip is finally here. As you know, I
-        love Yosemite National Park, a lot of great climbers and explorers have made
-        history there, so I&apos;m very excited to bring you with me in this journey.
-        <br />
-        <br />
-        There are plenty of amazing things to see there, from internationally
-        recognized granite cliffs, waterfalls, clear streams, giant sequoia groves,
-        lakes, mountains, meadows, glaciers, and a lot o biological diversity. It is
-        amazing that almost 95 percent of the park is designated wilderness. Yosemite
-        is one of the largest and least fragmented habitat blocks in the Serra
-        Nevada, and the park supports a fantastic diversity of plants and animals.
-        <br />
-        <br />
-        I really hope you love coming along with me, we will have an awesome time!
-        I&apos;m attaching a few pics I took on the last time I went there-get
-        excited!
-        <br />
-        <br />
-        See you soon, Alex Jonnold
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae voluptatibus, libero obcaecati voluptatum cumque in voluptate tenetur magni, eum ipsam beatae laboriosam commodi quis alias deserunt mollitia veritatis veniam, a aperiam! Voluptate animi quae rem, laboriosam deserunt illo repudiandae libero voluptatum dolore omnis esse alias repellendus veniam ullam debitis! Repellat?
       </Typography>
 
 
