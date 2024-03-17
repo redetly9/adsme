@@ -42,6 +42,7 @@ export const MessagesList = () => {
         flexDirection: 'column',
         minWidth: 0,
         height: 'calc(100dvh - 81.6px)',
+        width: '100vw',
         gap: 1,
         overflow: 'auto',
       }}

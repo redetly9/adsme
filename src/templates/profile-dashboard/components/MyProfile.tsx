@@ -151,15 +151,6 @@ export default function MyProfile() {
             <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
               Settings
             </Tab>
-            {/* <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
-              Team
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-              Plan
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-              Billing
-            </Tab> */}
           </TabList>
         </Tabs>
       </Box>
@@ -217,59 +208,6 @@ export default function MyProfile() {
                 <EditRoundedIcon />
               </IconButton>
             </Stack>
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
-                >
-                  
-                </FormControl>
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <FormControl>
-                  <FormLabel>Phone</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <div>
-                <CountrySelector />
-              </div>
-              <div>
-                <FormControl sx={{ display: { sm: 'contents' } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
-              </div>
-            </Stack>
           </Stack>
           <Stack
             direction="column"
@@ -326,7 +264,7 @@ export default function MyProfile() {
             </Stack>
             <FormControl>
               <FormLabel>Phone</FormLabel>
-              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
+              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} disabled />
             </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
@@ -335,7 +273,7 @@ export default function MyProfile() {
                 type="email"
                 startDecorator={<EmailRoundedIcon />}
                 placeholder="email"
-                defaultValue="siriwatk@test.com"
+                defaultValue="test@adsme.com"
                 sx={{ flexGrow: 1 }}
               />
             </FormControl>
@@ -377,7 +315,7 @@ export default function MyProfile() {
             </CardActions>
           </CardOverflow>
         </Card>
-        <Card>
+        {/* <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Bio</Typography>
             <Typography level="body-sm">
@@ -407,8 +345,8 @@ export default function MyProfile() {
               </Button>
             </CardActions>
           </CardOverflow>
-        </Card>
-        <Card>
+        </Card> */}
+        {/* <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Portfolio projects</Typography>
             <Typography level="body-sm">
@@ -441,7 +379,7 @@ export default function MyProfile() {
               </Button>
             </CardActions>
           </CardOverflow>
-        </Card>
+        </Card> */}
       </Stack>
     </Box> 
     ) : (
@@ -510,59 +448,12 @@ export default function MyProfile() {
                   </IconButton>
                 </Stack>
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                  <Stack spacing={1}>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl
-                      sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
-                    >
-                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} />
-                      <Input size="sm"  placeholder='Name' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} sx={{ flexGrow: 1 }} />
-                      
-                      
-                    </FormControl>
-                  </Stack>
-                  <Stack direction="row" spacing={2}>
-                    <FormControl>
-                      <FormLabel>Phone</FormLabel>
-                      <Input size="sm" placeholder='Name' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
-                    </FormControl>
-                    <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>Email</FormLabel>
-                      <Input
-                        size="sm"
-                        type="email"
-                        startDecorator={<EmailRoundedIcon />}
-                        placeholder="email"
-                        defaultValue="siriwatk@test.com"
-                        sx={{ flexGrow: 1 }}
-                      />
-                    </FormControl>
-                  </Stack>
+
                   <div>
                     <CountrySelector />
                   </div>
                   <div>
-                    <FormControl sx={{ display: { sm: 'contents' } }}>
-                      <FormLabel>Timezone</FormLabel>
-                      <Select
-                        size="sm"
-                        startDecorator={<AccessTimeFilledRoundedIcon />}
-                        defaultValue="1"
-                      >
-                        <Option value="1">
-                          Indochina Time (Bangkok){' '}
-                          <Typography textColor="text.tertiary" ml={0.5}>
-                            — GMT+07:00
-                          </Typography>
-                        </Option>
-                        <Option value="2">
-                          Indochina Time (Ho Chi Minh City){' '}
-                          <Typography textColor="text.tertiary" ml={0.5}>
-                            — GMT+07:00
-                          </Typography>
-                        </Option>
-                      </Select>
-                    </FormControl>
+                    
                   </div>
                 </Stack>
               </Stack>
@@ -599,14 +490,14 @@ export default function MyProfile() {
                       }}
                     >
                       <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} />
-                      <Input size="sm" placeholder='Name' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} />
+                      <Input size="sm" placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} />
                       
                     </FormControl>
                   </Stack>
                 </Stack>
                 <FormControl>
                   <FormLabel>Phone</FormLabel>
-                  <Input size="sm" placeholder='Name' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
+                  <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} disabled />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Написать сообщение</FormLabel>
@@ -621,7 +512,7 @@ export default function MyProfile() {
                 </div>
               </Stack>
             </Card>
-            <Card>
+            {/* <Card>
               <Box sx={{ mb: 1 }}>
                 <Typography level="title-md">Bio</Typography>
               </Box>
@@ -635,7 +526,7 @@ export default function MyProfile() {
                 />
 
               </Stack>
-            </Card>
+            </Card> */}
 
           </Stack>
         </Box>

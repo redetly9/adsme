@@ -76,7 +76,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/search'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator

@@ -44,8 +44,27 @@ export default function ChatsPane(props: ChatsPaneProps) {
         >
           Messages
         </Typography>
+        <IconButton
+          variant="plain"
+          aria-label="edit"
+          color="neutral"
+          size="sm"
+          sx={{ display: { xs: 'none', sm: 'unset' } }}
+        >
+          <EditNoteRoundedIcon />
+        </IconButton>
+        <IconButton
+          variant="plain"
+          aria-label="edit"
+          color="neutral"
+          size="sm"
+          onClick={() => {
+            toggleMessagesPane();
+          }}
+          sx={{ display: { sm: 'none' } }}
+        >
+        </IconButton>
       </Stack>
-
       <List
         sx={{
           py: 0,

@@ -16,7 +16,7 @@ import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Feed({ post }) {
+export default function Search({ post }) {
   const [open, setOpen] = React.useState([false, false, false]);
 
   const handleSnackbarOpen = (index: number) => {
