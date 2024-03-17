@@ -79,7 +79,6 @@ export default function MyProfile() {
       const data = {
         name: nameInput,
         surname:surnameInput,
-        phone:phoneInput,
       };
 
   
