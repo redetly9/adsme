@@ -39,7 +39,9 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
       py={{ xs: 2, md: 2 }}
       px={{ xs: 1, md: 2 }}
     >
-      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center">
+      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center" onClick={() => {
+        navigate(`/profile/${sender?._id}`)
+      }}>
         <IconButton
           variant="plain"
           color="neutral"

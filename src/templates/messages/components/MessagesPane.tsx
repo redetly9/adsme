@@ -19,6 +19,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
   const [textAreaValue, setTextAreaValue] = React.useState('');
+  const sender = chatMessages?.find(c => c.sender._id !== userId)
 
   console.log('chatMessages', chatMessages);
 
@@ -42,7 +43,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
         backgroundColor: 'background.level1',
       }}
     >
-      <MessagesPaneHeader sender={chatMessages?.[0]?.sender} />
+      <MessagesPaneHeader sender={sender?.sender} />
       <Box
         sx={{
           display: 'flex',
