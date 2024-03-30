@@ -30,6 +30,10 @@ export default function SearchList() {
     }
   }, [tag])
 
+  // React.useEffect(() => {
+  //     getPosts()
+  // }, [])
+
   const [typingTimeout, setTypingTimeout] = React.useState(null);
 
   const handleSearch = (event) => {
@@ -53,11 +57,12 @@ export default function SearchList() {
         flex: 1,
         minWidth: 0,
         height: 'calc(100dvh - 81.6px)',
+        width: '100vw',
         gap: 1,
         overflow: 'auto',
       }}
     >
-                  <Box sx={{ px: 2, pb: 1.5, margin:'0 auto', marginTop: '10px', }}>
+                  <Box sx={{ px: 2, pb: 1.5, margin:'0 auto', marginTop: '30px', }}>
         <Input
           size="sm"
           startDecorator={<SearchRoundedIcon />}
@@ -66,6 +71,15 @@ export default function SearchList() {
           onChange={handleSearch}
         />
       </Box>
+      
+      {/* {
+  !posts ? (
+    posts?.map(p => <Search post={p} key={p._id} />)
+  ) : (
+    <div>No Content</div>
+  )
+} */}
+
       {
         posts?.map(p => <Search post={p} key={p._id} />)
       }

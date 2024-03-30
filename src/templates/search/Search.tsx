@@ -36,6 +36,7 @@ export default function Search({ post }) {
       variant="outlined"
       sx={{
         borderRadius: 'sm',
+        border:"none",
         p: 2,
         mb: 3,
       }}

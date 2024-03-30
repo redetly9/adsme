@@ -36,7 +36,7 @@ import CountrySelector from './CountrySelector';
 import EditorToolbar from './EditorToolbar';
 import { api } from '../../../api';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -55,7 +55,7 @@ export default function MyProfile() {
       setNameInput(profileData.name);
     }
   }, [profileData]);
-  
+  const navigate = useNavigate();
 
   const onProfile = async (userId: string) => {
     try {
@@ -103,10 +103,30 @@ export default function MyProfile() {
   if (userId === sessionStorage.user) {
     isOwn = true
   }
+console.log('profileData', profileData);
+console.log('sessionStorage.user,', sessionStorage.user,);
+
+
+  const AddChat = async () => {
+    const { data } = await api.post('v2/chats', {
+
+        "participants": [
+          profileData?._id,
+          sessionStorage.user,
+        ]
+
+    })
+    if (data) {
+      console.log(data);
+      navigate(`/message/${data._id}`);
+      
+    }
+  }
+
   return (
       <>
       { isOwn ? (
-    <Box sx={{ flex: 1, width: '100%' }}>
+    <Box sx={{ flex: 1,         width: '100vw', }}>
       <Box
         sx={{
           position: 'sticky',
@@ -264,7 +284,7 @@ export default function MyProfile() {
             </Stack>
             <FormControl>
               <FormLabel>Phone</FormLabel>
-              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} disabled />
+              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly />
             </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
@@ -384,7 +404,7 @@ export default function MyProfile() {
     </Box> 
     ) : (
 
-          <Box sx={{ flex: 1, width: '100%' }}>
+          <Box sx={{ flex: 1,         width: '100vw', }}>
           <Box
             sx={{
               position: 'sticky',
@@ -489,18 +509,18 @@ export default function MyProfile() {
                         gap: 2,
                       }}
                     >
-                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} />
-                      <Input size="sm" placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} />
+                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} readOnly />
+                      <Input size="sm" placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} readOnly />
                       
                     </FormControl>
                   </Stack>
                 </Stack>
                 <FormControl>
                   <FormLabel>Phone</FormLabel>
-                  <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} disabled />
+                  <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Написать сообщение</FormLabel>
+                  <FormLabel onClick={AddChat}>Написать сообщение</FormLabel>
   {/* <EmailRoundedIcon /> */}
 
 

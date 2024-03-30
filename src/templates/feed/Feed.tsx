@@ -7,6 +7,8 @@ import Button from '@mui/joy/Button';
 import Snackbar from '@mui/joy/Snackbar';
 import Divider from '@mui/joy/Divider';
 import Avatar from '@mui/joy/Avatar';
+import Chip from '@mui/joy/Chip';
+
 
 import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
@@ -36,6 +38,7 @@ export default function Feed({ post }) {
       variant="outlined"
       sx={{
         borderRadius: 'sm',
+        border:"none",
         p: 2,
         mb: 3,
       }}
@@ -102,7 +105,7 @@ export default function Feed({ post }) {
           >
             Your message has been sent.
           </Snackbar>
-          <Button
+          {/* <Button
             size="sm"
             variant="plain"
             color="neutral"
@@ -110,7 +113,7 @@ export default function Feed({ post }) {
             onClick={() => handleSnackbarOpen(1)}
           >
             Forward
-          </Button>
+          </Button> */}
           <Snackbar
             color="success"
             open={open[1]}
@@ -180,6 +183,14 @@ export default function Feed({ post }) {
           post.title
         }
       </Typography>
+<Box sx={{display:'flex', gap:'5px'}}>
+      <Chip>        {
+          post?.tags[0]
+        }</Chip>
+            <Chip>        {
+          post?.tags[1]
+        }</Chip>
+</Box>
 
 
     </Sheet>
