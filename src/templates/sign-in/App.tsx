@@ -144,12 +144,12 @@ export default function JoySignInSideTemplate() {
             }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              <IconButton variant="soft" color="primary" size="sm">
+              {/* <IconButton variant="soft" color="primary" size="sm">
                 <BadgeRoundedIcon />
-              </IconButton>
-              <Typography level="title-lg">Company logo</Typography>
+              </IconButton> */}
+              {/* <Typography level="title-lg">Company logo</Typography> */}
             </Box>
-            <ColorSchemeToggle />
+            {/* <ColorSchemeToggle /> */}
           </Box>
           { !code ? ( 
           <Box
@@ -177,18 +177,18 @@ export default function JoySignInSideTemplate() {
           >
             <Stack gap={4} sx={{ mb: 2 }}>
               <Stack gap={1}>
-                <Typography component="h1" level="h3">
+                <Typography component="h1" level="h3" sx={{ margin: '0 auto' }}>
                   Sign in
                 </Typography>
-                <Typography level="body-sm">
-                  New to company?{' '}
-                  <Link href="#replace-with-a-link" level="title-sm">
+                {/* <Typography level="body-sm">
+                  New to company?{' '} */}
+                  {/* <Link href="#replace-with-a-link" level="title-sm">
                     Sign up!
-                  </Link>
-                </Typography>
+                  </Link> */}
+                {/* </Typography> */}
               </Stack>
             </Stack>
-            <Divider
+            {/* <Divider
               sx={(theme) => ({
                 [theme.getColorSchemeSelector('light')]: {
                   color: { xs: '#FFF', md: 'text.tertiary' },
@@ -196,7 +196,7 @@ export default function JoySignInSideTemplate() {
               })}
             >
               or
-            </Divider>
+            </Divider> */}
             <Stack gap={4} sx={{ mt: 2 }}>
                    <form
                 onSubmit={onSubmit}
@@ -213,10 +213,10 @@ export default function JoySignInSideTemplate() {
                       alignItems: 'center',
                     }}
                   >
-                    <Checkbox size="sm" label="Remember me" name="persistent" />
+                    {/* <Checkbox size="sm" label="Remember me" name="persistent" />
                     <Link level="title-sm" href="#replace-with-a-link">
                       Forgot your password?
-                    </Link>
+                    </Link> */}
                   </Box>
                   <Button type="submit" fullWidth>
                     Sign in
@@ -252,12 +252,12 @@ export default function JoySignInSideTemplate() {
           >
             <Stack gap={4} sx={{ mb: 2 }}>
               <Stack gap={1}>
-                <Typography component="h1" level="h3">
+                <Typography component="h1" level="h3" sx={{ margin: '0 auto' }}>
                   Confirm your phone
                 </Typography>
               </Stack>
             </Stack>
-            <Divider
+            {/* <Divider
               sx={(theme) => ({
                 [theme.getColorSchemeSelector('light')]: {
                   color: { xs: '#FFF', md: 'text.tertiary' },
@@ -265,7 +265,7 @@ export default function JoySignInSideTemplate() {
               })}
             >
               or
-            </Divider>
+            </Divider> */}
             <Stack gap={4} sx={{ mt: 2 }}>
               <form
                 onSubmit={onConfirm}
@@ -282,7 +282,7 @@ export default function JoySignInSideTemplate() {
                       alignItems: 'center',
                     }}
                   >
-                    <Checkbox size="sm" label="Remember me" name="persistent" />
+                    {/* <Checkbox size="sm" label="Remember me" name="persistent" /> */}
                   </Box>
                   <Button type="submit" fullWidth>
                     Confirm
@@ -294,7 +294,7 @@ export default function JoySignInSideTemplate() {
 
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body-xs" textAlign="center">
-              © Your company {new Date().getFullYear()}
+              © Adsme {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>
@@ -314,8 +314,8 @@ export default function JoySignInSideTemplate() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+          // backgroundImage:
+          //   'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
               'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',

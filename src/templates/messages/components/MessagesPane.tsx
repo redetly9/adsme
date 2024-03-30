@@ -55,7 +55,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
           px: 2,
           py: 3,
           pb: '200px',
-          overflowY: 'scroll',
+          overflowY: 'auto',
           flexDirection: 'column-reverse',
         }}
       >

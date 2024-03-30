@@ -7,8 +7,6 @@ import Button from '@mui/joy/Button';
 import Snackbar from '@mui/joy/Snackbar';
 import Divider from '@mui/joy/Divider';
 import Avatar from '@mui/joy/Avatar';
-import Chip from '@mui/joy/Chip';
-
 
 import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
@@ -18,7 +16,7 @@ import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Feed({ post }) {
+export default function Search({ post }) {
   const [open, setOpen] = React.useState([false, false, false]);
 
   const handleSnackbarOpen = (index: number) => {
@@ -105,7 +103,7 @@ export default function Feed({ post }) {
           >
             Your message has been sent.
           </Snackbar>
-          {/* <Button
+          <Button
             size="sm"
             variant="plain"
             color="neutral"
@@ -113,7 +111,7 @@ export default function Feed({ post }) {
             onClick={() => handleSnackbarOpen(1)}
           >
             Forward
-          </Button> */}
+          </Button>
           <Snackbar
             color="success"
             open={open[1]}
@@ -183,14 +181,6 @@ export default function Feed({ post }) {
           post.title
         }
       </Typography>
-<Box sx={{display:'flex', gap:'5px'}}>
-      <Chip>        {
-          post?.tags[0]
-        }</Chip>
-            <Chip>        {
-          post?.tags[1]
-        }</Chip>
-</Box>
 
 
     </Sheet>

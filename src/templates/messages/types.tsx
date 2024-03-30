@@ -3,6 +3,7 @@ export type UserProps = {
     username: string;
     avatar: string;
     online: boolean;
+    _id: string;
   };
   
   export type MessageProps = {

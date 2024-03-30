@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Box from '@mui/joy/Box';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Tabs from '@mui/joy/Tabs';
@@ -11,9 +12,24 @@ import { Link } from 'react-router-dom';
 import { MessageRounded } from '@mui/icons-material';
 
 export default function NavBar() {
-  const [index, setIndex] = React.useState(1);
+  const [index, setIndex] = React.useState(0);
   const id = sessionStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
+  const [ready, setReady] = React.useState(false)
+
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const tabs = ['/home', '/messages', '/search', '/profile'];
+    const tabIndex = tabs.findIndex(tab => pathname.startsWith(tab));
+    if (tabIndex !== -1) {
+      setIndex(tabIndex);
+      
+    }
+    setReady(true);
+  }, []);
+  if (!ready) {
+    return null;
+  }
   return (
     <Box>
       <Tabs
@@ -76,7 +92,23 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='#'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation="vertical"
+              {...(index === 1 && { color: colors[1] })}
+            >
+              <ListItemDecorator>
+            +
+                {/* <MessageRounded /> */}
+
+              </ListItemDecorator>
+              
+            </Tab>
+          </Link>
+
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/search'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -108,3 +140,4 @@ export default function NavBar() {
     </Box>
   );
 }
+
