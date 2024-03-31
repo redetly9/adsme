@@ -1,23 +1,20 @@
 import * as React from 'react';
-import { AspectRatio, Box, Input, Sheet, Skeleton } from "@mui/joy";
+import { Box, Input, Sheet, Skeleton } from "@mui/joy";
 import { api } from '../../api';
 // import { getCurrentLocation } from '../../utils/geo';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Search from './Search';
 
 
-import Card from '@mui/joy/Card';
+
 
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
-import Avatar from '@mui/joy/Avatar';
-import Chip from '@mui/joy/Chip';
 
 
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 
-import moment from 'moment'
 
 import { useAppSelector } from '../../store';
 
@@ -307,7 +304,8 @@ export default function SearchList() {
       ) : posts.length > 0 ? (
         posts.map(p => <Search post={p} key={p._id} />)
       ) : (
-        <div>No posts found</div>
+        <div style={{marginLeft: '145px',
+          marginTop: '120px'}}>No posts found</div>
       )}
     </Sheet>
   );
