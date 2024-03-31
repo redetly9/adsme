@@ -22,6 +22,19 @@ export default function SearchList() {
   const [posts, setPosts] = React.useState(null);
   const [tag, setTag] = React.useState('');
   const { latitude, longitude } = useAppSelector(state => state.user.geo);
+  console.log(posts);
+
+  const [chats, setChats] = React.useState<any>(null);
+  const getChats = async () => {
+    const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
+    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
+  }
+  React.useEffect(() => {
+    if (sessionStorage.user) {
+      getChats()
+    }
+  }, [])
+  console.log('chats', chats);
   
   const getPostsByTag = async () => {
     try {
@@ -302,7 +315,7 @@ export default function SearchList() {
            </Box>
          
       ) : posts.length > 0 ? (
-        posts.map(p => <Search post={p} key={p._id} />)
+        posts.map(p =>  <Search post={p} key={p._id} chats={chats} />)
       ) : (
         <div style={{marginLeft: '145px',
           marginTop: '120px'}}>No posts found</div>

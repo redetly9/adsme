@@ -17,21 +17,8 @@ import { api } from '../../api';
 
 
 
-export default function Feed({ post }) {
-  
-  const [chats, setChats] = React.useState<any>(null);
-const getChats = async () => {
-  const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
-  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
-}
-React.useEffect(() => {
-  console.log('useEffect вызван');
-  if (sessionStorage.user) {
-    console.log('useEffect вызван');
-    getChats()
-  }
-}, [])
-console.log('chats', chats);
+export default function Feed({ post, chats }) {
+
 
 
 const checkAndAddChat = async () => {

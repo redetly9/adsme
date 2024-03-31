@@ -153,6 +153,10 @@ useEffect(() => {
 }, [userId])
 console.log('chats', chats);
 
+function signOut() {
+  sessionStorage.removeItem('user');
+  sessionStorage.removeItem('phone');
+}
 
 const checkAndAddChat = async () => {
   const currentUserId = sessionStorage.user;
@@ -336,7 +340,16 @@ const checkAndAddChat = async () => {
             </div>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+            
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+            <Button size="sm" variant="solid" color="neutral" sx={{marginRight:'140px'}}
+            onClick={()=>{
+              signOut()
+              window.location.reload() 
+            }}
+            >
+                Logout
+              </Button>
               <Button size="sm" variant="outlined" color="neutral">
                 Cancel
               </Button>
