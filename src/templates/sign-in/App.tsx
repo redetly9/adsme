@@ -1,21 +1,14 @@
 import * as React from 'react';
-import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
+import { CssVarsProvider } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Checkbox from '@mui/joy/Checkbox';
-import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
-import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { api } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -31,30 +24,7 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-function ColorSchemeToggle(props: IconButtonProps) {
-  const { onClick, ...other } = props;
-  const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
 
-
-  React.useEffect(() => setMounted(true), []);
-
-  return (
-    <IconButton
-      aria-label="toggle light/dark mode"
-      size="sm"
-      variant="outlined"
-      disabled={!mounted}
-      onClick={(event) => {
-        setMode(mode === 'light' ? 'dark' : 'light');
-        onClick?.(event);
-      }}
-      {...other}
-    >
-      {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-    </IconButton>
-  );
-}
 
 export default function JoySignInSideTemplate() {
   const [ code, setCode] = useState(false)
@@ -105,15 +75,16 @@ export default function JoySignInSideTemplate() {
       <CssBaseline />
       <GlobalStyles
         styles={{
+
           ':root': {
             '--Form-maxWidth': '800px',
-            '--Transition-duration': '0.4s', // set to `none` to disable transition
+            '--Transition-duration': '0.4s',
           },
         }}
       />
       <Box
         sx={(theme) => ({
-          width: { xs: '100%', md: '50vw' },
+          width: { xs: '100vw', md: '50vw' },
           transition: 'width var(--Transition-duration)',
           transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
           position: 'relative',
@@ -144,12 +115,7 @@ export default function JoySignInSideTemplate() {
             }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              {/* <IconButton variant="soft" color="primary" size="sm">
-                <BadgeRoundedIcon />
-              </IconButton> */}
-              {/* <Typography level="title-lg">Company logo</Typography> */}
             </Box>
-            {/* <ColorSchemeToggle /> */}
           </Box>
           { !code ? ( 
           <Box
@@ -161,7 +127,7 @@ export default function JoySignInSideTemplate() {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              width: 400,
+              width: '100%',
               maxWidth: '100%',
               mx: 'auto',
               borderRadius: 'sm',
@@ -180,23 +146,8 @@ export default function JoySignInSideTemplate() {
                 <Typography component="h1" level="h3" sx={{ margin: '0 auto' }}>
                   Sign in
                 </Typography>
-                {/* <Typography level="body-sm">
-                  New to company?{' '} */}
-                  {/* <Link href="#replace-with-a-link" level="title-sm">
-                    Sign up!
-                  </Link> */}
-                {/* </Typography> */}
               </Stack>
             </Stack>
-            {/* <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              or
-            </Divider> */}
             <Stack gap={4} sx={{ mt: 2 }}>
                    <form
                 onSubmit={onSubmit}
@@ -213,10 +164,6 @@ export default function JoySignInSideTemplate() {
                       alignItems: 'center',
                     }}
                   >
-                    {/* <Checkbox size="sm" label="Remember me" name="persistent" />
-                    <Link level="title-sm" href="#replace-with-a-link">
-                      Forgot your password?
-                    </Link> */}
                   </Box>
                   <Button type="submit" fullWidth>
                     Sign in
@@ -236,7 +183,7 @@ export default function JoySignInSideTemplate() {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              width: 400,
+              width: '100%',
               maxWidth: '100%',
               mx: 'auto',
               borderRadius: 'sm',
@@ -257,15 +204,6 @@ export default function JoySignInSideTemplate() {
                 </Typography>
               </Stack>
             </Stack>
-            {/* <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              or
-            </Divider> */}
             <Stack gap={4} sx={{ mt: 2 }}>
               <form
                 onSubmit={onConfirm}
@@ -282,7 +220,6 @@ export default function JoySignInSideTemplate() {
                       alignItems: 'center',
                     }}
                   >
-                    {/* <Checkbox size="sm" label="Remember me" name="persistent" /> */}
                   </Box>
                   <Button type="submit" fullWidth>
                     Confirm
@@ -314,8 +251,6 @@ export default function JoySignInSideTemplate() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          // backgroundImage:
-          //   'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
               'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',

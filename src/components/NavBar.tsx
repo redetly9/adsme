@@ -52,7 +52,8 @@ console.log(index);
         sx={(theme) => ({
           p: 1,
           borderRadius: 16,
-          maxWidth: 400,
+          maxWidth: '100vw',
+          overflow:'hidden',
           mx: 'auto',
           boxShadow: theme.shadow.sm,
           '--joy-shadowChannel': theme.vars.palette[colors[0]].darkChannel,
@@ -75,7 +76,7 @@ console.log(index);
           sx={{ borderRadius: 'lg', p: 0 }}
         >
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/feed'>
+          <Link style={{ width: '20%', maxWidth: '20%' }} to='/feed'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -88,7 +89,7 @@ console.log(index);
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/messages'>
+          <Link style={{ width: '20%', maxWidth: '20%' }} to='/messages'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -104,7 +105,7 @@ console.log(index);
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/post'>
+          <Link style={{ width: '20%', maxWidth: '20%' }} to='/post'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -120,7 +121,7 @@ console.log(index);
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/search'>
+          <Link style={{ width: '20%', maxWidth: '20%' }} to='/search'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -133,7 +134,7 @@ console.log(index);
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to={`/profile/${id}`}>
+          <Link style={{ width: '20%', maxWidth: '20%' }} to={`/profile/${id}`}>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator

@@ -101,7 +101,7 @@ console.log('chats', chats);
     if (latitude && longitude) {
       getPosts()
     }
-  }, [latitude, longitude, radius])
+  }, [latitude, longitude, radius,])
 
 
   return (
