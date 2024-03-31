@@ -16,17 +16,29 @@ export default function NavBar() {
   const id = sessionStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   const [ready, setReady] = React.useState(false)
+  // const initialIndex = Number(sessionStorage.getItem('tabIndex') || 0);
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const tabs = ['/home', '/messages', '/search', '/profile'];
+    const tabs = ['/feed', '/messages','/post', '/search', `/profile/${id}`];
     const tabIndex = tabs.findIndex(tab => pathname.startsWith(tab));
     if (tabIndex !== -1) {
       setIndex(tabIndex);
-      
     }
     setReady(true);
-  }, []);
+    sessionStorage.setItem('tabIndex', index.toString());
+  }, [index, id]);
+console.log(index);
+
+  if (!ready) {
+    return null;
+  }
+
+  // При изменении вкладки обновите индекс и сохраните его
+  const handleChange = (event, newValue) => {
+    setIndex(newValue);
+    sessionStorage.setItem('tabIndex', newValue.toString());
+  };
   if (!ready) {
     return null;
   }
@@ -36,7 +48,7 @@ export default function NavBar() {
         size="lg"
         aria-label="Bottom Navigation"
         value={index}
-        onChange={(event, value) => setIndex(value as number)}
+        onChange={handleChange}
         sx={(theme) => ({
           p: 1,
           borderRadius: 16,
@@ -63,7 +75,7 @@ export default function NavBar() {
           sx={{ borderRadius: 'lg', p: 0 }}
         >
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='/'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/feed'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -92,7 +104,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '25%', maxWidth: '25%' }} to='#'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/post'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -101,7 +113,7 @@ export default function NavBar() {
             >
               <ListItemDecorator>
             +
-                {/* <MessageRounded /> */}
+
 
               </ListItemDecorator>
               

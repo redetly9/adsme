@@ -6,9 +6,10 @@ import { getCurrentLocation } from '../../utils/geo';
 import Box from '@mui/joy/Box';
 import { useAppSelector } from '../../store';
 import Slider from '@mui/joy/Slider';
+import CreatePost from './CreatePost';
 
 
-export default function FeedList() {
+export default function PostList() {
 
   const [posts, setPosts] = React.useState(null)
   const [radius, setRadius] = React.useState(null)
@@ -73,10 +74,8 @@ export default function FeedList() {
         radius,
       }
     })
-    const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    setPosts(sortedPosts);
-    // setPosts(data.slice().reverse())
+    setPosts(data.slice().reverse())
   }
 
   React.useEffect(() => {
@@ -100,41 +99,12 @@ export default function FeedList() {
       }}
     >
 
-      <Dropdown >
-        <MenuButton sx={{ marginLeft: 'auto', display: 'block', marginTop: '20px',
-         marginRight: '20px',    '&:hover': {
-          borderColor: '#c7dff7',
-         ' &:focus': {
-            'outline': '0',
-        }
-        } }}>Filter</MenuButton>
-        <Menu sx={{
-          width: '100vw', border: 'none', boxShadow: 'none',
-          backgroundColor: 'var(--joy-palette-background-surface)'
-        }}>
-          <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
-          <Slider
-  aria-label="Custom marks"
-  defaultValue={radius || Number(sessionStorage.getItem('radius')) || 20}
-  getAriaValueText={valueText}
-  max={1000}
-  step={10}
-  valueLabelDisplay="auto"
-  marks={marks}
-  onChangeCommitted={(event, newValue) => {
-    setRadius(newValue);
-    sessionStorage.setItem('radius', newValue.toString());
-  }}
-/>
-          </Box></MenuItem>
+<CreatePost  />
 
-        </Menu>
-      </Dropdown>
+            {/* {
+        posts?.map(p => <CreatePost post={p} key={p._id} />)
+      } */}
 
-
-      {
-        posts?.map(p => <Feed post={p} key={p._id} />)
-      }
 
     </Sheet>
 

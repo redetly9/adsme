@@ -1,4 +1,6 @@
-// import * as React from 'react';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -35,8 +37,7 @@ import FileUpload from './FileUpload';
 import CountrySelector from './CountrySelector';
 import EditorToolbar from './EditorToolbar';
 import { api } from '../../../api';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -46,7 +47,39 @@ export default function MyProfile() {
   const [nameInput, setNameInput] = useState(profileData.name)
   const [surnameInput, setSurnameInput] = useState(profileData.surname)
   const [phoneInput, setPhoneInput] = useState(profileData.phone)
+  const [imageUrl, setImageUrl] = React.useState('' || '');
   console.log('Profile', profileData);
+
+  const fileInputRef = useRef(null);
+
+  const handleAvatarChange = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      await uploadImage(file);
+    }
+  };
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'ml_default');
+    formData.append('api_key', '695968168657315');
+    const url = `https://api.cloudinary.com/v1_1/your_cloud_name/image/upload`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      setImageUrl(data.secure_url);
+    } catch (error) {
+      console.error('Ошибка при загрузке изображения: ', error);
+    }
+  };
+
+  const handleEditIconClick = () => {
+    fileInputRef.current.click();
+  };
   
   useEffect(() => {
     if (profileData?.phone) {
@@ -79,6 +112,7 @@ export default function MyProfile() {
       const data = {
         name: nameInput,
         surname:surnameInput,
+        avatar: imageUrl,
       };
 
   
@@ -197,37 +231,6 @@ console.log('sessionStorage.user,', sessionStorage.user,);
             spacing={3}
             sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
           >
-            <Stack direction="column" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
-              >
-                <img
-                  src={profileData.avatar}
-            
-                  loading="lazy"
-                  alt=""
-                />
-              </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: 'background.body',
-                  position: 'absolute',
-                  zIndex: 2,
-                  borderRadius: '50%',
-                  left: 100,
-                  top: 170,
-                  boxShadow: 'sm',
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
-            </Stack>
           </Stack>
           <Stack
             direction="column"
@@ -236,35 +239,42 @@ console.log('sessionStorage.user,', sessionStorage.user,);
           >
             <Stack direction="row" spacing={2}>
               <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
-                >
-                  <img
-                    src={profileData.avatar}
-              
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: 'background.body',
-                    position: 'absolute',
-                    zIndex: 2,
-                    borderRadius: '50%',
-                    left: 85,
-                    top: 180,
-                    boxShadow: 'sm',
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
+              <AspectRatio
+        ratio="1"
+        maxHeight={108}
+        sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
+      >
+        <img
+          src={profileData.avatar || imageUrl}
+          loading="lazy"
+          alt=""
+        />
+      </AspectRatio>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleAvatarChange}
+        style={{ display: 'none' }}
+        accept="image/*" 
+      />
+      <IconButton
+        aria-label="upload new picture"
+        size="sm"
+        variant="outlined"
+        color="neutral"
+        sx={{
+          bgcolor: 'background.body',
+          position: 'absolute',
+          zIndex: 2,
+          borderRadius: '50%',
+          left: 85,
+          top: 180,
+          boxShadow: 'sm',
+        }}
+        onClick={handleEditIconClick}
+      >
+        <EditRoundedIcon />
+      </IconButton>
               </Stack>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <FormLabel>Name</FormLabel>
@@ -298,30 +308,8 @@ console.log('sessionStorage.user,', sessionStorage.user,);
               />
             </FormControl>
             <div>
-              {/* <CountrySelector /> */}
             </div>
             <div>
-              {/* <FormControl sx={{ display: { sm: 'contents' } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
-                >
-                  <Option value="1">
-                    Indochina Time (Bangkok){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl> */}
             </div>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
@@ -335,71 +323,7 @@ console.log('sessionStorage.user,', sessionStorage.user,);
             </CardActions>
           </CardOverflow>
         </Card>
-        {/* <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <EditorToolbar />
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card> */}
-        {/* <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Portfolio projects</Typography>
-            <Typography level="body-sm">
-              Share a few snippets of your work.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <DropZone />
-            <FileUpload
-              icon={<InsertDriveFileRoundedIcon />}
-              fileName="Tech design requirements.pdf"
-              fileSize="200 kB"
-              progress={100}
-            />
-            <FileUpload
-              icon={<VideocamRoundedIcon />}
-              fileName="Dashboard prototype recording.mp4"
-              fileSize="16 MB"
-              progress={40}
-            />
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card> */}
+  
       </Stack>
     </Box> 
     ) : (

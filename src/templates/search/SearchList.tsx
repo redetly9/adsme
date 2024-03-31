@@ -17,6 +17,7 @@ export default function SearchList() {
       const response = await api.get('v2/posts/tags', {
         params: { tag },
       });
+      
       setPosts(response.data.slice().reverse());
     } catch (error) {
       setPosts([]);

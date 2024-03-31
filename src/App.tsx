@@ -13,6 +13,7 @@ import FeedList from './templates/feed/App';
 import { getCurrentLocation } from './utils/geo';
 import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
+import PostList from './templates/create-post/App';
 
 function App() {
   useEffect(() => {
@@ -48,7 +49,8 @@ function App() {
               <Route element={<Main />}>
                 <Route path="/messages" element={<MessagesList />} />
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
-                <Route path="/" element={<FeedList />} />
+                <Route path="/feed" element={<FeedList />} />
+                <Route path="/post" element={<PostList />} />
                 <Route path="/search" element={<SearchList />} />
                 
               </Route>

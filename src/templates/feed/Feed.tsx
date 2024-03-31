@@ -183,13 +183,16 @@ export default function Feed({ post }) {
           post.title
         }
       </Typography>
-<Box sx={{display:'flex', gap:'5px'}}>
+<Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+  {
+    post?.tags.map(tag => (
       <Chip>        {
-          post?.tags[0]
-        }</Chip>
-            <Chip>        {
-          post?.tags[1]
-        }</Chip>
+        tag
+      }</Chip>
+    ))
+  }
+
+
 </Box>
 
 
