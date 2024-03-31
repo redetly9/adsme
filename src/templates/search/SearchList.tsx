@@ -18,7 +18,12 @@ export default function SearchList() {
       });
       setPosts(response.data.slice().reverse());
     } catch (error) {
-      console.error('Error fetching posts by tag:', error);
+      if (error.response && error.response.status === 404) {
+        console.log(error.response.data.message);
+        setPosts([]);
+      } else {
+        console.error('Error fetching posts by tag:', error);
+      }
     }
   };
 
