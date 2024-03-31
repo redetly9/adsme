@@ -39,9 +39,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
       py={{ xs: 2, md: 2 }}
       px={{ xs: 1, md: 2 }}
     >
-      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center" onClick={() => {
-        navigate(`/profile/${sender?._id}`)
-      }}>
+      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center" >
         <IconButton
           variant="plain"
           color="neutral"
@@ -49,7 +47,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
           sx={{
             display: { xs: 'inline-flex', sm: 'none' },
           }}
-          onClick={() => navigate(`/messages/`)}
+          onClick={() => navigate(`/messages`)}
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
@@ -60,6 +58,9 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
             fontSize="lg"
             component="h2"
             noWrap
+            onClick={() => {
+              navigate(`/profile/${sender?._id}`)
+            }}
           >
             {sender?.name}
           </Typography>
