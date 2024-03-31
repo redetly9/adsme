@@ -14,19 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../../api';
 
 
-export default function Search({ post }) {
-  const [chats, setChats] = React.useState<any>(null);
-const getChats = async () => {
-  const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
-  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
-}
-React.useEffect(() => {
-  if (sessionStorage.user) {
-    getChats()
-  }
-},[])
-console.log('chats', chats);
-
+export default function Search({ post, chats }) {
 
 const checkAndAddChat = async () => {
   const currentUserId = sessionStorage.user;
