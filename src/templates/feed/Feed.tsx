@@ -19,19 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function Feed({ post }) {
-  const [open, setOpen] = React.useState([false, false, false]);
 
-  const handleSnackbarOpen = (index: number) => {
-    const updatedOpen = [...open];
-    updatedOpen[index] = true;
-    setOpen(updatedOpen);
-  };
-
-  const handleSnackbarClose = (index: number) => {
-    const updatedOpen = [...open];
-    updatedOpen[index] = false;
-    setOpen(updatedOpen);
-  };
   const navigate = useNavigate();
   return (
     <Sheet

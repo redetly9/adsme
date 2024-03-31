@@ -4,32 +4,17 @@ import Card from '@mui/joy/Card';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import Snackbar from '@mui/joy/Snackbar';
 import Divider from '@mui/joy/Divider';
 import Avatar from '@mui/joy/Avatar';
-
-import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import Chip from '@mui/joy/Chip';
 
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 
 
 export default function Search({ post }) {
-  const [open, setOpen] = React.useState([false, false, false]);
 
-  const handleSnackbarOpen = (index: number) => {
-    const updatedOpen = [...open];
-    updatedOpen[index] = true;
-    setOpen(updatedOpen);
-  };
-
-  const handleSnackbarClose = (index: number) => {
-    const updatedOpen = [...open];
-    updatedOpen[index] = false;
-    setOpen(updatedOpen);
-  };
   const navigate = useNavigate();
   return (
     <Sheet
@@ -80,7 +65,7 @@ export default function Search({ post }) {
             variant="plain"
             color="neutral"
             startDecorator={<ReplyRoundedIcon />}
-            onClick={() => handleSnackbarOpen(0)}
+            // onClick={() => handleSnackbarOpen(0)}
           >
             Reply
           </Button>
@@ -115,7 +100,17 @@ export default function Search({ post }) {
           post.title
         }
       </Typography>
+      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+  {
+    post?.tags.map(tag => (
+      <Chip>        {
+        tag
+      }</Chip>
+    ))
+  }
 
+
+</Box>
 
     </Sheet>
   );
