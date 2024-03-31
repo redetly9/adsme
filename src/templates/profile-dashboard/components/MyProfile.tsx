@@ -132,7 +132,7 @@ export default function MyProfile() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   useEffect(()=> { //@ts-ignore
     onProfile(id);
-  },[])
+  },[id])
   let isOwn = false
   if (userId === sessionStorage.user) {
     isOwn = true
