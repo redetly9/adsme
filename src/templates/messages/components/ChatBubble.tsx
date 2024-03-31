@@ -49,6 +49,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
             sx={{
               p: 1.25,
               borderRadius: 'lg',
+              wordBreak: 'break-all',
               borderTopRightRadius: isSent ? 0 : 'lg',
               borderTopLeftRadius: isSent ? 'lg' : 0,
               backgroundColor: isSent
@@ -87,22 +88,6 @@ export default function ChatBubble(props: ChatBubbleProps) {
                     }),
               }}
             >
-              <IconButton
-                variant={isLiked ? 'soft' : 'plain'}
-                color={isLiked ? 'danger' : 'neutral'}
-                size="sm"
-                onClick={() => setIsLiked((prevState) => !prevState)}
-              >
-                {isLiked ? '❤️' : <FavoriteBorderIcon />}
-              </IconButton>
-              <IconButton
-                variant={isCelebrated ? 'soft' : 'plain'}
-                color={isCelebrated ? 'warning' : 'neutral'}
-                size="sm"
-                onClick={() => setIsCelebrated((prevState) => !prevState)}
-              >
-                {isCelebrated ? '🎉' : <CelebrationOutlinedIcon />}
-              </IconButton>
             </Stack>
           )}
         </Box>

@@ -25,18 +25,17 @@ export default function MessageInput(props: MessageInputProps) {
   return (
     <Box sx={{ 
       px: 2,
-     pb: 3,
+     pb: 2,
      position: 'fixed',
     bottom: 0,
     width: '100%',
     zIndex: 1000, 
       }}>
-      <FormControl>
+      {/* <FormControl>
         <Textarea
           placeholder="Type something here…"
           aria-label="Message"
           ref={textAreaRef}
-          
           onChange={(e) => {
             setTextAreaValue(e.target.value);
           }}
@@ -80,7 +79,29 @@ export default function MessageInput(props: MessageInputProps) {
             },
           }}
         />
-      </FormControl>
+      </FormControl> */}
+<Box sx={{display:'flex', alignItems:'flex-end'}}>
+<Textarea
+          ref={textAreaRef}
+          minRows={1}
+          maxRows={4}
+          value={textAreaValue}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+              handleClick();
+            }
+          }}
+          onChange={(e) => {
+            setTextAreaValue(e.target.value);
+          }}
+          placeholder="Type something here…"
+  sx={{width:'100%'}}
+  
+/>
+<Button 
+sx={{maxHeight:'36px'}}
+onClick={handleClick} >Send</Button>
+</Box>
     </Box>
   );
 }

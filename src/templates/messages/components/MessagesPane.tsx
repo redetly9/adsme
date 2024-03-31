@@ -41,6 +41,8 @@ export default function MessagesPane(props: MessagesPaneProps) {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'background.level1',
+        // overflowY: 'auto',
+        
       }}
     >
       <MessagesPaneHeader sender={sender?.sender} />
