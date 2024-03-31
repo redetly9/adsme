@@ -82,76 +82,10 @@ export default function Feed({ post }) {
             variant="plain"
             color="neutral"
             startDecorator={<ReplyRoundedIcon />}
-            onClick={() => handleSnackbarOpen(0)}
+            // onClick={() => navigate(`/messages/${post?.author?._id}`)}
           >
             Reply
           </Button>
-          <Snackbar
-            color="success"
-            open={open[0]}
-            onClose={() => handleSnackbarClose(0)}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            startDecorator={<CheckCircleRoundedIcon />}
-            endDecorator={
-              <Button
-                onClick={() => handleSnackbarClose(0)}
-                size="sm"
-                variant="soft"
-                color="neutral"
-              >
-                Dismiss
-              </Button>
-            }
-          >
-            Your message has been sent.
-          </Snackbar>
-          {/* <Button
-            size="sm"
-            variant="plain"
-            color="neutral"
-            startDecorator={<ForwardToInboxRoundedIcon />}
-            onClick={() => handleSnackbarOpen(1)}
-          >
-            Forward
-          </Button> */}
-          <Snackbar
-            color="success"
-            open={open[1]}
-            onClose={() => handleSnackbarClose(1)}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            startDecorator={<CheckCircleRoundedIcon />}
-            endDecorator={
-              <Button
-                onClick={() => handleSnackbarClose(1)}
-                size="sm"
-                variant="soft"
-                color="neutral"
-              >
-                Dismiss
-              </Button>
-            }
-          >
-            Your message has been forwarded.
-          </Snackbar>
-          <Snackbar
-            color="danger"
-            open={open[2]}
-            onClose={() => handleSnackbarClose(2)}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            startDecorator={<CheckCircleRoundedIcon />}
-            endDecorator={
-              <Button
-                onClick={() => handleSnackbarClose(2)}
-                size="sm"
-                variant="soft"
-                color="neutral"
-              >
-                Dismiss
-              </Button>
-            }
-          >
-            Your message has been deleted.
-          </Snackbar>
         </Box>
       </Box>
       <Divider sx={{ mt: 2 }} />
