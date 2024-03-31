@@ -11,10 +11,48 @@ import Chip from '@mui/joy/Chip';
 
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../api';
 
 
 export default function Search({ post }) {
+  const [chats, setChats] = React.useState<any>(null);
+const getChats = async () => {
+  const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
+  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
+}
+React.useEffect(() => {
+  if (sessionStorage.user) {
+    getChats()
+  }
+},[])
+console.log('chats', chats);
 
+
+const checkAndAddChat = async () => {
+  const currentUserId = sessionStorage.user;
+  const otherUserId = post?.author?._id;
+
+  const existingChat = chats.find(chat =>
+    chat.participants.find(p => p._id === currentUserId) &&
+    chat.participants.find(p => p._id === otherUserId)
+  );
+
+  if (existingChat) {
+    navigate(`/message/${existingChat._id}`);
+  } else {
+    try {
+      const { data } = await api.post('v2/chats', {
+        participants: [currentUserId, otherUserId]
+      });
+      if (data) {
+        console.log(data);
+        navigate(`/message/${data._id}`);
+      }
+    } catch (error) {
+      console.error("Ошибка при создании чата:", error);
+    }
+  }
+};
   const navigate = useNavigate();
   return (
     <Sheet
@@ -65,7 +103,7 @@ export default function Search({ post }) {
             variant="plain"
             color="neutral"
             startDecorator={<ReplyRoundedIcon />}
-            // onClick={() => handleSnackbarOpen(0)}
+            onClick={checkAndAddChat}
           >
             Reply
           </Button>
