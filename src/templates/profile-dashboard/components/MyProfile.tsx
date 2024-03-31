@@ -141,21 +141,44 @@ console.log('profileData', profileData);
 console.log('sessionStorage.user,', sessionStorage.user,);
 
 
-  const AddChat = async () => {
-    const { data } = await api.post('v2/chats', {
+const [chats, setChats] = useState<any>(null);
+const getChats = async () => {
+  const { data } = await api.get(`v2/chats/${userId}`)
+  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== userId) }) })))
+}
+useEffect(() => {
+  if (userId) {
+    getChats()
+  }
+}, [userId])
+console.log('chats', chats);
 
-        "participants": [
-          profileData?._id,
-          sessionStorage.user,
-        ]
 
-    })
-    if (data) {
-      console.log(data);
-      navigate(`/message/${data._id}`);
-      
+const checkAndAddChat = async () => {
+  const currentUserId = sessionStorage.user;
+  const otherUserId = profileData?._id;
+
+  const existingChat = chats.find(chat =>
+    chat.participants.find(p => p._id === currentUserId) &&
+    chat.participants.find(p => p._id === otherUserId)
+  );
+
+  if (existingChat) {
+    navigate(`/message/${existingChat._id}`);
+  } else {
+    try {
+      const { data } = await api.post('v2/chats', {
+        participants: [currentUserId, otherUserId]
+      });
+      if (data) {
+        console.log(data);
+        navigate(`/message/${data._id}`);
+      }
+    } catch (error) {
+      console.error("Ошибка при создании чата:", error);
     }
   }
+};
 
   return (
       <>
@@ -444,7 +467,7 @@ console.log('sessionStorage.user,', sessionStorage.user,);
                   <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel onClick={AddChat}>Написать сообщение</FormLabel>
+                  <FormLabel onClick={checkAndAddChat}>Написать сообщение</FormLabel>
   {/* <EmailRoundedIcon /> */}
 
 
