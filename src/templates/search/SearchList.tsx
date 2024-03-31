@@ -46,13 +46,23 @@ export default function SearchList() {
   React.useEffect(() => {
     if (tag) {
       getPostsByTag();
-    } else {
+    } else if (latitude & longitude) {
       getAllPosts();
     }
   }, [tag, latitude, longitude]);
 
+  const [typingTimeout, setTypingTimeout] = React.useState(null);
+
   const handleSearch = (event) => {
-    setTag(event.target.value.trim());
+    const value = event.target.value.trim();
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    setTypingTimeout(setTimeout(() => {
+      setTag(value);
+    }, 300));
   };
 
   return (
