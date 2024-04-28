@@ -95,7 +95,8 @@ export async function getUserChats(userId) {
     .from('chats')
     .select(`
       *,
-      messages: messages(*)
+      messages: messages(*),
+      sender: user_profiles!chats_user_id_fkey(*)
     `)
     .eq('user_id', userId)
 
@@ -103,6 +104,22 @@ export async function getUserChats(userId) {
     console.error('Ошибка при получении чатов:', error.message);
     return { error };
   }
+
+  // const newChats = await chats?.map(m => {
+  //   const { data: sender } = supabase
+  //   .from('user_profiles')
+  //   .select('*')
+  //   .eq('id', m.chat_participants)
+  //   .single();
+
+  //   return {
+  //     ...m,
+  //     sender
+  //   }
+  // })
+
+  // console.log(newChats);
+  
 
   return { data: chats };
 }
