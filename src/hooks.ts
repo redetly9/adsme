@@ -105,22 +105,6 @@ export async function getUserChats(userId) {
     return { error };
   }
 
-  // const newChats = await chats?.map(m => {
-  //   const { data: sender } = supabase
-  //   .from('user_profiles')
-  //   .select('*')
-  //   .eq('id', m.chat_participants)
-  //   .single();
-
-  //   return {
-  //     ...m,
-  //     sender
-  //   }
-  // })
-
-  // console.log(newChats);
-  
-
   return { data: chats };
 }
 
