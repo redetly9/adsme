@@ -188,7 +188,7 @@ export async function updateUser(userId, updateData) {
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByLocation(longitude, latitude, radius = 1000) {
   let { data: posts, error } = await supabase
-    .rpc('get_posts_by_location', { long: longitude, lat: latitude, rad: radius });
+    .rpc('get_posts_by_location2', { long: longitude, lat: latitude, rad: radius });
 
   if (error) {
     console.error('Ошибка при получении постов:', error.message);
@@ -205,7 +205,7 @@ export async function getPostsByTag(tag) {
     .from('posts')
     .select(`
       *,
-      author: user_profiles (name, avatar)
+      author: user_profiles (*)
     `)
     .ilike('tags', `%${tag}%`);
 
