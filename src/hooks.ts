@@ -94,11 +94,9 @@ export async function getUserChats(userId) {
   let { data: chats, error } = await supabase
     .from('chats')
     .select(`
-      *,
-      chat_participants(
-        user_profile_id
-      )
+      *
     `)
+    .eq('user_id', userId)
 
   if (error) {
     console.error('Ошибка при получении чатов:', error.message);
