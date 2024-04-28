@@ -20,8 +20,9 @@ function App() {
   useEffect(() => {
     // sendMessage(1, 1, 'bla bla')
     // getChatMessages(1)
+    getUserChats(3)
 
-    getUserById(1)
+    // getUserById(1)
   }, [])
   const userId = useAppSelector(state => state.user.user) || sessionStorage.user
   const dispatch = useAppDispatch()

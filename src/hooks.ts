@@ -94,7 +94,8 @@ export async function getUserChats(userId) {
   let { data: chats, error } = await supabase
     .from('chats')
     .select(`
-      *
+      *,
+      messages: messages(*)
     `)
     .eq('user_id', userId)
 
