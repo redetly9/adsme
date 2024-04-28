@@ -188,14 +188,30 @@ export async function updateUser(userId, updateData) {
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByLocation(longitude, latitude, radius = 1000) {
   let { data: posts, error } = await supabase
-    .rpc('get_posts_by_location2', { long: longitude, lat: latitude, rad: radius });
+    .rpc('get_posts_by_location2', { long: longitude, lat: latitude, rad: radius })
+    .select('*')
 
   if (error) {
     console.error('Ошибка при получении постов:', error.message);
     return { error };
   }
 
-  return { data: posts };
+  const mapped = posts?.map(p => ({
+    "id": p.id,
+    "title": p.title,
+    "images": p.images,
+    "tags": p.tags,
+    "created_at": p.created_at,
+    "author": {
+      "id": p.author_id,
+      "name": p.author_name,
+      "avatar": p.avatar,
+      "surname": p.author_surname,
+      "lastname": p.author_lastname,
+    },
+  }))
+
+  return { data: mapped };
 }
 
 
