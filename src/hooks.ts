@@ -218,7 +218,7 @@ export async function getPostsByTag(tag) {
 }
 
 // Добавление нового поста
-export async function createPost({ title, images, tags, longitude, latitude, authorId }) {
+export async function createPost({ title, images, tags, longitude, latitude, author }) {
   let { data: newPost, error } = await supabase
     .from('posts')
     .insert([{
@@ -226,8 +226,9 @@ export async function createPost({ title, images, tags, longitude, latitude, aut
       images,
       tags,
       location: `POINT(${longitude} ${latitude})`,
-      author_id: authorId
-    }]);
+      author: author
+    }])
+    .select()
 
   if (error) {
     console.error('Ошибка при создании поста:', error.message);
