@@ -96,6 +96,7 @@ export async function getUserChats(userId) {
     .select(`
       *,
       messages: messages(*),
+      sender: user_profiles!chats_user_id_fkey(*)
     `)
     .eq('user_id', userId)
 
