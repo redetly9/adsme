@@ -187,16 +187,8 @@ export async function updateUser(userId, updateData) {
 
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByLocation(longitude, latitude, radius = 1000) {
-  const locationFilter = `location <@ ST_MakeEnvelope(${longitude - 0.01}, ${latitude - 0.01}, ${longitude + 0.01}, ${latitude + 0.01}, 4326)`;
-
   let { data: posts, error } = await supabase
-    .from('posts')
-    .select(`
-      *,
-      author: user_profiles (name, avatar)
-    `)
-    .filter('location', 'st_d_within', locationFilter)
-    .order('created_at', { ascending: false });
+    .rpc('get_posts_by_location', { long: longitude, lat: latitude, rad: radius });
 
   if (error) {
     console.error('Ошибка при получении постов:', error.message);
@@ -205,6 +197,7 @@ export async function getPostsByLocation(longitude, latitude, radius = 1000) {
 
   return { data: posts };
 }
+
 
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByTag(tag) {

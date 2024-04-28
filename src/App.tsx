@@ -14,13 +14,14 @@ import { getCurrentLocation } from './utils/geo';
 import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
-import { createChat, getUserById, getChatMessages, getUserChats, registerUser, sendMessage } from './hooks';
+import { createChat, getUserById, getChatMessages, getUserChats, registerUser, sendMessage, getPostsByLocation, getPostsByTag } from './hooks';
 
 function App() {
   useEffect(() => {
     // sendMessage(1, 1, 'bla bla')
     // getChatMessages(1)
-    getUserChats(3)
+    getPostsByLocation('71.4015332', '51.1357213', 1000)
+    // getPostsByTag(['22'])
 
     // getUserById(1)
   }, [])
