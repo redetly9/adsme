@@ -14,23 +14,24 @@ import { getCurrentLocation } from './utils/geo';
 import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
+import { createChat, getUserById, getChatMessages, getUserChats, registerUser, sendMessage } from './hooks';
 
 function App() {
   useEffect(() => {
-    // axios.get
+    // sendMessage(1, 1, 'bla bla')
+    // getChatMessages(1)
+
+    getUserById(1)
   }, [])
   const userId = useAppSelector(state => state.user.user) || sessionStorage.user
   const dispatch = useAppDispatch()
-  console.log(userId,'userId');
 
   useEffect(() => {
     getCurrentLocation().then(location => {
-      console.log('Your current location:', location);
       dispatch(addGeo(location))
     }).catch(error => {
       console.error(error);
     });
-    
   }, [])
   
   

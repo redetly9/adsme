@@ -28,7 +28,6 @@ export default function NavBar() {
     setReady(true);
     sessionStorage.setItem('tabIndex', index.toString());
   }, [index, id]);
-console.log(index);
 
   if (!ready) {
     return null;

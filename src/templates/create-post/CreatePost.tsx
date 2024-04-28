@@ -85,7 +85,6 @@ export default function Post() {
         "author": sessionStorage.user
     })
 if(data) {
-    console.log(data);
     navigate(`/feed`);
     
 }

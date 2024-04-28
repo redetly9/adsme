@@ -32,9 +32,6 @@ export default function JoySignInSideTemplate() {
   const [ codeInput, setCodeInput] = useState('')
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  console.log(navigate);
-
-  
   
   const onSubmit = async (event: React.FormEvent<SignInFormElement>) => {
     event.preventDefault();

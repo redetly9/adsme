@@ -24,13 +24,11 @@ const getChats = async () => {
   setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
 }
 React.useEffect(() => {
-  console.log('useEffect вызван');
   if (sessionStorage.user) {
     
     getChats()
   }
 }, [])
-console.log('chats', chats);
 
   const marks = [
     {
