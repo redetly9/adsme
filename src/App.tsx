@@ -20,8 +20,10 @@ function App() {
   useEffect(() => {
     // sendMessage(1, 1, 'bla bla')
     // getChatMessages(1)
-    getPostsByLocation('71.4015332', '51.1357213', 1000)
-    // getPostsByTag(['22'])
+    // console.log(getPostsByLocation('71.4015332', '51.1357213', 1000));
+    
+    // getPostsByTag('22')
+    createChat([1, 2])
 
     // getUserById(1)
   }, [])

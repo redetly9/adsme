@@ -61,20 +61,33 @@ export async function verifyUser(phone, code) {
 }
 
 export async function createChat(participants) {
-  // Создаем новый чат
+  // Проверяем, существует ли уже чат с данными участниками
+  const existingChat = await checkExistingChat(participants);
+
+  if (existingChat.error) {
+    console.error('Ошибка при проверке существующего чата:', existingChat.error.message);
+    return { error: existingChat.error };
+  }
+
+  // Если чат существует, возвращаем его
+  if (existingChat.data) {
+    return { data: existingChat.data };
+  }
+
+  // Если чата не существует, создаем новый
   let { data: chat, error: chatError } = await supabase
     .from('chats')
     .insert([{}])
-    .select()
+    .single();
 
   if (chatError) {
     console.error('Ошибка при создании чата:', chatError.message);
     return { error: chatError };
   }
 
-  // Добавляем участников к чату
+  // Добавляем участников к новому чату
   const participantRecords = participants.map(userId => ({
-    chat_id: chat[0].id,
+    chat_id: chat.id,
     user_profile_id: userId
   }));
 
@@ -89,6 +102,50 @@ export async function createChat(participants) {
 
   return { data: chat };
 }
+
+async function checkExistingChat(participants) {
+  // Для простоты предположим, что у нас есть таблица `chat_participants`
+  // и в ней есть колонки `chat_id` и `user_profile_id`.
+  // Мы ищем чаты, где есть все участники из списка `participants`.
+
+  // Сначала находим все чаты, где есть хотя бы один участник
+  let { data: chats, error } = await supabase
+    .from('chat_participants')
+    .select('chat_id')
+    .in('user_profile_id', participants);
+
+  if (error || !chats.length) {
+    return { error: error || new Error("No chats found for the participants.") };
+  }
+
+  // Теперь находим чаты, где количество участников совпадает с количеством переданных участников
+  const chatIds = chats.map(chat => chat.chat_id);
+  const { data: validChats, error: validChatsError } = await supabase
+    .from('chat_participants')
+    .select('chat_id')
+    .in('chat_id', chatIds)
+    .group('chat_id')
+    .having('count(user_profile_id)', 'eq', participants.length);
+
+  if (validChatsError || !validChats.length) {
+    return { error: validChatsError || new Error("No valid chats found with the exact participants.") };
+  }
+
+  // Возвращаем первый подходящий чат
+  const validChatId = validChats[0].chat_id;
+  const { data: chat, error: chatError } = await supabase
+    .from('chats')
+    .select('*')
+    .eq('id', validChatId)
+    .single();
+
+  if (chatError) {
+    return { error: chatError };
+  }
+
+  return { data: chat };
+}
+
 
 export async function getUserChats(userId) {
   let { data: chats, error } = await supabase
