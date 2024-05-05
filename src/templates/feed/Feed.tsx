@@ -14,6 +14,7 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../api';
+import { createChat } from '../../hooks';
 
 
 
@@ -21,31 +22,32 @@ export default function Feed({ post, chats }) {
 
 
 
-const checkAndAddChat = async () => {
-  const currentUserId = sessionStorage.user;
-  const otherUserId = post?.author?.id;
-
-  const existingChat = chats.find(chat =>
-    chat.participants.find(p => p.id === currentUserId) &&
-    chat.participants.find(p => p.id === otherUserId)
-  );
-
-  if (existingChat) {
-    navigate(`/message/${existingChat.id}`);
-  } else {
-    try {
-      const { data } = await api.post('v2/chats', {
-        participants: [currentUserId, otherUserId]
-      });
-      if (data) {
-        console.log(data);
-        navigate(`/message/${data.id}`);
+  const checkAndAddChat = async () => {
+    const currentUserId = sessionStorage.user;
+    const otherUserId = post?.author?.id;
+  
+    // const existingChat = chats.find(chat =>
+    //   chat.participants.find(p => p.id === currentUserId) &&
+    //   chat.participants.find(p => p.id === otherUserId)
+    // );
+  
+    // if (existingChat) {
+    //   navigate(`/message/${existingChat.id}`);
+    // } else {
+      try {
+        const { data, error } = await createChat([currentUserId, otherUserId])
+        if (error) {
+          console.log('error', error)
+        }
+        if (data) {
+          console.log('datasasasasaa', data);
+          navigate(`/message/${data?.id}`);
+        }
+      } catch (error) {
+        console.error("Ошибка при создании чата:", error);
       }
-    } catch (error) {
-      console.error("Ошибка при создании чата:", error);
-    }
-  }
-};
+    // }
+  };
 
   const navigate = useNavigate();
   return (
@@ -92,15 +94,17 @@ const checkAndAddChat = async () => {
         <Box
           sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
         >
-          <Button
-            size="sm"
-            variant="plain"
-            color="neutral"
-            startDecorator={<ReplyRoundedIcon />}
-            onClick={checkAndAddChat}
-          >
-            Reply
-          </Button>
+{
+  post?.author?.id != sessionStorage.user ? (          <Button
+    size="sm"
+    variant="plain"
+    color="neutral"
+    startDecorator={<ReplyRoundedIcon />}
+    onClick={checkAndAddChat}
+  >
+    Reply
+  </Button>):('')
+}
         </Box>
       </Box>
       <Divider sx={{ mt: 2 }} />

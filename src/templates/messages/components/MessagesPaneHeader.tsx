@@ -12,7 +12,6 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { UserProps } from '../types';
 // import { toggleMessagesPane } from '../utils';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../store';
 
 type MessagesPaneHeaderProps = {
   sender: UserProps;
@@ -21,7 +20,7 @@ type MessagesPaneHeaderProps = {
 export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
   const { sender } = props;
   console.log(sender);
-  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
+  
   const navigate = useNavigate();
   return (
     <Stack
@@ -63,7 +62,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
               navigate(`/profile/${sender?.id}`)
             }}
           >
-            {sender?.name}id {userId}
+            {sender?.name}
           </Typography>
           <Typography level="body-sm">{sender?.username}</Typography>
         </div>
