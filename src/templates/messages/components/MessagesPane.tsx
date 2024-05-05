@@ -88,7 +88,7 @@ console.log('sss', notMeData);
       >
         <Stack spacing={2} justifyContent="flex-end">
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = message.sender_id === +userId;
+            const isYou = Number(message.sender_id )=== Number(userId);
             return (
               <Stack
                 key={index}
