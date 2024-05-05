@@ -63,7 +63,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
               navigate(`/profile/${sender?.id}`)
             }}
           >
-            {sender?.name}{userId}
+            {sender?.name}id {userId}
           </Typography>
           <Typography level="body-sm">{sender?.username}</Typography>
         </div>
