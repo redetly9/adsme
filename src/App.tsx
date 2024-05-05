@@ -17,16 +17,16 @@ import PostList from './templates/create-post/App';
 import { createChat, getUserById, getChatMessages, getUserChats, registerUser, sendMessage, getPostsByLocation, getPostsByTag } from './hooks';
 
 function App() {
-  useEffect(() => {
-    // sendMessage(1, 1, 'bla bla')
-    // getChatMessages(1)
-    // console.log(getPostsByLocation('71.4015332', '51.1357213', 1000));
+  // useEffect(() => {
+  //   // sendMessage(1, 1, 'bla bla')
+  //   // getChatMessages(1)
+  //   // console.log(getPostsByLocation('71.4015332', '51.1357213', 1000));
     
-    // getPostsByTag('22')
-    createChat([1, 2])
+  //   // getPostsByTag('22')
+  //   createChat([1, 2])
 
-    // getUserById(1)
-  }, [])
+  //   // getUserById(1)
+  // }, [])
   const userId = useAppSelector(state => state.user.user) || sessionStorage.user
   const dispatch = useAppDispatch()
 

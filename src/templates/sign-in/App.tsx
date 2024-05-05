@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { add } from '../../slices';
 import { useAppDispatch } from '../../store';
+import { registerUser, verifyUser } from '../../hooks';
 
 interface FormElements extends HTMLFormControlsCollection {
   phone: HTMLInputElement;
@@ -41,9 +42,7 @@ export default function JoySignInSideTemplate() {
     };
     console.log('phoneInput', phoneInput);
 
-    await api.post('v2/register', {
-      ...data
-    })
+    await registerUser(data.phone)
     setCode(true)
     // navigate('/confirm')
   }
@@ -57,12 +56,11 @@ export default function JoySignInSideTemplate() {
     console.log('phoneInput', phoneInput);
     console.log('codeInput', codeInput);
 
-    const response = await api.post('v2/verify', {
-      ...data
-    })
+    const response = await verifyUser(data.phone, data.code)
     
     dispatch(add(response?.data?.user))
-    sessionStorage.user = response?.data?.user._id
+    sessionStorage.token = response?.data?.token
+    sessionStorage.user = response?.data?.user.id
     sessionStorage.phone = response?.data?.user.phone
         navigate('/feed')
   }

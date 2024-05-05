@@ -10,12 +10,14 @@ import Box from '@mui/joy/Box';
 import { useAppSelector } from '../../store';
 import Slider from '@mui/joy/Slider';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
+import { getPostsByLocation } from '../../hooks';
 
 export default function FeedList() {
 
   const [posts, setPosts] = React.useState(null)
-  const [radius, setRadius] = React.useState(null)
+  const [radius, setRadius] = React.useState(sessionStorage?.getItem('radius'))
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
+console.log('posts', posts);
 
 
   const [chats, setChats] = React.useState(null);
@@ -82,13 +84,11 @@ React.useEffect(() => {
   }
 
   const getPosts = async () => {
-    const { data } = await api.get('v2/posts', {
-      params: {
-        latitude,
-        longitude,
-        radius,
-      }
-    })
+    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 0,
+)
+console.log('longitude', longitude);
+console.log('latitude', latitude);
+
     const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     setPosts(sortedPosts);
@@ -351,7 +351,7 @@ React.useEffect(() => {
            </Box>
          
       ) : posts.length > 0 ? (
-        posts.map(p => <Feed post={p} key={p._id} chats={chats} />)
+        posts?.map(p => <Feed post={p} key={p.id} chats={chats} />)
       ) : (
         <div style={{marginLeft: '145px',
           marginTop: '120px'}}>No posts found</div>

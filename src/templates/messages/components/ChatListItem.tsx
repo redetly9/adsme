@@ -24,6 +24,8 @@ export default function ChatListItem(props: ChatListItemProps) {
   const { id, sender, messages, selectedChatId, setSelectedChat } = props;
   const selected = selectedChatId === id;
   const navigate = useNavigate();
+console.log('props', props);
+
   return (
     <React.Fragment>
       <ListItem>
@@ -42,7 +44,7 @@ export default function ChatListItem(props: ChatListItemProps) {
           }}
         >
           <Stack direction="row" spacing={1.5}>
-            <AvatarWithStatus online={false} src={sender?.avatar} onClick={() => navigate(`/profile/${sender?._id}`)} />
+            <AvatarWithStatus online={false} src={sender?.avatar} onClick={() => navigate(`/profile/${sender?.id}`)} />
             <Box sx={{ flex: 1, }}>
               <Typography level="title-sm">{sender?.name}</Typography>
               <Typography level="body-sm">{sender?.lastMessage ? sender?.lastMessage : 'Последнее сообщение' }</Typography>
@@ -53,7 +55,8 @@ export default function ChatListItem(props: ChatListItemProps) {
                 textAlign: 'right',
               }}
             >
-              {messages[0]?.unread && (
+              
+              {messages && messages[0]?.unread && (
                 <CircleIcon sx={{ fontSize: 12 }} color="primary" />
               )}
               <Typography
@@ -75,7 +78,7 @@ export default function ChatListItem(props: ChatListItemProps) {
               textOverflow: 'ellipsis',
             }}
           >
-            {messages[0]?.content}
+            {messages && messages[0]?.content}
           </Typography>
         </ListItemButton>
       </ListItem>

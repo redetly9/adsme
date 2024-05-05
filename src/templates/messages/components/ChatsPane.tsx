@@ -72,14 +72,16 @@ export default function ChatsPane(props: ChatsPaneProps) {
           '--ListItem-paddingX': '1rem',
         }}
       >
-        {chats?.map((chat) => (
-          <ChatListItem
-            key={chat._id}
-            {...chat}
-            setSelectedChat={setSelectedChat}
-            selectedChatId={selectedChatId}
-          />
-        ))}
+        {chats?.map((chat) => {
+          return (
+            <ChatListItem
+              key={chat.id}
+              {...chat}
+              setSelectedChat={setSelectedChat}
+              selectedChatId={selectedChatId}
+            />
+          )
+        })}
       </List>
     </Sheet>
   );

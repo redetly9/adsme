@@ -23,15 +23,15 @@ export default function Feed({ post, chats }) {
 
 const checkAndAddChat = async () => {
   const currentUserId = sessionStorage.user;
-  const otherUserId = post?.author?._id;
+  const otherUserId = post?.author?.id;
 
   const existingChat = chats.find(chat =>
-    chat.participants.find(p => p._id === currentUserId) &&
-    chat.participants.find(p => p._id === otherUserId)
+    chat.participants.find(p => p.id === currentUserId) &&
+    chat.participants.find(p => p.id === otherUserId)
   );
 
   if (existingChat) {
-    navigate(`/message/${existingChat._id}`);
+    navigate(`/message/${existingChat.id}`);
   } else {
     try {
       const { data } = await api.post('v2/chats', {
@@ -39,7 +39,7 @@ const checkAndAddChat = async () => {
       });
       if (data) {
         console.log(data);
-        navigate(`/message/${data._id}`);
+        navigate(`/message/${data.id}`);
       }
     } catch (error) {
       console.error("Ошибка при создании чата:", error);
@@ -70,8 +70,8 @@ const checkAndAddChat = async () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Avatar
             src={post?.author?.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JYrktZNYfJ7k1QFk-hL3v6J9fiTAvsZeWRTybV0hSv_-wwPli_IJBB16Y8Tepi5U0Qg&usqp=CAU'}
-            onClick={() => {if(post?.author?._id) {
-              navigate(`/profile/${post?.author?._id}`)
+            onClick={() => {if(post?.author?.id) {
+              navigate(`/profile/${post?.author?.id}`)
             }}}
           />
           <Box sx={{ ml: 2 }}>
@@ -119,7 +119,7 @@ const checkAndAddChat = async () => {
       >
         <Card variant="outlined" sx={{ minWidth: '100%' }}>
             <img
-              src={post.images?.[0]}
+              src={post.images}
               alt="Yosemite National Park"
               style={{ minWidth: '100%', maxWidth: '100%' }}
             />
@@ -134,7 +134,7 @@ const checkAndAddChat = async () => {
       </Typography>
 <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
   {
-    post?.tags.map(tag => (
+    post?.tags?.split(' ').map(tag => (
       <Chip>        {
         tag
       }</Chip>

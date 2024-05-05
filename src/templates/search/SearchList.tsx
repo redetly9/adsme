@@ -17,6 +17,7 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 
 
 import { useAppSelector } from '../../store';
+import { getPostsByLocation, getPostsByTag } from '../../hooks';
 
 export default function SearchList() {
   const [posts, setPosts] = React.useState(null);
@@ -27,7 +28,7 @@ export default function SearchList() {
   const [chats, setChats] = React.useState<any>(null);
   const getChats = async () => {
     const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
-    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
+    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== sessionStorage.user) }) })))
   }
   React.useEffect(() => {
     if (sessionStorage.user) {
@@ -36,11 +37,9 @@ export default function SearchList() {
   }, [])
   console.log('chats', chats);
   
-  const getPostsByTag = async () => {
+  const getPostsByTagApi = async () => {
     try {
-      const response = await api.get('v2/posts/tags', {
-        params: { tag },
-      });
+      const response = await getPostsByTag(tag);
       setPosts(response.data.slice().reverse());
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -51,16 +50,11 @@ export default function SearchList() {
       }
     }
   };
-
+  const radius = sessionStorage?.getItem('radius') || 10
   const getAllPosts = async () => {
     try {
-      const response = await api.get('v2/posts', {
-        params: {
-          latitude,
-          longitude,
-          radius: sessionStorage.getItem('radius') || '20'
-        }
-      });
+      const response = await getPostsByLocation(`${longitude}`,`${latitude}`, radius,
+    )
       const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setPosts(sortedPosts);
     } catch (error) {
@@ -70,7 +64,7 @@ export default function SearchList() {
 
   React.useEffect(() => {
     if (tag) {
-      getPostsByTag();
+      getPostsByTagApi();
     } else if (latitude & longitude) {
       getAllPosts();
     }
@@ -315,7 +309,7 @@ export default function SearchList() {
            </Box>
          
       ) : posts.length > 0 ? (
-        posts.map(p =>  <Search post={p} key={p._id} chats={chats} />)
+        posts.map(p =>  <Search post={p} key={p.id} chats={chats} />)
       ) : (
         <div style={{marginLeft: '145px',
           marginTop: '120px'}}>No posts found</div>

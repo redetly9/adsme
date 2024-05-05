@@ -7,13 +7,9 @@ import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import FormHelperText from '@mui/joy/FormHelperText';
 import Input from '@mui/joy/Input';
 import IconButton from '@mui/joy/IconButton';
-import Textarea from '@mui/joy/Textarea';
 import Stack from '@mui/joy/Stack';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
 import Typography from '@mui/joy/Typography';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
@@ -27,16 +23,11 @@ import CardOverflow from '@mui/joy/CardOverflow';
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
-import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-import DropZone from './DropZone';
-import FileUpload from './FileUpload';
 import CountrySelector from './CountrySelector';
-import EditorToolbar from './EditorToolbar';
 import { api } from '../../../api';
+import { createChat, getUserById, getUserChats, updateUser } from '../../../hooks';
 
 
 export default function MyProfile() {
@@ -93,7 +84,7 @@ export default function MyProfile() {
   const onProfile = async (userId: string) => {
     try {
     
-      const response = await api.get(`/v2/users/${userId}`);
+      const response = await getUserById(userId);
       setProfileData(response.data)
       console.log(response.data);
       
@@ -112,13 +103,11 @@ export default function MyProfile() {
       const data = {
         name: nameInput,
         surname:surnameInput,
-        avatar: imageUrl,
+        avatar: imageUrl || profileData.avatar,
       };
 
   
-      await api.patch(`v2/users/${userId}`, {
-        ...data
-      })
+      await updateUser(userId, data)
 
       // navigate('/confirm')
     } catch (error) {
@@ -143,8 +132,8 @@ console.log('sessionStorage.user,', sessionStorage.user,);
 
 const [chats, setChats] = useState<any>(null);
 const getChats = async () => {
-  const { data } = await api.get(`v2/chats/${userId}`)
-  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== userId) }) })))
+  const { data } = await getUserChats(userId)
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))
 }
 useEffect(() => {
   if (userId) {
@@ -160,28 +149,29 @@ function signOut() {
 
 const checkAndAddChat = async () => {
   const currentUserId = sessionStorage.user;
-  const otherUserId = profileData?._id;
+  const otherUserId = profileData?.id;
 
-  const existingChat = chats.find(chat =>
-    chat.participants.find(p => p._id === currentUserId) &&
-    chat.participants.find(p => p._id === otherUserId)
-  );
+  // const existingChat = chats.find(chat =>
+  //   chat.participants.find(p => p.id === currentUserId) &&
+  //   chat.participants.find(p => p.id === otherUserId)
+  // );
 
-  if (existingChat) {
-    navigate(`/message/${existingChat._id}`);
-  } else {
+  // if (existingChat) {
+  //   navigate(`/message/${existingChat.id}`);
+  // } else {
     try {
-      const { data } = await api.post('v2/chats', {
-        participants: [currentUserId, otherUserId]
-      });
+      const { data, error } = await createChat([currentUserId, otherUserId])
+      if (error) {
+        console.log('error', error)
+      }
       if (data) {
-        console.log(data);
-        navigate(`/message/${data._id}`);
+        console.log('datasasasasaa', data);
+        navigate(`/message/${data?.id}`);
       }
     } catch (error) {
       console.error("Ошибка при создании чата:", error);
     }
-  }
+  // }
 };
 
   return (

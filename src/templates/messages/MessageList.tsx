@@ -5,6 +5,7 @@ import { ChatProps } from "./types";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store";
 import { api } from "../../api";
+import { getUserChats } from "../../hooks";
 
 export const MessagesList = () => {
   const [selectedChat, setSelectedChat] = useState<ChatProps | null>(null);
@@ -15,8 +16,11 @@ export const MessagesList = () => {
 
 
   const getChats = async () => {
-    const { data } = await api.get(`v2/chats/${userId}`)
-    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== userId) }) })))
+    // const { data } = await api.get(`v2/chats/${userId}`)
+    const { data } = await getUserChats(userId)
+    console.log('data', data);
+    
+    setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))
   }
 
   useEffect(() => {
@@ -28,7 +32,7 @@ export const MessagesList = () => {
 
   useEffect(() => {
     if (selectedChat) {
-      navigate(`/message/${selectedChat._id}`);
+      navigate(`/message/${selectedChat?.id}`);
     }
   }, [selectedChat, navigate]);
 

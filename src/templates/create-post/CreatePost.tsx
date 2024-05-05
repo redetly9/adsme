@@ -16,6 +16,7 @@ import ChipDelete from '@mui/joy/ChipDelete';
 import { Button } from '@mui/joy';
 import { useAppSelector } from '../../store';
 import { api } from '../../api';
+import { createPost } from '../../hooks';
 
 export default function Post() {
 
@@ -76,15 +77,9 @@ export default function Post() {
 
 
   const UploadPosts = async () => {
-    const { data } = await api.post('v2/posts', {
-        "title": description,
-        "images": [imageUrl],
-        "tags": tags,
-        "longitude": longitude,
-        "latitude": latitude,
-        "author": sessionStorage.user
-    })
-if(data) {
+    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude, latitude, author: sessionStorage.user })
+
+    if(data) {
     navigate(`/feed`);
     
 }

@@ -51,7 +51,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <Avatar size="lg" src={sender?.avatar} onClick={() => navigate(`/profile/${sender?._id}`)} />
+        <Avatar size="lg" src={sender?.avatar} onClick={() => navigate(`/profile/${sender?.id}`)} />
         <div>
           <Typography
             fontWeight="lg"
@@ -59,7 +59,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
             component="h2"
             noWrap
             onClick={() => {
-              navigate(`/profile/${sender?._id}`)
+              navigate(`/profile/${sender?.id}`)
             }}
           >
             {sender?.name}

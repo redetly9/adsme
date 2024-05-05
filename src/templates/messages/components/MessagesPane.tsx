@@ -9,6 +9,7 @@ import MessagesPaneHeader from './MessagesPaneHeader';
 import { MessageProps } from '../types';
 import { api } from '../../../api';
 import { useAppSelector } from '../../../store';
+import { getChatMessages, sendMessage } from '../../../hooks';
 
 type MessagesPaneProps = {
   chatId: string | undefined;
@@ -19,18 +20,42 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
   const [textAreaValue, setTextAreaValue] = React.useState('');
-  const sender = chatMessages?.find(c => c.sender._id !== userId)
+  const sender = chatMessages?.find(c => c.sender.id !== userId)
 
   console.log('chatMessages', chatMessages);
 
-  const getChatMessages = async () => {
-    const { data } = await api.get(`v2/chats/${chatId}/messages`)
+  const getChatsMessagesApi = async () => {
+    const { data } = await getChatMessages(chatId)
+    console.log('datachat', data);
+    
     setChatMessages(data)
   }
 
+  function filterOtherUserMessages(chatMessages, mySenderId) {
+    const otherUserMessages = chatMessages?.filter(message => message.sender_id !== mySenderId);
+    const otherUsers = otherUserMessages?.map(message => ({
+        id: message.sender_id,
+        name: message.sender.name,
+        avatar: message.sender.avatar
+    }));
+
+    const uniqueUsers = Array.from(new Map(otherUsers?.map(user => [user.id, user]))?.values());
+
+    return {
+        messages: otherUserMessages,
+        users: uniqueUsers
+    };
+    
+}
+
+const groupedData = filterOtherUserMessages(chatMessages, userId);
+const notMeData = groupedData.users?.filter((f) => f?.id != userId)
+console.log('notMe', groupedData);
+console.log('sss', notMeData);
+
   React.useEffect(() => {
     if (chatId) {
-      getChatMessages()
+      getChatsMessagesApi()
     }
   }, [chatId])
 
@@ -45,14 +70,14 @@ export default function MessagesPane(props: MessagesPaneProps) {
         
       }}
     >
-      <MessagesPaneHeader sender={sender?.sender} />
+      <MessagesPaneHeader sender={notMeData?.[0]} />
       <Box
         sx={{
           display: 'flex',
           flex: 1,
           minWidth: '100dvw',
-          maxHeight: '100vh',
-          minHeight: 'calc(100vh - 81px)',
+          maxHeight: 'calc(100vh - 68px - 82px)',
+          minHeight: 'calc(100vh - 68px - 82px)',
           marginTop: '80px',
           px: 2,
           py: 3,
@@ -63,7 +88,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
       >
         <Stack spacing={2} justifyContent="flex-end">
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = message.sender._id === userId;
+            const isYou = message.sender_id === +userId;
             return (
               <Stack
                 key={index}
@@ -71,7 +96,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                {message.sender._id !== userId && (
+                {message.sender.id !== userId && (
                   <AvatarWithStatus
                     online={false}
                     src={message.sender.avatar}
@@ -88,11 +113,12 @@ export default function MessagesPane(props: MessagesPaneProps) {
         setTextAreaValue={setTextAreaValue}
         // @ts-ignore
         onSubmit={async (value: string) => {
-          await api.post(`v2/chats/${chatId}/messages`, {
-            senderId: userId,
-            text: value
-          })
-          getChatMessages()
+          await sendMessage(
+            chatId,
+             userId,
+            value
+          )
+          getChatsMessagesApi()
         }}
       />
     </Sheet>
