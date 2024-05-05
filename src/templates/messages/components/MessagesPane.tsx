@@ -20,7 +20,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
   const [textAreaValue, setTextAreaValue] = React.useState('');
-  const sender = chatMessages?.find(c => c.sender.id !== userId)
+  const sender = chatMessages?.find(c => c.sender_id !== userId)
 
   console.log('chatMessages', chatMessages);
 
@@ -96,7 +96,7 @@ console.log('sss', notMeData);
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                {message.sender.id !== userId && (
+                {message.sender_id !== userId && (
                   <AvatarWithStatus
                     online={false}
                     src={message.sender.avatar}

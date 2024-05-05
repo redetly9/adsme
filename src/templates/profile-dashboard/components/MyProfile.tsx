@@ -262,7 +262,7 @@ const checkAndAddChat = async () => {
         sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
       >
         <img
-          src={profileData.avatar || imageUrl}
+          src={profileData?.avatar || imageUrl}
           loading="lazy"
           alt=""
         />
