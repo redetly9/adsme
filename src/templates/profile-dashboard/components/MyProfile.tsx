@@ -35,9 +35,9 @@ export default function MyProfile() {
   const [profileData, setProfileData] = useState('')
   console.log('id', id);
   const userId = id;
-  const [nameInput, setNameInput] = useState(profileData.name)
-  const [surnameInput, setSurnameInput] = useState(profileData.surname)
-  const [phoneInput, setPhoneInput] = useState(profileData.phone)
+  const [nameInput, setNameInput] = useState(profileData?.name)
+  const [surnameInput, setSurnameInput] = useState(profileData?.surname)
+  const [phoneInput, setPhoneInput] = useState(profileData?.phone)
   const [imageUrl, setImageUrl] = React.useState('' || '');
   console.log('Profile', profileData);
 
@@ -103,7 +103,7 @@ export default function MyProfile() {
       const data = {
         name: nameInput,
         surname:surnameInput,
-        avatar: imageUrl || profileData.avatar,
+        avatar: imageUrl || profileData?.avatar,
       };
 
   
@@ -133,7 +133,7 @@ console.log('sessionStorage.user,', sessionStorage.user,);
 const [chats, setChats] = useState<any>(null);
 const getChats = async () => {
   const { data } = await getUserChats(userId)
-  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p?.id !== userId) }) })))
 }
 useEffect(() => {
   if (userId) {
