@@ -64,7 +64,7 @@ export async function createChat(participants) {
   // Проверяем, существует ли уже чат с данными участниками
   const existingChat = await checkExistingChat(participants);
   console.log('existingChat', existingChat);
-  
+  console.log('existingChat', existingChat);
   if (!existingChat) {
      // Если чата не существует, создаем новый
   const { data: chat, error: chatError } = await supabase
