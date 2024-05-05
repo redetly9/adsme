@@ -10,7 +10,7 @@ import { getUserChats } from "../../hooks";
 export const MessagesList = () => {
   const [selectedChat, setSelectedChat] = useState<ChatProps | null>(null);
   const [chats, setChats] = useState<any>(null);
-  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   console.log(userId);
   const navigate = useNavigate();
 

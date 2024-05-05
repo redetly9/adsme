@@ -13,10 +13,10 @@ import { MessageRounded } from '@mui/icons-material';
 
 export default function NavBar() {
   const [index, setIndex] = React.useState(0);
-  const id = sessionStorage.user
+  const id = localStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   const [ready, setReady] = React.useState(false)
-  // const initialIndex = Number(sessionStorage.getItem('tabIndex') || 0);
+  // const initialIndex = Number(localStorage.getItem('tabIndex') || 0);
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -26,7 +26,7 @@ export default function NavBar() {
       setIndex(tabIndex);
     }
     setReady(true);
-    sessionStorage.setItem('tabIndex', index.toString());
+    localStorage.setItem('tabIndex', index.toString());
   }, [index, id]);
 
   if (!ready) {
@@ -36,7 +36,7 @@ export default function NavBar() {
   // При изменении вкладки обновите индекс и сохраните его
   const handleChange = (event, newValue) => {
     setIndex(newValue);
-    sessionStorage.setItem('tabIndex', newValue.toString());
+    localStorage.setItem('tabIndex', newValue.toString());
   };
   if (!ready) {
     return null;

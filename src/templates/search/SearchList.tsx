@@ -27,11 +27,11 @@ export default function SearchList() {
 
   const [chats, setChats] = React.useState<any>(null);
   const getChats = async () => {
-    const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
-    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== sessionStorage.user) }) })))
+    const { data } = await api.get(`v2/chats/${localStorage.user}`)
+    setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== localStorage.user) }) })))
   }
   React.useEffect(() => {
-    if (sessionStorage.user) {
+    if (localStorage.user) {
       getChats()
     }
   }, [])
@@ -50,7 +50,7 @@ export default function SearchList() {
       }
     }
   };
-  const radius = sessionStorage?.getItem('radius') || 10
+  const radius = localStorage?.getItem('radius') || 10
   const getAllPosts = async () => {
     try {
       const response = await getPostsByLocation(`${longitude}`,`${latitude}`, radius,

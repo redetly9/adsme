@@ -16,7 +16,7 @@ type MessagesPaneProps = {
 };
 
 export default function MessagesPane(props: MessagesPaneProps) {
-  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
   const [textAreaValue, setTextAreaValue] = React.useState('');

@@ -15,18 +15,18 @@ import { getPostsByLocation } from '../../hooks';
 export default function FeedList() {
 
   const [posts, setPosts] = React.useState(null)
-  const [radius, setRadius] = React.useState(sessionStorage?.getItem('radius'))
+  const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
 console.log('posts', posts);
 
 
   const [chats, setChats] = React.useState(null);
 const getChats = async () => {
-  const { data } = await api.get(`v2/chats/${sessionStorage.user}`)
-  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== sessionStorage.user) }) })))
+  const { data } = await api.get(`v2/chats/${localStorage.user}`)
+  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
 }
 React.useEffect(() => {
-  if (sessionStorage.user) {
+  if (localStorage.user) {
     
     getChats()
   }
@@ -131,7 +131,7 @@ console.log('latitude', latitude);
           <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
           <Slider
   aria-label="Custom marks"
-  defaultValue={radius || Number(sessionStorage.getItem('radius')) || 20}
+  defaultValue={radius || Number(localStorage.getItem('radius')) || 20}
   getAriaValueText={valueText}
   max={1000}
   step={10}
@@ -139,7 +139,7 @@ console.log('latitude', latitude);
   marks={marks}
   onChangeCommitted={(event, newValue) => {
     setRadius(newValue);
-    sessionStorage.setItem('radius', newValue.toString());
+    localStorage.setItem('radius', newValue.toString());
   }}
 />
           </Box></MenuItem>

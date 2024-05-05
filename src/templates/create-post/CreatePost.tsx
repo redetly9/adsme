@@ -77,7 +77,7 @@ export default function Post() {
 
 
   const UploadPosts = async () => {
-    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude, latitude, author: sessionStorage.user })
+    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude, latitude, author: localStorage.user })
 
     if(data) {
     navigate(`/feed`);

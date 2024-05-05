@@ -27,7 +27,7 @@ function App() {
 
   //   // getUserById(1)
   // }, [])
-  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const dispatch = useAppDispatch()
 
   useEffect(() => {

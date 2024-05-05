@@ -23,7 +23,7 @@ export default function Feed({ post, chats }) {
 
 
   const checkAndAddChat = async () => {
-    const currentUserId = sessionStorage.user;
+    const currentUserId = localStorage.user;
     const otherUserId = post?.author?.id;
   
     // const existingChat = chats.find(chat =>
@@ -95,7 +95,7 @@ export default function Feed({ post, chats }) {
           sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
         >
 {
-  post?.author?.id != sessionStorage.user ? (          <Button
+  post?.author?.id != localStorage.user ? (          <Button
     size="sm"
     variant="plain"
     color="neutral"

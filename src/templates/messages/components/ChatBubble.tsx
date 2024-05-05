@@ -18,7 +18,7 @@ type ChatBubbleProps = MessageProps & {
 
 export default function ChatBubble(props: ChatBubbleProps) {
   const { text, variant, createdAt, sender } = props;
-  const userId = useAppSelector(state => state.user.user) || sessionStorage.user
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const isSent = variant === 'sent';
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
   const [isLiked, setIsLiked] = React.useState<boolean>(false);

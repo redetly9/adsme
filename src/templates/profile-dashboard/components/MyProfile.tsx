@@ -123,11 +123,11 @@ export default function MyProfile() {
     onProfile(id);
   },[id])
   let isOwn = false
-  if (userId === sessionStorage.user) {
+  if (userId === localStorage.user) {
     isOwn = true
   }
 console.log('profileData', profileData);
-console.log('sessionStorage.user,', sessionStorage.user,);
+console.log('localStorage.user,', localStorage.user,);
 
 
 const [chats, setChats] = useState<any>(null);
@@ -143,12 +143,12 @@ useEffect(() => {
 console.log('chats', chats);
 
 function signOut() {
-  sessionStorage.removeItem('user');
-  sessionStorage.removeItem('phone');
+  localStorage.removeItem('user');
+  localStorage.removeItem('phone');
 }
 
 const checkAndAddChat = async () => {
-  const currentUserId = sessionStorage.user;
+  const currentUserId = localStorage.user;
   const otherUserId = profileData?.id;
 
   // const existingChat = chats.find(chat =>

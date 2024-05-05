@@ -59,9 +59,9 @@ export default function JoySignInSideTemplate() {
     const response = await verifyUser(data.phone, data.code)
     
     dispatch(add(response?.data?.user))
-    sessionStorage.token = response?.data?.token
-    sessionStorage.user = response?.data?.user.id
-    sessionStorage.phone = response?.data?.user.phone
+    localStorage.token = response?.data?.token
+    localStorage.user = response?.data?.user.id
+    localStorage.phone = response?.data?.user.phone
         navigate('/feed')
   }
 
