@@ -114,9 +114,9 @@ console.log('sss', notMeData);
         // @ts-ignore
         onSubmit={async (value: string) => {
           await sendMessage(
-            chatId,
-             userId,
-            value
+            chatId || 40,
+             userId || 3,
+            value || 'hello'
           )
           getChatsMessagesApi()
         }}

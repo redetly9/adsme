@@ -33,7 +33,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
         sx={{ mb: 0.25 }}
       >
         <Typography level="body-xs">
-          {sender._id !== userId ? sender.name : 'You'}
+          {sender?.name || ""}
         </Typography>
         <Typography level="body-xs">{moment(createdAt).fromNow()}</Typography>
       </Stack>
