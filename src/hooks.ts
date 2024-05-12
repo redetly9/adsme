@@ -165,8 +165,12 @@ async function checkExistingChat(participants) {
 export async function getUserChats(userId) {
   const { data: allChatIds } = await supabase
     .from('chat_participants')
-    .select(`*, user_profiles: user_profiles(*)`)
+    .select(`*`)
     .eq('user_profile_id', userId)
+
+    if (!allChatIds) {
+      return { data: null }
+    }
 
   const { data: chats, error } = await supabase
     .from('chats')
