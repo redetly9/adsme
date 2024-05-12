@@ -156,7 +156,7 @@ const checkAndAddChat = async () => {
   // if (existingChat) {
   //   navigate(`/message/${existingChat.id}`);
   // } else {
-    debugger
+    
     try {
       const { data, error } = await createChat([currentUserId, otherUserId])
       if (error) {

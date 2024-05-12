@@ -18,7 +18,7 @@ import { createChat } from '../../hooks';
 export default function Search({ post, chats }) {
 
   const checkAndAddChat = async () => {
-    const currentUserId = localStorage.user;
+    const currentUserId = +localStorage.user;
     const otherUserId = post?.author?.id;
   
     // const existingChat = chats.find(chat =>
@@ -29,6 +29,7 @@ export default function Search({ post, chats }) {
     // if (existingChat) {
     //   navigate(`/message/${existingChat.id}`);
     // } else {
+      
       try {
         const { data, error } = await createChat([currentUserId, otherUserId])
         if (error) {

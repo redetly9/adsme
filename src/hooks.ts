@@ -61,7 +61,7 @@ export async function verifyUser(phone, code) {
 }
 
 export async function createChat(participants) {
-  debugger
+  
   // Проверяем, существует ли уже чат с данными участниками
   const existingChat = await  checkExistingChat(participants);
   console.log('existingChat', existingChat);
@@ -105,17 +105,38 @@ export async function createChat(participants) {
 }
 
 async function checkExistingChat(participants) {
-  let { data: chats, error } = await supabase
+//
+  const { data: chats1, error: error1 } = await supabase
     .from('chat_participants')
     .select('chat_id')
-    .in('user_profile_id', participants);
+    .eq('user_profile_id', participants[0]);
 
-  if (error || chats.length < 2) {
-    return null
-  }
+      // Запрос для второго participant
+const { data: chats2, error: error2 } = await supabase
+    .from('chat_participants')
+    .select('chat_id')
+    .eq('user_profile_id', participants[1]);
+
+      // Находим пересечение chat_id из обоих запросов
+const commonChats = chats1?.filter(chat1 => chats2?.some(chat2 => chat2.chat_id === chat1.chat_id));
+//
+
+if (error1 || error2 || !commonChats.length) {
+  return null
+}
+  // let { data: chats, error } = await supabase
+  //   .from('chat_participants')
+  //   .select('chat_id')
+  //   .in('user_profile_id', participants);
+
+
+
+    // if (error || chats.length < 2) {
+  //   return null
+  // }
 
   // Теперь находим чаты, где количество участников совпадает с количеством переданных участников
-  const chatIds = chats.map(chat => chat.chat_id);
+  const chatIds = commonChats.map(chat => chat.chat_id);
 
   // Запрашиваем участников чатов
   const { data: participantsData, groupError } = await supabase

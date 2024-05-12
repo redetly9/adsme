@@ -13,7 +13,6 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
 import { createChat } from '../../hooks';
 
 
@@ -23,7 +22,7 @@ export default function Feed({ post, chats }) {
 
 
   const checkAndAddChat = async () => {
-    const currentUserId = localStorage.user;
+    const currentUserId = +localStorage.user;
     const otherUserId = post?.author?.id;
   
     // const existingChat = chats.find(chat =>
@@ -34,6 +33,7 @@ export default function Feed({ post, chats }) {
     // if (existingChat) {
     //   navigate(`/message/${existingChat.id}`);
     // } else {
+      
       try {
         const { data, error } = await createChat([currentUserId, otherUserId])
         if (error) {

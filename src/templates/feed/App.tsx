@@ -10,7 +10,7 @@ import Box from '@mui/joy/Box';
 import { useAppSelector } from '../../store';
 import Slider from '@mui/joy/Slider';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-import { getPostsByLocation } from '../../hooks';
+import { getPostsByLocation, getUserChats } from '../../hooks';
 
 export default function FeedList() {
 
@@ -22,8 +22,8 @@ console.log('posts', posts);
 
   const [chats, setChats] = React.useState(null);
 const getChats = async () => {
-  const { data } = await api.get(`v2/chats/${localStorage.user}`)
-  setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
+  const { data } = await getUserChats(+localStorage.user)
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
 }
 React.useEffect(() => {
   if (localStorage.user) {

@@ -98,12 +98,12 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                {sender.id !== userId && (
+                {/* {sender.id !== userId && (
                   <AvatarWithStatus
                     online={false}
                     src={sender.avatar}
                   />
-                )}
+                )} */}
                 <ChatBubble variant={isYou ? 'sent' : 'received'} {...message} />
               </Stack>
             );
