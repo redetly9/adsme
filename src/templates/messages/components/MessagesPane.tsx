@@ -64,6 +64,7 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
         height: { xs: 'calc(100dvh - var(--Header-height))', lg: '100dvh' },
         display: 'flex',
         flexDirection: 'column',
+        maxHeight: '100vh',
         backgroundColor: 'background.level1',
         // overflowY: 'auto',
         
@@ -76,7 +77,7 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
           flex: 1,
           minWidth: '100dvw',
           maxHeight: 'calc(100vh - 68px - 82px)',
-          minHeight: 'calc(100vh - 68px - 82px)',
+          // minHeight: 'calc(100vh - 68px - 82px)',
           marginTop: '80px',
           px: 2,
           py: 3,
