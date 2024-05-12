@@ -84,7 +84,7 @@ React.useEffect(() => {
   }
 
   const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 0,
+    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 1000,
 )
 console.log('longitude', longitude);
 console.log('latitude', latitude);
@@ -131,7 +131,7 @@ console.log('latitude', latitude);
           <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
           <Slider
   aria-label="Custom marks"
-  defaultValue={radius || Number(localStorage.getItem('radius')) || 20}
+  defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
   getAriaValueText={valueText}
   max={1000}
   step={10}
