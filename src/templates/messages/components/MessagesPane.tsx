@@ -90,8 +90,7 @@ console.log('sss', notMeData);
       >
         <Stack spacing={2} justifyContent="flex-end">
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = Number(sender.id ) !== Number(userId);
-            
+            const isYou = Number(message.sender_id ) === Number(userId);
             return (
               <Stack
                 key={index}
@@ -117,9 +116,9 @@ console.log('sss', notMeData);
         // @ts-ignore
         onSubmit={async (value: string) => {
           await sendMessage(
-            chatId || 40,
-             userId || 3,
-            value || 'hello'
+            chatId,
+            +userId,
+            value
           )
           getChatsMessagesApi()
         }}
