@@ -23,13 +23,12 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const [textAreaValue, setTextAreaValue] = React.useState('');
   const sender = chat?.find(c => c.user_profile_id !== +userId)?.user_profiles
 
+
   const getChatsMessagesApi = async () => {
     const { data: chat } = await getChatParticipants(+chatId)
     setChat(chat)
-    
+
     const { data } = await getChatMessages(chatId)
-    console.log('datachat', data);
-    
     setChatMessages(data)
   }
 
@@ -52,8 +51,6 @@ export default function MessagesPane(props: MessagesPaneProps) {
 
 const groupedData = filterOtherUserMessages(chatMessages, userId);
 const notMeData = groupedData.users?.filter((f) => f?.id != userId)
-console.log('notMe', groupedData);
-console.log('sss', notMeData);
 
   React.useEffect(() => {
     if (chatId) {

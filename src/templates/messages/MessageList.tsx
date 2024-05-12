@@ -51,6 +51,8 @@ export const MessagesList = () => {
         overflow: 'auto',
       }}
     >
+      <pre>{ userId }</pre>
+      <pre>{ JSON.stringify(chats, 2, 2) }</pre>
       <ChatsPane
         chats={chats}
         selectedChatId={selectedChat?.id}
