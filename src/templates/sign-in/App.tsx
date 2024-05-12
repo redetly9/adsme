@@ -57,8 +57,9 @@ export default function JoySignInSideTemplate() {
     console.log('codeInput', codeInput);
 
     const response = await verifyUser(data.phone, data.code)
+    console.log('response', response);
     
-    dispatch(add(response?.data?.user?.id || response?.data?.user))
+    dispatch(add(response?.data?.user?.id))
     localStorage.token = response?.data?.token
     localStorage.user = response?.data?.user.id
     localStorage.phone = response?.data?.user.phone

@@ -45,7 +45,7 @@ function App() {
         {
           !userId ? (
             <Routes>
-              <Route path="/confirm" element={<Confirm />} />
+              {/* <Route path="/confirm" element={<Confirm />} /> */}
               <Route path="*" element={<JoySignInSideTemplate />} />
             </Routes>
           ) : (
