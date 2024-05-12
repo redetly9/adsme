@@ -76,16 +76,16 @@ console.log('messages', messages);
               }}
             >
               
-              {messages && messages[0]?.unread && (
+              {/* {messages && (
                 <CircleIcon sx={{ fontSize: 12 }} color="primary" />
-              )}
-              <Typography
+              )} */}
+              {/* <Typography
                 level="body-xs"
                 display={{ xs: 'none', md: 'block' }}
                 noWrap
               >
                 5 mins ago
-              </Typography>
+              </Typography> */}
             </Box>
           </Stack>
           <Typography

@@ -78,6 +78,7 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
           minWidth: '100dvw',
           maxHeight: 'calc(100vh - 68px - 82px)',
           // minHeight: 'calc(100vh - 68px - 82px)',
+          // minHeight: '100vh',
           marginTop: '80px',
           px: 2,
           py: 3,
@@ -86,10 +87,11 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
           flexDirection: 'column-reverse',
         }}
       >
-        <Stack spacing={2} justifyContent="flex-end">
+        <Stack spacing={2} justifyContent="flex-end" sx={{ minHeight:'55vh'}}>
           {chatMessages?.map((message: MessageProps, index: number) => {
             const isYou = Number(message.sender_id ) === Number(userId);
             return (
+              // <div></div>
               <Stack
                 key={index}
                 direction="row"
