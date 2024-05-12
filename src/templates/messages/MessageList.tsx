@@ -51,6 +51,7 @@ export const MessagesList = () => {
         overflow: 'auto',
       }}
     >
+      <h1>TEST</h1>
       <pre>{ userId }</pre>
       <pre>{ JSON.stringify(chats, 2, 2) }</pre>
       <ChatsPane
