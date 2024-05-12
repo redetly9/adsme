@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 
 export default function MyMessages() {
   const { id: chatId } = useParams();
-
   return (
     <Sheet
       sx={{

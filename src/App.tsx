@@ -14,7 +14,6 @@ import { getCurrentLocation } from './utils/geo';
 import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
-import { createChat, getUserById, getChatMessages, getUserChats, registerUser, sendMessage, getPostsByLocation, getPostsByTag } from './hooks';
 
 function App() {
   // useEffect(() => {

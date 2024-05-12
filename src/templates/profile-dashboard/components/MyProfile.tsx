@@ -26,20 +26,17 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 import CountrySelector from './CountrySelector';
-import { api } from '../../../api';
 import { createChat, getUserById, getUserChats, updateUser } from '../../../hooks';
 
 
 export default function MyProfile() {
   const { id } = useParams();
   const [profileData, setProfileData] = useState('')
-  console.log('id', id);
   const userId = id;
   const [nameInput, setNameInput] = useState(profileData?.name)
   const [surnameInput, setSurnameInput] = useState(profileData?.surname)
   const [phoneInput, setPhoneInput] = useState(profileData?.phone)
   const [imageUrl, setImageUrl] = React.useState('' || '');
-  console.log('Profile', profileData);
 
   const fileInputRef = useRef(null);
 
@@ -148,7 +145,7 @@ function signOut() {
 }
 
 const checkAndAddChat = async () => {
-  const currentUserId = localStorage.user;
+  const currentUserId = +localStorage.user;
   const otherUserId = profileData?.id;
 
   // const existingChat = chats.find(chat =>
@@ -159,6 +156,7 @@ const checkAndAddChat = async () => {
   // if (existingChat) {
   //   navigate(`/message/${existingChat.id}`);
   // } else {
+    debugger
     try {
       const { data, error } = await createChat([currentUserId, otherUserId])
       if (error) {

@@ -17,7 +17,7 @@ export const MessagesList = () => {
 
   const getChats = async () => {
     // const { data } = await api.get(`v2/chats/${userId}`)
-    const { data } = await getUserChats(userId)
+    const { data } = await getUserChats(+userId)
     console.log('data', data);
     
     setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))

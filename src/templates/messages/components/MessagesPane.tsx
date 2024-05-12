@@ -9,7 +9,7 @@ import MessagesPaneHeader from './MessagesPaneHeader';
 import { MessageProps } from '../types';
 import { api } from '../../../api';
 import { useAppSelector } from '../../../store';
-import { getChatMessages, sendMessage } from '../../../hooks';
+import { getChatMessages, getChatParticipants, getUserChats, sendMessage } from '../../../hooks';
 
 type MessagesPaneProps = {
   chatId: string | undefined;
@@ -19,12 +19,14 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
+  const [chat, setChat] = React.useState(null);
   const [textAreaValue, setTextAreaValue] = React.useState('');
-  const sender = chatMessages?.find(c => c.sender_id !== userId)
-
-  console.log('chatMessages', chatMessages);
+  const sender = chat?.find(c => c.user_profile_id !== +userId)?.user_profiles
 
   const getChatsMessagesApi = async () => {
+    const { data: chat } = await getChatParticipants(+chatId)
+    setChat(chat)
+    
     const { data } = await getChatMessages(chatId)
     console.log('datachat', data);
     
@@ -70,7 +72,7 @@ console.log('sss', notMeData);
         
       }}
     >
-      <MessagesPaneHeader sender={notMeData?.[0]} />
+      <MessagesPaneHeader sender={sender} />
       <Box
         sx={{
           display: 'flex',
@@ -88,7 +90,8 @@ console.log('sss', notMeData);
       >
         <Stack spacing={2} justifyContent="flex-end">
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = Number(message.sender_id )=== Number(userId);
+            const isYou = Number(sender.id ) !== Number(userId);
+            
             return (
               <Stack
                 key={index}
@@ -96,10 +99,10 @@ console.log('sss', notMeData);
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                {message.sender_id !== userId && (
+                {sender.id !== userId && (
                   <AvatarWithStatus
                     online={false}
-                    src={message.sender.avatar}
+                    src={sender.avatar}
                   />
                 )}
                 <ChatBubble variant={isYou ? 'sent' : 'received'} {...message} />
