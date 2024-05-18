@@ -16,7 +16,7 @@ export const MessagesList = () => {
 
 
   const getChats = async () => {
-    // const { data } = await api.get(`v2/chats/${userId}`)
+
     const { data } = await getUserChats(+userId)
     console.log('data', data);
     

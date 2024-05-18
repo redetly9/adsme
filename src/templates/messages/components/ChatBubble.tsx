@@ -17,7 +17,7 @@ type ChatBubbleProps = MessageProps & {
 };
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { text, variant, createdAt, sender } = props;
+  const { text, variant, created_at, sender } = props;
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const isSent = variant === 'sent';
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
@@ -35,7 +35,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
         <Typography level="body-xs">
           {sender?.name || ""}
         </Typography>
-        <Typography level="body-xs">{moment(createdAt).fromNow()}</Typography>
+        <Typography level="body-xs">{moment(created_at).fromNow()}</Typography>
       </Stack>
       
         <Box

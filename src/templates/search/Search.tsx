@@ -84,7 +84,7 @@ export default function Search({ post, chats }) {
             }
             </Typography>
             <Typography level="body-xs" textColor="text.tertiary">
-              { moment(post.createdAt).fromNow() }
+            { moment(post.created_at).fromNow() }
             </Typography>
           </Box>
         </Box>

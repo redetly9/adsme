@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Textarea from '@mui/joy/Textarea';
+import SendIcon from './SendIcon';
 
 
 export type MessageInputProps = {
@@ -39,13 +40,14 @@ export default function MessageInput(props: MessageInputProps) {
           onChange={(e) => {
             setTextAreaValue(e.target.value);
           }}
-          placeholder="Type something here…"
+          placeholder="Сообщение"
   sx={{width:'100%'}}
   
 />
-<Button 
+{/* <Button 
 sx={{maxHeight:'36px'}}
-onClick={handleClick} >Send</Button>
+onClick={handleClick} >Send</Button> */}
+{textAreaValue ? (<SendIcon onClick={handleClick}/>): ('')}
 </Box>
     </Box>
   );

@@ -136,7 +136,7 @@ export default function Post() {
         style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', cursor: 'pointer' }}
       />
       {!imageUrl && !loading && (
-        <img src="https://getuikit.com/v2/docs/images/placeholder_600x400_2.svg" alt="" style={{width: '100%', height: 'auto',}} />
+        <img src="https://pixelroyals.com/assets/img/Placeholder.png?h=ca3b2018af8371e9070c2a8095bd60b6" alt="" style={{width: '100%', height: 'auto',}} />
       )}
       {loading && (
         <CircularProgress /> 

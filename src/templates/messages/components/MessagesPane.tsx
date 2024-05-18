@@ -23,6 +23,8 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const [textAreaValue, setTextAreaValue] = React.useState('');
   const sender = chat?.find(c => c.user_profile_id !== +userId)?.user_profiles
 
+  console.log('chatMessages', chatMessages);
+  
 
   const getChatsMessagesApi = async () => {
     const { data: chat } = await getChatParticipants(+chatId)

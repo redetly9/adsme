@@ -27,7 +27,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 import CountrySelector from './CountrySelector';
 import { createChat, getUserById, getUserChats, updateUser } from '../../../hooks';
-
+import SendIcon2 from '../../messages/components/SendIcon2';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -186,42 +187,21 @@ const checkAndAddChat = async () => {
       >
         <Box sx={{ px: { xs: 2, md: 6 } }}>
           
-          <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            My profile
+          <Typography level="h3" component="h1" sx={{ mt: 1 }}>
+          <IconButton
+          variant="plain"
+          color="neutral"
+          size="sm"
+          sx={{
+            display: { xs: 'inline-flex', sm: 'none' },
+          }}
+          onClick={() =>  navigate(-1)}
+        >
+          <ArrowBackIosNewRoundedIcon />
+        </IconButton>
           </Typography>
         </Box>
-        <Tabs
-          defaultValue={0}
-          sx={{
-            bgcolor: 'transparent',
-          }}
-        >
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: { xs: 0, md: 4 },
-              justifyContent: 'left',
-              [`&& .${tabClasses.root}`]: {
-                fontWeight: '600',
-                flex: 'initial',
-                color: 'text.tertiary',
-                [`&.${tabClasses.selected}`]: {
-                  bgcolor: 'transparent',
-                  color: 'text.primary',
-                  '&::after': {
-                    height: '2px',
-                    bgcolor: 'primary.500',
-                  },
-                },
-              },
-            }}
-          >
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
-              Settings
-            </Tab>
-          </TabList>
-        </Tabs>
+
       </Box>
       <Stack
         spacing={4}
@@ -233,20 +213,8 @@ const checkAndAddChat = async () => {
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Personal info</Typography>
-            <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
-          >
-          </Stack>
+
+
           <Stack
             direction="column"
             spacing={2}
@@ -256,8 +224,8 @@ const checkAndAddChat = async () => {
               <Stack direction="column" spacing={1}>
               <AspectRatio
         ratio="1"
-        maxHeight={108}
-        sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
+        maxHeight={75}
+        sx={{ flex: 1, minWidth: 75, borderRadius: '100%' }}
       >
         <img
           src={profileData?.avatar || imageUrl}
@@ -272,7 +240,7 @@ const checkAndAddChat = async () => {
         style={{ display: 'none' }}
         accept="image/*" 
       />
-      <IconButton
+      {/* <IconButton
         aria-label="upload new picture"
         size="sm"
         variant="outlined"
@@ -289,29 +257,21 @@ const checkAndAddChat = async () => {
         onClick={handleEditIconClick}
       >
         <EditRoundedIcon />
-      </IconButton>
+      </IconButton> */}
               </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: 'flex-column',
-                      md: 'flex-row',
-                    },
-                    gap: 2,
-                  }}
-                >
-                  <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)}/>
-                  <Input size="sm" sx={{ flexGrow: 1 }} placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)}/>
-                </FormControl>
+              <Stack spacing={1} sx={{ flexGrow: 1, justifyContent:'center' }}>
+                <Box>
+                {nameInput}{' '}{surnameInput}
+                </Box>
               </Stack>
             </Stack>
+            <Divider></Divider>
             <FormControl>
-              <FormLabel>Phone</FormLabel>
-              <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly />
+              <FormLabel>Номер телефона</FormLabel>
+              {phoneInput}
+              {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
+            {/* <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
               <Input
                 size="sm"
@@ -321,13 +281,13 @@ const checkAndAddChat = async () => {
                 defaultValue="test@adsme.com"
                 sx={{ flexGrow: 1 }}
               />
-            </FormControl>
-            <div>
+            </FormControl> */}
+            {/* <div>
             </div>
             <div>
-            </div>
+            </div> */}
           </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+          {/* <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
             <Button size="sm" variant="solid" color="neutral" sx={{marginRight:'140px'}}
@@ -345,8 +305,8 @@ const checkAndAddChat = async () => {
                 Save
               </Button>
             </CardActions>
-          </CardOverflow>
-        </Card>
+          </CardOverflow> */}
+        {/* </Card> */}
   
       </Stack>
     </Box> 
@@ -363,13 +323,23 @@ const checkAndAddChat = async () => {
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
 
-              <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                 Profile
-              </Typography>
+            <Typography level="h3" component="h1" sx={{ mt: 1 }}>
+            <IconButton
+          variant="plain"
+          color="neutral"
+          size="sm"
+          sx={{
+            display: { xs: 'inline-flex', sm: 'none' },
+          }}
+          onClick={() =>  navigate(-1)}
+        >
+          <ArrowBackIosNewRoundedIcon />
+        </IconButton>
+          </Typography>
             </Box>
           </Box>
           <Stack
-            spacing={4}
+
             sx={{
               display: 'flex',
               maxWidth: '800px',
@@ -378,7 +348,7 @@ const checkAndAddChat = async () => {
               py: { xs: 2, md: 3 },
             }}
           >
-            <Card>
+       
               <Stack
                 direction="row"
                 spacing={3}
@@ -434,11 +404,11 @@ const checkAndAddChat = async () => {
                   <Stack direction="column" spacing={1}>
                     <AspectRatio
                       ratio="1"
-                      maxHeight={108}
-                      sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
+                      maxHeight={75}
+                      sx={{ flex: 1, minWidth: 75, borderRadius: '100%' }}
                     >
                       <img
-                        src={profileData.avatar}
+                        src={profileData.avatar }
                   
                         loading="lazy"
                         alt=""
@@ -446,29 +416,21 @@ const checkAndAddChat = async () => {
                     </AspectRatio>
 
                   </Stack>
-                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl
-                      sx={{
-                        display: {
-                          sm: 'flex-column',
-                          md: 'flex-row',
-                        },
-                        gap: 2,
-                      }}
-                    >
-                      <Input size="sm" placeholder='Name' value={nameInput} onChange={e => setNameInput(e.target.value)} readOnly />
-                      <Input size="sm" placeholder='Surname' value={surnameInput} onChange={e => setSurnameInput(e.target.value)} readOnly />
-                      
-                    </FormControl>
-                  </Stack>
+                  <Stack spacing={1} sx={{ flexGrow: 1, justifyContent:'center' }}>
+                <Box>
+                {nameInput}{' '}{surnameInput}
+                </Box>
+              </Stack>
                 </Stack>
+                <Divider></Divider>
                 <FormControl>
-                  <FormLabel>Phone</FormLabel>
-                  <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly />
-                </FormControl>
+              <FormLabel>Номер телефона</FormLabel>
+              {phoneInput}
+              {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
+            </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel onClick={checkAndAddChat}>Написать сообщение</FormLabel>
+                  {/* <FormLabel onClick={checkAndAddChat}>Написать сообщение  </FormLabel> */}
+                  { profileData ? (<SendIcon2 onClick={checkAndAddChat}/>):('')}
   {/* <EmailRoundedIcon /> */}
 
 
@@ -479,7 +441,7 @@ const checkAndAddChat = async () => {
 
                 </div>
               </Stack>
-            </Card>
+     
             {/* <Card>
               <Box sx={{ mb: 1 }}>
                 <Typography level="title-md">Bio</Typography>

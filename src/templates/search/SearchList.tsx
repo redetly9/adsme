@@ -26,7 +26,7 @@ export default function SearchList() {
 
   const [chats, setChats] = React.useState<any>(null);
   const getChats = async () => {
-    // const { data } = await api.get(`v2/chats/${localStorage.user}`)
+
     // setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== localStorage.user) }) })))
   }
   React.useEffect(() => {
