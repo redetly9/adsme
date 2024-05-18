@@ -6,16 +6,20 @@ import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import Avatar from '@mui/joy/Avatar';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import Chip from '@mui/joy/Chip';
+
+
+import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
 import { createChat } from '../../hooks';
 
 
-export default function Search({ post, chats }) {
+
+export default function FeedInsideChild({ post, chats }) {
+
+
 
   const checkAndAddChat = async () => {
     const currentUserId = +localStorage.user;
@@ -44,9 +48,8 @@ export default function Search({ post, chats }) {
       }
     // }
   };
+
   const navigate = useNavigate();
-  console.log('post1111', post);
-  console.log('post1111', post);
   return (
     <Sheet
       variant="outlined"
@@ -55,8 +58,6 @@ export default function Search({ post, chats }) {
         border:"none",
         p: 2,
         mb: 3,
-        pt: 0,
-        pb: 0,
       }}
     >
       <Box
@@ -75,11 +76,7 @@ export default function Search({ post, chats }) {
               navigate(`/profile/${post?.author?.id}`)
             }}}
           />
-          <Box sx={{ ml: 2 }}
-                    onClick={()=> {
-                      navigate(`/feed/${post?.author?.id}`);
-                    }}
-          >
+          <Box sx={{ ml: 2 }}>
             <Typography level="title-sm" textColor="text.primary" mb={0.5}>
             {post?.author?.surname}{' '}
             {post?.author?.name}{' '}
@@ -90,7 +87,7 @@ export default function Search({ post, chats }) {
             }
             </Typography>
             <Typography level="body-xs" textColor="text.tertiary">
-            { moment(post.created_at).fromNow() }
+              { moment(post.created_at).fromNow() }
             </Typography>
           </Box>
         </Box>
@@ -112,7 +109,7 @@ export default function Search({ post, chats }) {
       </Box>
       <Divider sx={{ mt: 2 }} />
       <Divider />
-      {/* <Box
+      <Box
         sx={(theme) => ({
           display: 'flex',
           flexWrap: 'wrap',
@@ -131,15 +128,15 @@ export default function Search({ post, chats }) {
               style={{ minWidth: '100%', maxWidth: '100%' }}
             />
         </Card>
-      </Box> */}
+      </Box>
 
-      {/* <Divider /> */}
-      {/* <Typography level="body-sm" mt={2} mb={2}>
+      <Divider />
+      <Typography level="body-sm" mt={2} mb={2}>
         {
           post.title
         }
-      </Typography> */}
-      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+      </Typography>
+<Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
   {
     post?.tags?.split(' ').map(tag => (
       <Chip>        {
@@ -150,6 +147,7 @@ export default function Search({ post, chats }) {
 
 
 </Box>
+
 
     </Sheet>
   );

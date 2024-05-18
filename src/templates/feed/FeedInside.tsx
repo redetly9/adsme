@@ -1,118 +1,165 @@
 import * as React from 'react';
-import { Box, Input, Sheet, Skeleton } from "@mui/joy";
-// import { getCurrentLocation } from '../../utils/geo';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Search from './Search';
-
-
-
-
+import Feed from './Feed';
+import { Dropdown, Menu, MenuButton, MenuItem, Sheet, Skeleton } from "@mui/joy"
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
-
-
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-
-
+import { api } from '../../api';
+import { getCurrentLocation } from '../../utils/geo';
+import Box from '@mui/joy/Box';
 import { useAppSelector } from '../../store';
-import { getPostsByLocation, getPostsByTag } from '../../hooks';
+import Slider from '@mui/joy/Slider';
+import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
+import { getPostsByLocation, getUserChats } from '../../hooks';
+import FeedInsideChild from './FeedInsideChild';
+import { useParams } from 'react-router-dom';
 
-export default function SearchList() {
-  const [posts, setPosts] = React.useState(null);
-  const [tag, setTag] = React.useState('');
-  const { latitude, longitude } = useAppSelector(state => state.user.geo);
-  console.log(posts);
+export default function FeedInside() {
 
-  const [chats, setChats] = React.useState<any>(null);
-  const getChats = async () => {
+  const [posts, setPosts] = React.useState(null)
+  const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
+  const { latitude, longitude } = useAppSelector(state => state.user.geo)
+console.log('posts', posts);
+ 
+const { userId} = useParams()
+console.log('userId', userId);
 
-    // setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== localStorage.user) }) })))
+
+  const [chats, setChats] = React.useState(null);
+const getChats = async () => {
+  const { data } = await getUserChats(+localStorage.user)
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
+}
+React.useEffect(() => {
+  if (localStorage.user) {
+    
+    getChats()
   }
+}, [])
+
+  const marks = [
+    {
+      value: 0,
+      label: '0',
+    },
+    {
+      value: 100,
+      label: '',
+    },
+    {
+      value: 200,
+      label: '',
+    },
+    {
+      value: 300,
+      label: '',
+    },
+    {
+      value: 400,
+      label: '',
+    },
+    {
+      value: 500,
+      label: '',
+    },
+    {
+      value: 600,
+      label: '',
+    },
+    {
+      value: 700,
+      label: '',
+    },
+    {
+      value: 800,
+      label: '',
+    },
+    {
+      value: 900,
+      label: '',
+    },
+    {
+      value: 1000,
+      label: '1000',
+    },
+  ];
+
+  function valueText(value: number) {
+    return `${value}`;
+  }
+
+  const getPosts = async () => {
+    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 1000,
+)
+console.log('longitude', longitude);
+console.log('latitude', latitude);
+
+    const sortedPosts = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    console.log('sortedPosts', sortedPosts);
+
+
+    setPosts(sortedPosts);
+    // setPosts(data.slice().reverse())
+  }
+
+
   React.useEffect(() => {
-    if (localStorage.user) {
-      getChats()
+    if (latitude && longitude) {
+      getPosts()
     }
-  }, [])
-  console.log('chats', chats);
-  
-  const getPostsByTagApi = async () => {
-    try {
-      const response = await getPostsByTag(tag);
-      setPosts(response.data.slice().reverse());
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.log(error.response.data.message);
-        setPosts([]);
-      } else {
-        console.error('Error fetching posts by tag:', error);
-      }
-    }
-  };
-  const radius = localStorage?.getItem('radius') || 10
-  const getAllPosts = async () => {
-    try {
-      const response = await getPostsByLocation(`${longitude}`,`${latitude}`, radius,
-    )
-      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }, [latitude, longitude, radius,])
 
-      const uniqueList = (ps: any[]) => {
-        const ids = ps.map((p) => p.author.id) // @ts-ignore
-        const uniqueIds = [...new Set(ids)]
-        return uniqueIds.map((i) => ps.find((p) => p.author.id === i))
-      }
-      const postssss = sortedPosts ? uniqueList(sortedPosts) : []
-  
-      console.log('postssss', postssss);
-      setPosts(postssss);
-    } catch (error) {
-      console.error('Error fetching all posts:', error);
-    }
-  };
 
-  React.useEffect(() => {
-    if (tag) {
-      getPostsByTagApi();
-    } else if (latitude & longitude) {
-      getAllPosts();
-    }
-  }, [tag, latitude, longitude]);
+  const userPost = posts?.filter((v) => v.author.id === +userId);
+  console.log('userPost', userPost);
 
-  const [typingTimeout, setTypingTimeout] = React.useState(null);
-
-  const handleSearch = (event) => {
-    const value = event.target.value.trim();
-
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
-
-    setTypingTimeout(setTimeout(() => {
-      setTag(value);
-    }, 300));
-  };
 
   return (
-    <Sheet sx={{
+    <Sheet
+      sx={{
         pt: { xs: 'calc(12px + var(--Header-height))', md: 3 },
         pb: { xs: 2, sm: 2, md: 3 },
         flex: 1,
         minWidth: 0,
-        height: 'calc(100vh - 81.6px)',
+        height: 'calc(100dvh - 81.6px)',
         width: '100vw',
         gap: 1,
         overflow: 'auto',
       }}
     >
-      <Box sx={{ px: 2, pb: 1.5, margin:'0 auto', marginTop: '30px', }}>
-        <Input
-          size="sm"
-          startDecorator={<SearchRoundedIcon />}
-          placeholder="Search tags"
-          aria-label="Search"
-          onChange={handleSearch}
-        />
-      </Box>
+
+      {/* <Dropdown >
+        <MenuButton sx={{ marginLeft: 'auto', display: 'block', marginTop: '20px',
+         marginRight: '20px',    '&:hover': {
+          borderColor: '#c7dff7',
+         ' &:focus': {
+            'outline': '0',
+        }
+        } }}>Filter</MenuButton>
+        <Menu sx={{
+          width: '100vw', border: 'none', boxShadow: 'none',
+          backgroundColor: 'var(--joy-palette-background-surface)'
+        }}>
+          <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
+          <Slider
+  aria-label="Custom marks"
+  defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
+  getAriaValueText={valueText}
+  max={1000}
+  step={10}
+  valueLabelDisplay="auto"
+  marks={marks}
+  onChangeCommitted={(event, newValue) => {
+    setRadius(newValue);
+    localStorage.setItem('radius', newValue.toString());
+  }}
+/>
+          </Box></MenuItem>
+
+        </Menu>
+      </Dropdown> */}
+      
+
 
       {posts === null ? (
            <Box>
@@ -316,12 +363,14 @@ export default function SearchList() {
          </Sheet>
            </Box>
          
-      ) : posts.length > 0 ? (
-        posts.map(p =>  <Search post={p} key={p.id} chats={chats} />)
+      ) : userPost.length > 0 ? (
+        userPost?.map(p => <FeedInsideChild post={p} key={p.id} chats={chats} />)
       ) : (
         <div style={{marginLeft: '145px',
           marginTop: '120px'}}>No posts found</div>
       )}
+
     </Sheet>
+
   );
 }

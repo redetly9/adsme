@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { add } from '../../slices';
 import { useAppDispatch } from '../../store';
 import { registerUser, verifyUser } from '../../hooks';
-
+import InputMask from 'react-input-mask';
 interface FormElements extends HTMLFormControlsCollection {
   phone: HTMLInputElement;
   persistent: HTMLInputElement;
@@ -31,12 +31,21 @@ export default function JoySignInSideTemplate() {
   const [ code, setCode] = useState(false)
   const [ phoneInput, setPhoneInput] = useState('')
   const [ codeInput, setCodeInput] = useState('')
+  const [ inputError, setInputError] = useState(false)
+  const [ codeInputError, setCodeInputError] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   
   const onSubmit = async (event: React.FormEvent<SignInFormElement>) => {
     event.preventDefault();
     // const formElements = event.currentTarget.elements;
+    if (phoneInput.length != 11) {
+      setInputError(true)
+      throw console.error();
+      
+      
+    }
+
     const data = {
       phone: phoneInput,
     };
@@ -49,6 +58,13 @@ export default function JoySignInSideTemplate() {
   const onConfirm = async (event: React.FormEvent<SignInFormElement>) => {
     event.preventDefault();
     // const formElements = event.currentTarget.elements;
+
+    if (codeInput.length != 4) {
+      setCodeInputError(true)
+      throw console.error();
+      
+      
+    }
     const data = {
       phone: phoneInput,
       code: codeInput,
@@ -65,6 +81,48 @@ export default function JoySignInSideTemplate() {
     localStorage.phone = response?.data?.user.phone
         navigate('/feed')
   }
+
+  const handleChange = (e) => {
+    // Получаем значение из input, введенное пользователем
+    const input = e.target.value;
+  
+    // Удаляем все символы, кроме цифр
+    const cleanedInput = input.replace(/\D/g, '');
+  
+    // Устанавливаем обработанное значение в состояние
+    setPhoneInput(cleanedInput);
+  };
+
+
+    React.useEffect(() => {
+ if(phoneInput.length === 11) {
+  setInputError(false)
+ }
+ if(phoneInput.length != 11) {
+  setInputError(true)
+ }
+ if(phoneInput.length === 1 || !phoneInput.length) {
+  setInputError(false)
+ }
+  }, [phoneInput])
+
+  React.useEffect(() => {
+    if(codeInput.length === 4) {
+      console.log('da');
+      
+     setInputError(false)
+    }
+    if(codeInput.length != 4) {
+      console.log('da2');
+     setInputError(true)
+    }
+    if(!codeInput.length) {
+      console.log('da3');
+     setInputError(false)
+    }
+     }, [codeInput])
+  
+console.log('codeInput', codeInput);
 
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
@@ -148,10 +206,17 @@ export default function JoySignInSideTemplate() {
                    <form
                 onSubmit={onSubmit}
               >
-                <FormControl required>
-                  <FormLabel>Phone</FormLabel>
-                  <Input type="phone" name="phone" value={phoneInput} onChange={e => setPhoneInput(e.target.value)} />
-                </FormControl>
+         <FormControl required>
+      <FormLabel>Phone</FormLabel>
+      <InputMask
+        mask="+7 999 999 99 99"
+        value={phoneInput}
+        onChange={handleChange}
+        maskChar=" "
+      >
+        {(inputProps) => <Input {...inputProps} type="tel" name="phone" error={inputError} />}
+      </InputMask>
+    </FormControl>
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Box
                     sx={{
@@ -206,7 +271,7 @@ export default function JoySignInSideTemplate() {
               >
                 <FormControl required>
                   <FormLabel>Code</FormLabel>
-                  <Input type="smsCode" name="smsCode" value={codeInput} onChange={e => setCodeInput(e.target.value)}  />
+                  <Input type="smsCode" name="smsCode" value={codeInput} onChange={e => setCodeInput(e.target.value)} error={codeInputError}  />
                 </FormControl>
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Box

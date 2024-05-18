@@ -14,6 +14,7 @@ import { getCurrentLocation } from './utils/geo';
 import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
+import FeedInside from './templates/feed/FeedInside';
 
 function App() {
   // useEffect(() => {
@@ -56,6 +57,9 @@ function App() {
                 <Route path="/feed" element={<FeedList />} />
                 <Route path="/post" element={<PostList />} />
                 <Route path="/search" element={<SearchList />} />
+                <Route path="/feed/:userId" element={<FeedInside />} />
+
+                
                 
               </Route>
               <Route>

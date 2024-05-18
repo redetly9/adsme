@@ -36,6 +36,8 @@ export async function registerUser(phone) {
 // Функция для верификации пользователя
 export async function verifyUser(phone, code) {
   if (code !== '1111') {  // Здесь можно заменить на проверку с реальным кодом, если необходимо
+    throw console.error();
+    
     return { error: { message: 'Неверный код верификации.' } };
   }
 

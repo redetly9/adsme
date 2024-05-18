@@ -57,6 +57,8 @@ export default function Feed({ post, chats }) {
         borderRadius: 'sm',
         border:"none",
         p: 2,
+        pt: 0,
+        pb: 0,
         mb: 3,
       }}
     >
@@ -76,7 +78,11 @@ export default function Feed({ post, chats }) {
               navigate(`/profile/${post?.author?.id}`)
             }}}
           />
-          <Box sx={{ ml: 2 }}>
+          <Box sx={{ ml: 2 }}
+          onClick={()=> {
+            navigate(`/feed/${post?.author?.id}`);
+          }}
+          >
             <Typography level="title-sm" textColor="text.primary" mb={0.5}>
             {post?.author?.surname}{' '}
             {post?.author?.name}{' '}
@@ -109,7 +115,7 @@ export default function Feed({ post, chats }) {
       </Box>
       <Divider sx={{ mt: 2 }} />
       <Divider />
-      <Box
+      {/* <Box
         sx={(theme) => ({
           display: 'flex',
           flexWrap: 'wrap',
@@ -128,15 +134,15 @@ export default function Feed({ post, chats }) {
               style={{ minWidth: '100%', maxWidth: '100%' }}
             />
         </Card>
-      </Box>
+      </Box> */}
 
-      <Divider />
-      <Typography level="body-sm" mt={2} mb={2}>
+      {/* <Divider /> */}
+      {/* <Typography level="body-sm" mt={2} mb={2}>
         {
           post.title
         }
-      </Typography>
-<Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+      </Typography> */}
+{/* <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
   {
     post?.tags?.split(' ').map(tag => (
       <Chip>        {
@@ -146,7 +152,7 @@ export default function Feed({ post, chats }) {
   }
 
 
-</Box>
+</Box> */}
 
 
     </Sheet>

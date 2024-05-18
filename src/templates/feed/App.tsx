@@ -90,8 +90,18 @@ console.log('longitude', longitude);
 console.log('latitude', latitude);
 
     const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  //
+    const uniqueList = (ps: any[]) => {
+      const ids = ps.map((p) => p.author.id) // @ts-ignore
+      const uniqueIds = [...new Set(ids)]
+      return uniqueIds.map((i) => ps.find((p) => p.author.id === i))
+    }
+    const postssss = sortedPosts ? uniqueList(sortedPosts) : []
 
-    setPosts(sortedPosts);
+    console.log('postssss', postssss);
+    
+    //
+    setPosts(postssss);
     // setPosts(data.slice().reverse())
   }
 

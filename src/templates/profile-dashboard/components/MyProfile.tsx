@@ -19,6 +19,7 @@ import Tab, { tabClasses } from '@mui/joy/Tab';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -173,6 +174,26 @@ const checkAndAddChat = async () => {
   // }
 };
 
+function formatPhoneNumber(phoneNumber) {
+  // Убедитесь, что phoneNumber является строкой
+  if (typeof phoneNumber !== 'string') {
+    console.error('Invalid input type:', phoneNumber);
+    return phoneNumber; // или можно вернуть пустую строку или дефолтное значение, если это более уместно
+  }
+
+  // Удаление всех нецифровых символов
+  const digits = phoneNumber.replace(/\D/g, '');
+
+  // Разделение номера на части и соединение с нужными разделителями
+  const match = digits.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
+
+  // Возврат отформатированного номера или оригинального значения, если формат не соответствует ожидаемому
+  return match ? `+${match[1]} ${match[2]} ${match[3]} ${match[4]} ${match[5]}` : phoneNumber;
+}
+const formattedPhoneNumber = phoneInput ? formatPhoneNumber(phoneInput.toString()) : '';
+
+console.log('formattedPhoneNumber', formattedPhoneNumber);
+
   return (
       <>
       { isOwn ? (
@@ -268,7 +289,7 @@ const checkAndAddChat = async () => {
             <Divider></Divider>
             <FormControl>
               <FormLabel>Номер телефона</FormLabel>
-              {phoneInput}
+              <div>{formattedPhoneNumber}</div>
               {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
             {/* <FormControl sx={{ flexGrow: 1 }}>
@@ -425,7 +446,7 @@ const checkAndAddChat = async () => {
                 <Divider></Divider>
                 <FormControl>
               <FormLabel>Номер телефона</FormLabel>
-              {phoneInput}
+              <div>{formattedPhoneNumber}</div>
               {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
