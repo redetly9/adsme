@@ -20,7 +20,7 @@ export default function NavBar() {
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const tabs = ['/feed', '/messages','/post', '/search', `/profile/${id}`];
+    const tabs = ['/feed', '/messages', '/search', `/profile/${id}`];
     const tabIndex = tabs.findIndex(tab => pathname.startsWith(tab));
     if (tabIndex !== -1) {
       setIndex(tabIndex);
@@ -75,7 +75,7 @@ export default function NavBar() {
           sx={{ borderRadius: 'lg', p: 0 }}
         >
 
-          <Link style={{ width: '20%', maxWidth: '20%' }} to='/feed'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/feed'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -88,7 +88,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '20%', maxWidth: '20%' }} to='/messages'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/messages'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -104,23 +104,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '20%', maxWidth: '20%' }} to='/post'>
-            <Tab
-              sx={{ width: '100%' }}
-              disableIndicator
-              orientation="vertical"
-              {...(index === 1 && { color: colors[1] })}
-            >
-              <ListItemDecorator>
-            +
-
-
-              </ListItemDecorator>
-              
-            </Tab>
-          </Link>
-
-          <Link style={{ width: '20%', maxWidth: '20%' }} to='/search'>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to='/search'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
@@ -133,7 +117,7 @@ export default function NavBar() {
             </Tab>
           </Link>
 
-          <Link style={{ width: '20%', maxWidth: '20%' }} to={`/profile/${id}`}>
+          <Link style={{ width: '25%', maxWidth: '25%' }} to={`/profile/${id}`}>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
