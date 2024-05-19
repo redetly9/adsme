@@ -23,6 +23,7 @@ console.log('posts', posts);
   const [chats, setChats] = React.useState(null);
 const getChats = async () => {
   const { data } = await getUserChats(+localStorage.user)
+  
   setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
 }
 React.useEffect(() => {
