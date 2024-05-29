@@ -196,9 +196,7 @@ const style = {
   p: 4,
 };
 
-const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
       <>
@@ -313,7 +311,7 @@ const [open, setOpen] = React.useState(false);
                   {profileData ? (       <Box sx={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px'}}
                         onClick={()=> {
                           if(profileData?.activate === false){
-                            alert('netu')
+                            setIsModalOpen(true)
                           }
                           else {navigate('/post/create')}
                           }}>
@@ -531,6 +529,24 @@ const [open, setOpen] = React.useState(false);
 
 {/* <Box sx={{padding:'30px', borderRadius:'30px', backgroundColor:'black'}}>dfffffffffffffff</Box>
      */}
+
+{isModalOpen && (
+        <div style={{
+          backgroundColor: 'aquamarine',
+          margin: '30px',
+          bottom: '50%',
+          position: 'absolute',
+          width:'80%',
+          padding:'15px'
+        }}className="modal-overlay">
+          <div className="modal-content">
+            <span className="close-button" style={{fontSize: '25px'}} onClick={()=> setIsModalOpen(false)}>&times;</span>
+            <h2>Модальное окно</h2>
+            <p>Для создания постов нужно купить премиум.</p>
+            <button onClick={()=> setIsModalOpen(false)} className="close-modal-button">Купить</button>
+          </div>
+        </div>
+      )}
     
     
     </>
