@@ -110,15 +110,15 @@ export default function JoySignInSideTemplate() {
     if(codeInput.length === 4) {
       console.log('da');
       
-     setInputError(false)
+     setCodeInputError(false)
     }
     if(codeInput.length != 4) {
       console.log('da2');
-     setInputError(true)
+     setCodeInputError(true)
     }
     if(!codeInput.length) {
       console.log('da3');
-     setInputError(false)
+     setCodeInputError(false)
     }
      }, [codeInput])
   

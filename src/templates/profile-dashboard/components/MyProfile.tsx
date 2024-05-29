@@ -1,35 +1,24 @@
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
+
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
 import IconButton from '@mui/joy/IconButton';
-import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-// import Breadcrumbs from '@mui/joy/Breadcrumbs';
-// import Link from '@mui/joy/Link';
-import Card from '@mui/joy/Card';
-import CardActions from '@mui/joy/CardActions';
-import CardOverflow from '@mui/joy/CardOverflow';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import Button from '@mui/joy/Button';
+import AspectRatio from '@mui/joy/AspectRatio';
 
-// import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-// import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import CountrySelector from './CountrySelector';
 import { createChat, getUserById, getUserChats, updateUser } from '../../../hooks';
 import SendIcon2 from '../../messages/components/SendIcon2';
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -194,6 +183,23 @@ const formattedPhoneNumber = phoneInput ? formatPhoneNumber(phoneInput.toString(
 
 console.log('formattedPhoneNumber', formattedPhoneNumber);
 
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
       <>
       { isOwn ? (
@@ -290,6 +296,18 @@ console.log('formattedPhoneNumber', formattedPhoneNumber);
             <FormControl>
               <FormLabel>Номер телефона</FormLabel>
               <div>{formattedPhoneNumber}</div>
+
+
+              
+{profileData ? (    <Button onClick={()=> {
+                if(profileData?.activate === false){
+                  alert('netu')
+                }
+                else {navigate('/post/create')}
+                }}>1</Button>): ('')}
+          
+
+
               {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
             {/* <FormControl sx={{ flexGrow: 1 }}>
@@ -482,6 +500,13 @@ console.log('formattedPhoneNumber', formattedPhoneNumber);
           </Stack>
         </Box>
  ) } 
+
+{/* <Box sx={{padding:'30px', borderRadius:'30px', backgroundColor:'black'}}>dfffffffffffffff</Box>
+     */}
+    
+    
     </>
+
+   
   );
 }

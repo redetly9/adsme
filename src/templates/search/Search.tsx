@@ -110,7 +110,7 @@ export default function Search({ post, chats }) {
 }
         </Box>
       </Box>
-      <Divider sx={{ mt: 2 }} />
+      {/* <Divider sx={{ mt: 2 }} /> */}
       <Divider />
       {/* <Box
         sx={(theme) => ({
@@ -142,7 +142,7 @@ export default function Search({ post, chats }) {
       <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
   {
     post?.tags?.split(' ').map(tag => (
-      <Chip>        {
+      <Chip sx={{overflow:'hidden'}}>        {
         tag
       }</Chip>
     ))
