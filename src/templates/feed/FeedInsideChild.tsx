@@ -137,12 +137,10 @@ export default function FeedInsideChild({ post, chats }) {
         }
       </Typography>
 <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-  {
+{ post?.tags ?
     post?.tags?.split(' ').map(tag => (
-      <Chip>        {
-        tag
-      }</Chip>
-    ))
+      <Chip sx={{overflow:'hidden'}}>{tag}</Chip>
+    )) : ''
   }
 
 
