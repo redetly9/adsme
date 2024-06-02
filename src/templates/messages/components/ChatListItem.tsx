@@ -61,6 +61,8 @@ console.log('messages', messages);
             flexDirection: 'column',
             alignItems: 'initial',
             gap: 1,
+            overflow:'hidden',
+            maxWidth:'100%'
           }}
         >
           <Stack direction="row" spacing={1.5}>
