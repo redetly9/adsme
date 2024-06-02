@@ -70,6 +70,7 @@ export default function CreatePost() {
   const handleTagInputChange = (e) => {
     setTagInput(e.target.value);
   };
+  
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -87,6 +88,13 @@ export default function CreatePost() {
     }
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevents the default behavior
+      handleAddTag();
+    }
+  };
+
   const onLocationSelected = ({ address, lat, lng }) => {
     console.log(lat, lng);
     setLat(lat)
@@ -102,7 +110,7 @@ export default function CreatePost() {
         border: "none",
         p: 2,
         mb: 3,
-        minHeight: 'calc(100vh - 68px - 82px)',
+        minHeight: 'calc(100vh - 68px - 41px)',
         maxHeight: 'calc(100vh - 68px - 82px)',
         overflow: 'auto'
       }}
@@ -174,11 +182,12 @@ export default function CreatePost() {
           placeholder="Добавить тег..."
           value={tagInput}
           onChange={handleTagInputChange}
-          onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+          onKeyDown={handleKeyDown}
           sx={{ flexGrow: 1, width: '100%' }}
         />
         {tags.map((tag) => (
           <Chip
+            sx={{ marginBottom:'15px', marginTop:'15px'}}
             endDecorator={<ChipDelete onDelete={() => {
 
               setTags((value) => {
@@ -186,14 +195,15 @@ export default function CreatePost() {
               })
             }} />}>        {tag}</Chip>
         ))}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+
+      </Box>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <MapSuggestion value={value} setValue={setValue} onSelectAddress={onLocationSelected} />
         <button onClick={() => setShowMap(true)}>
           <span role="img" aria-label="map icon">🗺️</span>
         </button>
       </div>
       {showMap && <MapComponent onLocationSelected={onLocationSelected} center={location} setValue={setValue} />}
-      </Box>
       <Button onClick={UploadPosts} sx={{ marginTop: '30px' }}>Создать пост</Button>
     </Sheet>
   );

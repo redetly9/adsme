@@ -310,10 +310,12 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                   <Box> 
                   {profileData ? (       <Box sx={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px'}}
                         onClick={()=> {
-                          if(profileData?.activate === false){
-                            setIsModalOpen(true)
-                          }
-                          else {navigate('/post/create')}
+                          // if(profileData?.activate === false){
+                          //   setIsModalOpen(true)
+                          // }
+                          // else {
+                            navigate('/post/create')
+                          // }
                           }}>
                           <Box sx={{
                             // backgroundColor:'#f7f7f7', 
