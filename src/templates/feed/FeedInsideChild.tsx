@@ -124,7 +124,7 @@ export default function FeedInsideChild({ post, chats }) {
         <Card variant="outlined" sx={{ minWidth: '100%' }}>
             <img
               src={post.images}
-              alt="Yosemite National Park"
+              // alt="Yosemite National Park"
               style={{ minWidth: '100%', maxWidth: '100%' }}
             />
         </Card>
