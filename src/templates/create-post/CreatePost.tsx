@@ -192,7 +192,7 @@ export default function CreatePost() {
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '5px', mt: 2 }}>
 
-        <Input
+        {/* <Input
           placeholder="Добавить тег..."
           value={tagInput}
           onChange={handleChange}
@@ -208,7 +208,7 @@ export default function CreatePost() {
                 return value.filter((v) => tag !== v)
               })
             }} />}>        {tag}</Chip>
-        ))}
+        ))} */}
 
       </Box>
       <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
