@@ -101,6 +101,20 @@ export default function CreatePost() {
     setLon(lng)
     setValue(address);
   }
+  const [typingTimeout, setTypingTimeout] = React.useState(null);
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setTagInput(value);
+    handleTagInputChange(e);
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    setTypingTimeout(setTimeout(() => {
+      handleAddTag(value);
+    }, 1000)); // 1000 мс = 1 секунда
+  };
 
   return (
     <Sheet
@@ -181,7 +195,7 @@ export default function CreatePost() {
         <Input
           placeholder="Добавить тег..."
           value={tagInput}
-          onChange={handleTagInputChange}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
           sx={{ flexGrow: 1, width: '100%' }}
         />
@@ -197,7 +211,7 @@ export default function CreatePost() {
         ))}
 
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
         <MapSuggestion value={value} setValue={setValue} onSelectAddress={onLocationSelected} />
         <button onClick={() => setShowMap(true)}>
           <span role="img" aria-label="map icon">🗺️</span>
