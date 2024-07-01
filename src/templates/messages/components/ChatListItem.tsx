@@ -12,6 +12,7 @@ import { toggleMessagesPane } from '../utils';
 import { useNavigate } from 'react-router-dom';
 import { getChatParticipants } from '../../../hooks';
 import { useAppSelector } from '../../../store';
+import LoadingOverlay from '../../profile-dashboard/components/LoadingOverlay';
 
 type ChatListItemProps = ListItemButtonProps & {
   id: string;
@@ -45,10 +46,11 @@ console.log('messages', messages);
       getSenders()
     }
   }, [id])
+  
 
   return (
     <React.Fragment>
-      <ListItem>
+{senderData ?       <ListItem>
         <ListItemButton
           onClick={() => {
             toggleMessagesPane();
@@ -66,7 +68,9 @@ console.log('messages', messages);
           }}
         >
           <Stack direction="row" spacing={1.5}>
-            <AvatarWithStatus online={false} src={senderData?.[0]?.user_profiles?.avatar} onClick={() => navigate(`/profile/${senderData?.[0]?.user_profile_id}`)} />
+            <AvatarWithStatus online={false} src={senderData?.[0]?.user_profiles?.avatar} onClick={() => {if(senderData?.[0]?.user_profile_id){
+              navigate(`/profile/${senderData?.[0]?.user_profile_id}`)
+            }}} />
             <Box sx={{ flex: 1, }}>
               <Typography level="title-sm">{senderData?.[0]?.user_profiles?.name}</Typography>
               <Typography level="body-sm">{lastMessage?.text ? lastMessage?.text : 'Последнее сообщение' }</Typography>
@@ -103,7 +107,9 @@ console.log('messages', messages);
             {messages && messages[0]?.content}
           </Typography>
         </ListItemButton>
-      </ListItem>
+      </ListItem> : (<LoadingOverlay
+      noFull={80}
+      />)}
       <ListDivider sx={{ margin: 0 }} />
     </React.Fragment>
   );

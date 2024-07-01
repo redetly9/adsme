@@ -10,6 +10,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ChatListItem from './ChatListItem';
 import { ChatProps } from '../types';
 import { toggleMessagesPane } from '../utils';
+import LoadingOverlay from '../../profile-dashboard/components/LoadingOverlay';
 
 type ChatsPaneProps = {
   chats: ChatProps[] | undefined;
@@ -19,6 +20,15 @@ type ChatsPaneProps = {
 
 export default function ChatsPane(props: ChatsPaneProps) {
   const { chats, setSelectedChat, selectedChatId } = props;
+  const [isLoading, setIsLoading] = React.useState(false)
+  React.useEffect(() => {
+
+    if(!chats) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
+    }
+  }, [chats]);
   return (
     <Sheet
       sx={{
@@ -36,14 +46,15 @@ export default function ChatsPane(props: ChatsPaneProps) {
         p={2}
         pb={1.5}
       >
-        <Typography
+                 { isLoading ? (''):          <Typography
           fontSize={{ xs: 'md', md: 'lg' }}
           component="h1"
           fontWeight="lg"
           sx={{ mr: 'auto' }}
         >
           Messages
-        </Typography>
+        </Typography>}
+
         <IconButton
           variant="plain"
           aria-label="edit"
@@ -83,6 +94,9 @@ export default function ChatsPane(props: ChatsPaneProps) {
           )
         })}
       </List>
+      {isLoading ? (<LoadingOverlay
+      noFull={80}
+      />) : ('')}
     </Sheet>
   );
 }

@@ -18,7 +18,8 @@ import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRound
 import CountrySelector from './CountrySelector';
 import { createChat, getUserById, getUserChats, updateUser } from '../../../hooks';
 import SendIcon2 from '../../messages/components/SendIcon2';
-
+import { CircularProgress } from '@mui/material';
+import LoadingOverlay from './LoadingOverlay';
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -65,6 +66,11 @@ export default function MyProfile() {
       setPhoneInput(profileData.phone);
       setSurnameInput(profileData.surname);
       setNameInput(profileData.name);
+    }
+    if(!profileData.phone) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
     }
   }, [profileData]);
   const navigate = useNavigate();
@@ -183,6 +189,9 @@ const formattedPhoneNumber = phoneInput ? formatPhoneNumber(phoneInput.toString(
 
 console.log('formattedPhoneNumber', formattedPhoneNumber);
 
+const [isLoading, setIsLoading] = useState(false)
+const [isChatLoading, setIsChatLoading] = useState(false)
+
 
 const style = {
   position: 'absolute',
@@ -222,7 +231,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           }}
           onClick={() =>  navigate(-1)}
         >
-          <ArrowBackIosNewRoundedIcon />
+         {isChatLoading || isLoading ? (''):  <ArrowBackIosNewRoundedIcon />}
         </IconButton>
           </Typography>
         </Box>
@@ -253,7 +262,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         sx={{ flex: 1, minWidth: 75, borderRadius: '100%' }}
       >
         <img
-          src={profileData?.avatar || imageUrl}
+          src={profileData?.avatar || imageUrl || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
           loading="lazy"
           alt=""
         />
@@ -336,44 +345,10 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           
 
 
-              {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
-            {/* <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                size="sm"
-                type="email"
-                startDecorator={<EmailRoundedIcon />}
-                placeholder="email"
-                defaultValue="test@adsme.com"
-                sx={{ flexGrow: 1 }}
-              />
-            </FormControl> */}
-            {/* <div>
-            </div>
-            <div>
-            </div> */}
+
           </Stack>
-          {/* <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            <Button size="sm" variant="solid" color="neutral" sx={{marginRight:'140px'}}
-            onClick={()=>{
-              signOut()
-              window.location.reload() 
-            }}
-            >
-                Logout
-              </Button>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button onClick={()=> UpdateProfile(userId)} size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow> */}
-        {/* </Card> */}
+ 
   
       </Stack>
     </Box> 
@@ -400,7 +375,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           }}
           onClick={() =>  navigate(-1)}
         >
-          <ArrowBackIosNewRoundedIcon />
+         {isChatLoading || isLoading ? (''):  <ArrowBackIosNewRoundedIcon />}
         </IconButton>
           </Typography>
             </Box>
@@ -475,7 +450,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                       sx={{ flex: 1, minWidth: 75, borderRadius: '100%' }}
                     >
                       <img
-                        src={profileData.avatar }
+                        src={profileData.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
                   
                         loading="lazy"
                         alt=""
@@ -489,48 +464,105 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 </Box>
               </Stack>
                 </Stack>
-                <Divider></Divider>
                 <FormControl>
               <FormLabel>Номер телефона</FormLabel>
               <div>{formattedPhoneNumber}</div>
-              {/* <Input size="sm" placeholder='Phone' value={phoneInput} onChange={e => setPhoneInput(e.target.value)} readOnly /> */}
             </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  {/* <FormLabel onClick={checkAndAddChat}>Написать сообщение  </FormLabel> */}
-                  { profileData ? (<SendIcon2 onClick={checkAndAddChat}/>):('')}
-  {/* <EmailRoundedIcon /> */}
+
+                  {/* { profileData ? (<SendIcon2 onClick={checkAndAddChat}/>):('')} */}
+
 
 
                 </FormControl>
-                <div>
-                </div>
-                <div>
-
-                </div>
               </Stack>
      
-            {/* <Card>
-              <Box sx={{ mb: 1 }}>
-                <Typography level="title-md">Bio</Typography>
-              </Box>
-              <Divider />
-              <Stack spacing={2} sx={{ my: 1 }}>
-                <Textarea
-                  size="sm"
-                  minRows={4}
-                  sx={{ mt: 1.5 }}
-                  defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-                />
-
-              </Stack>
-            </Card> */}
+    
 
           </Stack>
+          <Box sx={{ 
+      display: 'flex', 
+      gap: '10px', 
+      padding: '0px 8px', 
+      margin: '0 auto', 
+      justifyContent: 'space-between', 
+      flexWrap: 'wrap',
+      fontSize:'small'
+    }}>
+      <Box sx={{ 
+        flex: '1 1 0', 
+        backgroundColor: '#f1eded', 
+        borderRadius: '6px', 
+        color: '#0796e1', 
+        padding: '15px 5px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minWidth: '70px',
+        maxWidth: 'calc(25% - 10px)',
+        flexBasis: 'calc(25% - 10px)'
+      }}>
+        Подписаться
+      </Box>
+      <Box sx={{ 
+        flex: '1 1 0', 
+        backgroundColor: '#f1eded', 
+        borderRadius: '6px', 
+        color: '#0796e1', 
+        padding: '15px 5px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minWidth: '70px',
+        maxWidth: 'calc(25% - 10px)',
+        flexBasis: 'calc(25% - 10px)'
+      }}
+      onClick={() => {if (profileData){
+        setIsChatLoading(true)
+        checkAndAddChat()
+      }}}
+      >
+        Написать
+      </Box>
+      <Box sx={{ 
+        flex: '1 1 0', 
+        backgroundColor: '#f1eded', 
+        borderRadius: '6px', 
+        color: '#0796e1', 
+        padding: '15px 5px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minWidth: '70px',
+        maxWidth: 'calc(25% - 10px)',
+        flexBasis: 'calc(25% - 10px)'
+      }}>
+        Покупки
+      </Box>
+      <Box sx={{ 
+        flex: '1 1 0', 
+        backgroundColor: '#f1eded', 
+        borderRadius: '6px', 
+        color: '#0796e1', 
+        padding: '15px 5px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minWidth: '70px',
+        maxWidth: 'calc(25% - 10px)',
+        flexBasis: 'calc(25% - 10px)'
+      }}>
+        Поделиться
+      </Box>
+    </Box>
         </Box>
  ) } 
 
 {/* <Box sx={{padding:'30px', borderRadius:'30px', backgroundColor:'black'}}>dfffffffffffffff</Box>
      */}
+
+{isLoading ?  (<LoadingOverlay    noFull={80}/>) : ('')}
+{isChatLoading ?  (<LoadingOverlay />) : ('')}
 
 {isModalOpen && (
         <div style={{

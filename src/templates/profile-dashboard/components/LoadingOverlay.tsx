@@ -1,0 +1,26 @@
+import React from 'react';
+import { Box, CircularProgress } from '@mui/material';
+
+const LoadingOverlay = ({ noFull }) => {
+  return (
+    <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: noFull ? `${noFull}%` : '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(5px)',
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
+
+export default LoadingOverlay;

@@ -31,7 +31,7 @@ export const MessagesList = () => {
 
 
   useEffect(() => {
-    if (selectedChat) {
+    if (selectedChat && selectedChat != undefined) {
       navigate(`/message/${selectedChat?.id}`);
     }
   }, [selectedChat, navigate]);

@@ -211,10 +211,10 @@ export default function CreatePost() {
         ))} */}
 
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px', marginBottom:'10px' }}>
         <MapSuggestion value={value} setValue={setValue} onSelectAddress={onLocationSelected} />
         <button onClick={() => setShowMap(true)}>
-          <span role="img" aria-label="map icon">🗺️</span>
+          <span role="img" aria-label="map icon">На карте</span>
         </button>
       </div>
       {showMap && <MapComponent onLocationSelected={onLocationSelected} center={location} setValue={setValue} />}

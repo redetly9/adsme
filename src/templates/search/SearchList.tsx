@@ -17,6 +17,7 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 
 import { useAppSelector } from '../../store';
 import { getPostsByLocation, getPostsByTag } from '../../hooks';
+import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
 
 export default function SearchList() {
   const [posts, setPosts] = React.useState(null);
@@ -115,206 +116,210 @@ export default function SearchList() {
       </Box>
 
       {posts === null ? (
-           <Box>
-            <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
-               >
-              <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+//            <Box>
+//             <Sheet
+//            variant="outlined"
+//            sx={{
+//              borderRadius: 'sm',
+//              border:"none",
+//              p: 2,
+//              mb: 3,
+//            }}>
+//            <Box
+//              sx={{
+//                display: 'flex',
+//                justifyContent: 'space-between',
+//                alignItems: 'center',
+//                flexWrap: 'wrap',
+//                gap: 2,
+//              }}
+//            >
+//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+//              <Skeleton variant="circular" width={40} height={40} />
+//                <Box sx={{ ml: 2 }}>
+//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
+//                  </Typography>
+//                  <Typography level="body-xs" textColor="text.tertiary">
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
+//                  </Typography>
+//                </Box>
+//              </Box>
+//              <Box
+//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+//              >
+//                <Button
+//                  size="sm"
+//                  variant="plain"
+//                  color="neutral"
+//                  startDecorator={<ReplyRoundedIcon />}
+//                >
+//               <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
+//                </Button>
+//              </Box>
+//            </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
-    </Box>
-           </Box>
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {<Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />}
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
+//            <Box
+//              sx={{marginTop:'15px'}}
+//            >
+// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+//       <Skeleton
+//         variant="rectangular"
+//         animation="wave"
+//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
+//       />
+//     </Box>
+//            </Box>
+//            <Divider />
+//            <Typography level="body-sm" mt={2} mb={2}>
+//              {<Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />}
+//            </Typography>
+//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      </Box>
+//          </Sheet>
 
 
-         <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
+//          <Sheet
+//            variant="outlined"
+//            sx={{
+//              borderRadius: 'sm',
+//              border:"none",
+//              p: 2,
+//              mb: 3,
+//            }}>
+//            <Box
+//              sx={{
+//                display: 'flex',
+//                justifyContent: 'space-between',
+//                alignItems: 'center',
+//                flexWrap: 'wrap',
+//                gap: 2,
+//              }}
+//            >
+//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+//              <Skeleton variant="circular" width={40} height={40} />
+//                <Box sx={{ ml: 2 }}>
+//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
+//                  </Typography>
+//                  <Typography level="body-xs" textColor="text.tertiary">
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
+//                  </Typography>
+//                </Box>
+//              </Box>
+//              <Box
+//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+//              >
+//                <Button
+//                  size="sm"
+//                  variant="plain"
+//                  color="neutral"
+//                  startDecorator={<ReplyRoundedIcon />}
                  
-               >
-                                  <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+//                >
+//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
+//                </Button>
+//              </Box>
+//            </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
+//            <Box
+//              sx={{marginTop:'15px'}}
+//            >
+// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+//       <Skeleton
+//         variant="rectangular"
+//         animation="wave"
+//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
+//       />
 
-    </Box>
-           </Box>
+//     </Box>
+//            </Box>
      
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {
-                 <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-             }
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
-         <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
+//            <Divider />
+//            <Typography level="body-sm" mt={2} mb={2}>
+//              {
+//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
+//              }
+//            </Typography>
+//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      </Box>
+//          </Sheet>
+//          <Sheet
+//            variant="outlined"
+//            sx={{
+//              borderRadius: 'sm',
+//              border:"none",
+//              p: 2,
+//              mb: 3,
+//            }}>
+//            <Box
+//              sx={{
+//                display: 'flex',
+//                justifyContent: 'space-between',
+//                alignItems: 'center',
+//                flexWrap: 'wrap',
+//                gap: 2,
+//              }}
+//            >
+//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+//              <Skeleton variant="circular" width={40} height={40} />
+//                <Box sx={{ ml: 2 }}>
+//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
+//                  </Typography>
+//                  <Typography level="body-xs" textColor="text.tertiary">
+//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
+//                  </Typography>
+//                </Box>
+//              </Box>
+//              <Box
+//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+//              >
+//                <Button
+//                  size="sm"
+//                  variant="plain"
+//                  color="neutral"
+//                  startDecorator={<ReplyRoundedIcon />}
                  
-               >
-                                  <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+//                >
+//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
+//                </Button>
+//              </Box>
+//            </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
+//            <Box
+//              sx={{marginTop:'15px'}}
+//            >
+// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+//       <Skeleton
+//         variant="rectangular"
+//         animation="wave"
+//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
+//       />
 
-    </Box>
-           </Box>
+//     </Box>
+//            </Box>
      
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {
-                 <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-             }
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
-           </Box>
+//            <Divider />
+//            <Typography level="body-sm" mt={2} mb={2}>
+//              {
+//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
+//              }
+//            </Typography>
+//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
+//      </Box>
+//          </Sheet>
+//            </Box>
+
+<LoadingOverlay
+      noFull={80}
+      />
          
       ) : posts.length > 0 ? (
         posts.map(p =>  <Search post={p} key={p.id} chats={chats} />)
