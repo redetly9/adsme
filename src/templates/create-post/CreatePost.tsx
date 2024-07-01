@@ -18,7 +18,6 @@ import { useAppSelector } from '../../store';
 import { createPost } from '../../hooks';
 import MapSuggestion from './MapSuggestion';
 import MapComponent from './Map';
-import { getUser } from '../../utils/storageUtils';
 
 export default function CreatePost() {
   const [selectedImage, setSelectedImage] = React.useState(null);
@@ -81,8 +80,7 @@ export default function CreatePost() {
 
 
   const UploadPosts = async () => {
-    // const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude: lon || longitude, latitude: lat || latitude, author: localStorage.user })
-    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude: lon || longitude, latitude: lat || latitude, author: getUser()})
+    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude: lon || longitude, latitude: lat || latitude, author: localStorage.user })
 
     if (data) {
       navigate(`/feed`);

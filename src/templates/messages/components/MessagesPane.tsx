@@ -10,14 +10,13 @@ import { MessageProps } from '../types';
 import { api } from '../../../api';
 import { useAppSelector } from '../../../store';
 import { getChatMessages, getChatParticipants, getUserChats, sendMessage } from '../../../hooks';
-import { getUser } from '../../../utils/storageUtils';
 
 type MessagesPaneProps = {
   chatId: string | undefined;
 };
 
 export default function MessagesPane(props: MessagesPaneProps) {
-  const userId = useAppSelector(state => state.user.user) || getUser()
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const { chatId } = props;
   const [chatMessages, setChatMessages] = React.useState(null);
   const [chat, setChat] = React.useState(null);

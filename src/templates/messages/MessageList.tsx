@@ -6,12 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store";
 import { api } from "../../api";
 import { getUserChats } from "../../hooks";
-import { getUser } from "../../utils/storageUtils";
 
 export const MessagesList = () => {
   const [selectedChat, setSelectedChat] = useState<ChatProps | null>(null);
   const [chats, setChats] = useState<any>(null);
-  const userId = useAppSelector(state => state.user.user) || getUser()
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   console.log(userId);
   const navigate = useNavigate();
 

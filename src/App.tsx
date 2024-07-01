@@ -10,12 +10,11 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store';
 import FeedList from './templates/feed/App';
 import { getCurrentLocation } from './utils/geo';
-import { add, addGeo } from './slices';
+import { addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
 import FeedInside from './templates/feed/FeedInside';
 import CreatePost from './templates/create-post/CreatePost';
-import { getUser } from './utils/storageUtils';
 
 function App() {
   // useEffect(() => {
@@ -28,9 +27,7 @@ function App() {
 
   //   // getUserById(1)
   // }, [])
-  // const userId = useAppSelector(state => state.user.user) || localStorage.user
-  const userId = useAppSelector(state => state.user.user) || getUser()
-
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -41,20 +38,13 @@ function App() {
     });
   }, [])
 
-  useEffect(() => {
-    const storedUser = getUser();
-    if (storedUser) {
-      dispatch(add(storedUser));
+  const Refresh = () => {
+    if (localStorage.user) {
+      localStorage.clear()
+      window.location.reload()
     }
-  }, [dispatch]);
-
-  // const Refresh = () => {
-  //   if (localStorage.user) {
-  //     localStorage.clear()
-  //     window.location.reload()
-  //   }
-  //   return <h1>Проверка безопасности токена...</h1>
-  // }
+    return <h1>Проверка безопасности токена...</h1>
+  }
   
   return (
     <CssVarsProvider disableTransitionOnChange>
@@ -69,7 +59,7 @@ function App() {
           ) : (
             <Routes>
               <Route element={<Main />}>
-                {/* <Route path="/" element={<Refresh />} /> */}
+                <Route path="/" element={<Refresh />} />
                 <Route path="/messages" element={<MessagesList />} />
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/feed" element={<FeedList />} />

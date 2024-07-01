@@ -13,7 +13,6 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import { getPostsByLocation, getUserChats } from '../../hooks';
 import FeedInsideChild from './FeedInsideChild';
 import { useParams } from 'react-router-dom';
-import { getUser } from '../../utils/storageUtils';
 
 export default function FeedInside() {
 
@@ -28,11 +27,11 @@ console.log('userId', userId);
 
   const [chats, setChats] = React.useState(null);
 const getChats = async () => {
-  const { data } = await getUserChats(+getUser())
-  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== getUser()) }) })))
+  const { data } = await getUserChats(+localStorage.user)
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
 }
 React.useEffect(() => {
-  if (getUser()) {
+  if (localStorage.user) {
     
     getChats()
   }
