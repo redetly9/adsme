@@ -11,6 +11,7 @@ import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRound
 import { MessageProps } from '../types';
 import moment from 'moment';
 import { useAppSelector } from '../../../store';
+import { getUser } from '../../../utils/storageUtils';
 
 type ChatBubbleProps = MessageProps & {
   variant: 'sent' | 'received';
@@ -18,7 +19,7 @@ type ChatBubbleProps = MessageProps & {
 
 export default function ChatBubble(props: ChatBubbleProps) {
   const { text, variant, created_at, sender } = props;
-  const userId = useAppSelector(state => state.user.user) || localStorage.user
+  const userId = useAppSelector(state => state.user.user) || getUser()
   const isSent = variant === 'sent';
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
   const [isLiked, setIsLiked] = React.useState<boolean>(false);

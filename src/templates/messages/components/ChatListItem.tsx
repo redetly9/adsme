@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { getChatParticipants } from '../../../hooks';
 import { useAppSelector } from '../../../store';
 import LoadingOverlay from '../../profile-dashboard/components/LoadingOverlay';
+import { getUser } from '../../../utils/storageUtils';
 
 type ChatListItemProps = ListItemButtonProps & {
   id: string;
@@ -25,7 +26,7 @@ type ChatListItemProps = ListItemButtonProps & {
 
 export default function ChatListItem(props: ChatListItemProps) {
   const { id, sender, messages, selectedChatId, setSelectedChat } = props;
-    const userId = useAppSelector(state => state.user.user) || localStorage.user
+    const userId = useAppSelector(state => state.user.user) || getUser()
   const selected = selectedChatId === id;
   const [senderData, setSenderData] = React.useState(null)
   const navigate = useNavigate();

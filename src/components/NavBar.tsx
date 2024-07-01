@@ -10,10 +10,13 @@ import Search from '@mui/icons-material/Search';
 import Person from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom';
 import { MessageRounded } from '@mui/icons-material';
+import { getUser } from '../utils/storageUtils';
 
 export default function NavBar() {
   const [index, setIndex] = React.useState(0);
-  const id = localStorage.user
+  // const id = localStorage.user
+  const id = getUser()
+
   const colors = ['primary', 'primary', 'primary', 'primary'] as const;
   const [ready, setReady] = React.useState(false)
   // const initialIndex = Number(localStorage.getItem('tabIndex') || 0);

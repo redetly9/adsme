@@ -14,6 +14,7 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 import { createChat } from '../../hooks';
+import { getUser } from '../../utils/storageUtils';
 
 
 
@@ -22,7 +23,9 @@ export default function Feed({ post, chats }) {
 
 
   const checkAndAddChat = async () => {
-    const currentUserId = +localStorage.user;
+    // const currentUserId = +localStorage.user;
+    const currentUserId = +getUser()
+
     const otherUserId = post?.author?.id;
   
     // const existingChat = chats.find(chat =>
@@ -101,7 +104,7 @@ export default function Feed({ post, chats }) {
           sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
         >
 {
-  post?.author?.id != localStorage.user ? (          <Button
+  post?.author?.id != getUser() ? (          <Button
     size="sm"
     variant="plain"
     color="neutral"

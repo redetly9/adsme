@@ -18,6 +18,7 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import { useAppSelector } from '../../store';
 import { getPostsByLocation, getPostsByTag } from '../../hooks';
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
+import { getUser } from '../../utils/storageUtils';
 
 export default function SearchList() {
   const [posts, setPosts] = React.useState(null);
@@ -28,10 +29,10 @@ export default function SearchList() {
   const [chats, setChats] = React.useState<any>(null);
   const getChats = async () => {
 
-    // setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== localStorage.user) }) })))
+    // setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== getUser()) }) })))
   }
   React.useEffect(() => {
-    if (localStorage.user) {
+    if (getUser()) {
       getChats()
     }
   }, [])

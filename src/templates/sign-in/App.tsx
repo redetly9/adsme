@@ -76,9 +76,14 @@ export default function JoySignInSideTemplate() {
     console.log('response', response);
     
     dispatch(add(response?.data?.user?.id))
-    localStorage.token = response?.data?.token
-    localStorage.user = response?.data?.user.id
-    localStorage.phone = response?.data?.user.phone
+    // localStorage.token = response?.data?.token
+    // localStorage.user = response?.data?.user.id
+    // localStorage.phone = response?.data?.user.phone
+    document.cookie = `token=${response?.data?.token}; path=/; max-age=31536000; secure`;
+// Установка cookie с идентификатором пользователя, срок действия 1 год
+document.cookie = `user=${response?.data?.user.id}; path=/; max-age=31536000; secure`;
+// Установка cookie с номером телефона пользователя, срок действия 1 год
+document.cookie = `phone=${response?.data?.user.phone}; path=/; max-age=31536000; secure`;
         navigate('/feed')
   }
 

@@ -20,6 +20,7 @@ import { createChat, getUserById, getUserChats, updateUser } from '../../../hook
 import SendIcon2 from '../../messages/components/SendIcon2';
 import { CircularProgress } from '@mui/material';
 import LoadingOverlay from './LoadingOverlay';
+import { getUser } from '../../../utils/storageUtils';
 
 export default function MyProfile() {
   const { id } = useParams();
@@ -117,11 +118,11 @@ export default function MyProfile() {
     onProfile(id);
   },[id])
   let isOwn = false
-  if (userId === localStorage.user) {
+  if (userId === getUser()) {
     isOwn = true
   }
 console.log('profileData', profileData);
-console.log('localStorage.user,', localStorage.user,);
+console.log('getUser(),', getUser(),);
 
 
 const [chats, setChats] = useState<any>(null);
@@ -142,7 +143,7 @@ function signOut() {
 }
 
 const checkAndAddChat = async () => {
-  const currentUserId = +localStorage.user;
+  const currentUserId = +getUser();
   const otherUserId = profileData?.id;
 
   // const existingChat = chats.find(chat =>

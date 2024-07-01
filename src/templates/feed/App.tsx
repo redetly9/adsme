@@ -12,6 +12,7 @@ import Slider from '@mui/joy/Slider';
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import { getPostsByLocation, getUserChats } from '../../hooks';
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
+import { getUser } from '../../utils/storageUtils';
 
 export default function FeedList() {
 
@@ -24,12 +25,15 @@ console.log('posts', posts);
   const [chats, setChats] = React.useState(null);
 const getChats = async () => {
   const { data } = await getUserChats(+localStorage.user)
+  const id1 = getUser()
   
-  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
+  // setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
+  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== id1) }) })))
+
 }
 React.useEffect(() => {
-  if (localStorage.user) {
-    
+  // if (localStorage.user) {
+    if (getUser()) {
     getChats()
   }
 }, [])
