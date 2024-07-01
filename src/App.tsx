@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store';
 import FeedList from './templates/feed/App';
 import { getCurrentLocation } from './utils/geo';
-import { addGeo } from './slices';
+import { add, addGeo } from './slices';
 import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
 import FeedInside from './templates/feed/FeedInside';
@@ -40,6 +40,13 @@ function App() {
       console.error(error);
     });
   }, [])
+
+  useEffect(() => {
+    const storedUser = getUser();
+    if (storedUser) {
+      dispatch(add(storedUser));
+    }
+  }, [dispatch]);
 
   // const Refresh = () => {
   //   if (localStorage.user) {
