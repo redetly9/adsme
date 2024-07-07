@@ -38,14 +38,6 @@ function App() {
     });
   }, [])
 
-  const Refresh = () => {
-    if (localStorage.user) {
-      localStorage.clear()
-      window.location.reload()
-    }
-    return <h1>Проверка безопасности токена...</h1>
-  }
-  
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -59,7 +51,7 @@ function App() {
           ) : (
             <Routes>
               <Route element={<Main />}>
-                <Route path="/" element={<Refresh />} />
+                <Route path="/" element={<FeedList />} />
                 <Route path="/messages" element={<MessagesList />} />
                 <Route path="/profile/:id" element={<JoyOrderDashboardTemplate />} />
                 <Route path="/feed" element={<FeedList />} />

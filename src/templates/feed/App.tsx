@@ -1,38 +1,34 @@
 import * as React from 'react';
 import Feed from './Feed';
-import { Dropdown, Menu, MenuButton, MenuItem, Sheet, Skeleton } from "@mui/joy"
-import Typography from '@mui/joy/Typography';
+import { Box, Sheet } from "@mui/joy"
 import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-import { api } from '../../api';
-import { getCurrentLocation } from '../../utils/geo';
-import Box from '@mui/joy/Box';
 import { useAppSelector } from '../../store';
 import Slider from '@mui/joy/Slider';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
 import { getPostsByLocation, getUserChats } from '../../hooks';
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
+import SwipeableEdgeDrawer from './Drawer';
+import TuneIcon from '@mui/icons-material/TuneRounded';
 
 export default function FeedList() {
-
+  const [filterOpen, setFilterOpen] = React.useState(false)
   const [posts, setPosts] = React.useState(null)
   const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
-console.log('posts', posts);
+  console.log('posts', posts);
 
 
   const [chats, setChats] = React.useState(null);
-const getChats = async () => {
-  const { data } = await getUserChats(+localStorage.user)
-  
-  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
-}
-React.useEffect(() => {
-  if (localStorage.user) {
-    
-    getChats()
+  const getChats = async () => {
+    const { data } = await getUserChats(+localStorage.user)
+
+    setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
   }
-}, [])
+  React.useEffect(() => {
+    if (localStorage.user) {
+
+      getChats()
+    }
+  }, [])
 
   const marks = [
     {
@@ -86,13 +82,13 @@ React.useEffect(() => {
   }
 
   const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 1000,
-)
-console.log('longitude', longitude);
-console.log('latitude', latitude);
+    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000,
+    )
+    console.log('longitude', longitude);
+    console.log('latitude', latitude);
 
     const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  //
+    //
     const uniqueList = (ps: any[]) => {
       const ids = ps.map((p) => p.author.id) // @ts-ignore
       const uniqueIds = [...new Set(ids)]
@@ -101,7 +97,7 @@ console.log('latitude', latitude);
     const postssss = sortedPosts ? uniqueList(sortedPosts) : []
 
     console.log('postssss', postssss);
-    
+
     //
     setPosts(postssss);
     // setPosts(data.slice().reverse())
@@ -128,250 +124,89 @@ console.log('latitude', latitude);
       }}
     >
 
-      <Dropdown >
-        <MenuButton sx={{ marginLeft: 'auto', display: 'block', marginTop: '20px',
-         marginRight: '20px',    '&:hover': {
-          borderColor: '#c7dff7',
-         ' &:focus': {
-            'outline': '0',
-        }
-        } }}>Filter</MenuButton>
+      {/* <Dropdown >
+        <MenuButton sx={{
+          marginLeft: 'auto', display: 'block', marginTop: '20px',
+          marginRight: '20px', '&:hover': {
+            borderColor: '#c7dff7',
+            ' &:focus': {
+              'outline': '0',
+            }
+          }
+        }}>Filter</MenuButton>
         <Menu sx={{
           width: '100vw', border: 'none', boxShadow: 'none',
           backgroundColor: 'var(--joy-palette-background-surface)'
         }}>
           <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
-          <Slider
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  aria-label="Custom marks" //@ts-ignore
-  defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
-  getAriaValueText={valueText}
-  max={1000}
-  step={10}
-  valueLabelDisplay="auto"
-  marks={marks}
-  onChangeCommitted={(event, newValue) => {
-    setRadius(newValue);
-    localStorage.setItem('radius', newValue.toString());
-  }}
-/>
+            <Slider
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              aria-label="Custom marks" //@ts-ignore
+              defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
+              getAriaValueText={valueText}
+              max={1000}
+              step={10}
+              valueLabelDisplay="auto"
+              marks={marks}
+              onChangeCommitted={(event, newValue) => {
+                setRadius(newValue);
+                localStorage.setItem('radius', newValue.toString());
+              }}
+            />
           </Box></MenuItem>
 
         </Menu>
-      </Dropdown>
-      
+      </Dropdown> */}
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '20px' }}>
+        <Button
+          variant="outlined"
+          color="neutral"
+          startDecorator={<TuneIcon />}
+          onClick={() => setFilterOpen(true)}
+          sx={{
+            '&:hover': {
+              borderColor: '#c7dff7',
+              ' &:focus': {
+                'outline': '0',
+              }
+            }
+          }}
+        >
+          Change filters
+        </Button>
+      </Box>
+
+      <SwipeableEdgeDrawer open={filterOpen} setOpen={setFilterOpen}>
+        <Slider
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            aria-label="Custom marks" //@ts-ignore
+            defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
+            getAriaValueText={valueText}
+            max={1000}
+            step={10}
+            valueLabelDisplay="auto"
+            marks={marks}
+            onChangeCommitted={(event, newValue) => {
+              setRadius(newValue);
+              localStorage.setItem('radius', newValue.toString());
+            }}
+          />
+      </SwipeableEdgeDrawer>
+
 
 
       {posts === null ? (
-//            <Box>
-//             <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-//                >
-//               <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-//     </Box>
-//            </Box>
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {<Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />}
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-
-
-//          <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-                 
-//                >
-//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-
-//     </Box>
-//            </Box>
-     
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {
-//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-//              }
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-//          <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-                 
-//                >
-//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-
-//     </Box>
-//            </Box>
-     
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {
-//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-//              }
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-//            </Box>
-<LoadingOverlay
-      noFull={80}
-      />
-         
+        <LoadingOverlay
+          noFull={80}
+        />
       ) : posts?.length > 0 ? (
         posts?.map(p => <Feed post={p} key={p.id} chats={chats} />)
       ) : (
-        <div style={{marginLeft: '145px',
-          marginTop: '120px'}}>No posts found</div>
+        <div style={{
+          marginLeft: '145px',
+          marginTop: '120px'
+        }}>No posts found</div>
       )}
 
     </Sheet>
