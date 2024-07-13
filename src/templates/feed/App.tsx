@@ -4,7 +4,7 @@ import { Box, Input, Sheet } from '@mui/joy'
 import Button from '@mui/joy/Button'
 import Slider from '@mui/joy/Slider'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { TagsSlider } from '../../components/tags-slider'
 import { getPostsByLocation, getUserChats } from '../../hooks'
@@ -19,7 +19,6 @@ export default function FeedList() {
   const [filterOpen, setFilterOpen] = useState(false)
   const [posts, setPosts] = useState<Array<any> | null>(null)
   const [tags, setTags] = useState<string[]>([])
-  const [filteredPosts, setFilteredPosts] = useState<Array<any> | null>(null)
   const [radius, setRadius] = useState<string | null>(localStorage?.getItem('radius'))
   const [chats, setChats] = useState<Array<any> | null>(null)
   const [search, setSearch] = useState('')
@@ -75,25 +74,26 @@ export default function FeedList() {
     }
   }, [latitude, longitude, radius])
 
-  useEffect(() => {
-    if (posts && search.length > 0) {
-      const postsWithFilter = posts.filter(post => {
-        const findSearch = post.title.toLowerCase().includes(search)
-        const findTags = tags.some(t => post.tags.includes(t))
+  const filteredPosts = useMemo(() => {
+    if (posts && (search.length > 0 || tags.length > 0)) {
+      return posts.filter(post => {
+        const findSearch = post.title.toLowerCase().includes(search.toLowerCase())
+        const postTags = post.tags.split(' ')
+        const findTags = tags.some(t => postTags.includes(t))
 
-        if (tags.length === 0 && search.length === 0) {
+        if (tags.length === 0) {
           return findSearch
         }
-        if (tags.length > 0 && search.length === 0) {
+
+        if (search.length === 0) {
           return findTags
         }
 
         return findSearch && findTags
       })
-      setFilteredPosts(postsWithFilter)
-    } else {
-      setFilteredPosts(posts)
     }
+
+    return posts
   }, [posts, search, tags])
 
   return (
@@ -157,27 +157,29 @@ export default function FeedList() {
           }}
         />
       </SwipeableEdgeDrawer>
-      {posts === null
-        ? (
-          <LoadingOverlay
-            noFull={80}
-          />
-        )
-        : filteredPosts && filteredPosts?.length > 0
+      <Box>
+        {posts === null
           ? (
-            filteredPosts.map(p => (<Feed
-              post={p}
-              key={p.id}
-              chats={chats} />))
+            <LoadingOverlay
+              noFull={80}
+            />
           )
-          : (
-            <div style={{
-              marginLeft: '145px',
-              marginTop: '120px'
-            }}>
-              No posts found
-            </div>
-          )}
+          : filteredPosts && filteredPosts?.length > 0
+            ? (
+              filteredPosts.map(p => (<Feed
+                post={p}
+                key={p.id}
+                chats={chats} />))
+            )
+            : (
+              <div style={{
+                marginLeft: '145px',
+                marginTop: '120px'
+              }}>
+                No posts found
+              </div>
+            )}
+      </Box>
     </Sheet>
   )
 }

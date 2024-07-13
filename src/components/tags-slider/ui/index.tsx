@@ -22,7 +22,7 @@ export const TagsSlider = ({ title, pikedTags, onClick, isWrapped }: TagsSliderP
         : null
       }
       <Box sx={{ display: 'flex', overflowX: 'auto', width: 'calc(100vw - 40px)', pb: 1 }}>
-        <Box sx={{ display: 'flex', gap: '5px', maxWidth: 'max-content', flexWrap: isWrapped ? 'wrap' : '' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px', maxWidth: 'max-content', flexWrap: isWrapped ? 'wrap' : '' }}>
           {
             tagsCollection.map(tag => (
               <Chip

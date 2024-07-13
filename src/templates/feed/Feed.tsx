@@ -2,9 +2,9 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import Avatar from '@mui/joy/Avatar'
 import Box from '@mui/joy/Box'
 import Button from '@mui/joy/Button'
-import Divider from '@mui/joy/Divider'
 import Sheet from '@mui/joy/Sheet'
 import Typography from '@mui/joy/Typography'
+import { Divider } from '@mui/material'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 
@@ -84,23 +84,24 @@ export default function Feed({ post, chats }) {
               level='body-xs'
               textColor='text.tertiary'
             >
-              {moment(post.created_at).fromNow()}
-            </Typography>
-            <Typography
-              level='body-xs'
-              textColor='text.tertiary'
-            >
               {post?.title}
             </Typography>
           </Box>
         </Box>
         <Box
-          sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+          sx={{ display: 'flex', height: '100%', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', mr: 0.5 }}
         >
+          <Typography
+            level='body-xs'
+            textColor='text.tertiary'
+          >
+            {moment(post.created_at).fromNow()}
+          </Typography>
           {
             post?.author?.id != localStorage.user
               ? (<Button
                 size='sm'
+                sx={{ p: 0 }}
                 variant='plain'
                 color='neutral'
                 startDecorator={<ReplyRoundedIcon />}
@@ -113,7 +114,6 @@ export default function Feed({ post, chats }) {
         </Box>
       </Box>
       <Divider sx={{ mt: 2 }} />
-      <Divider />
     </Sheet>
   )
 }

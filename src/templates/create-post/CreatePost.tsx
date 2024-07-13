@@ -164,7 +164,7 @@ export default function CreatePost() {
           isWrapped
         />
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', marginBottom: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <MapSuggestion
           value={value}
           setValue={setValue}
