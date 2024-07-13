@@ -15,6 +15,7 @@ import SearchList from './templates/search/SearchList';
 import PostList from './templates/create-post/App';
 import FeedInside from './templates/feed/FeedInside';
 import CreatePost from './templates/create-post/CreatePost';
+import GroupChat from './templates/group-messages/App';
 
 function App() {
   // useEffect(() => {
@@ -62,6 +63,7 @@ function App() {
               </Route>
               <Route>
                 <Route path="/message/:id" element={<JoyMessagesTemplate />} />
+                <Route path="/group-messages" element={<GroupChat />} />
               </Route>
             </Routes>
           )
