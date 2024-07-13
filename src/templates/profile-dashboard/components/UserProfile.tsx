@@ -16,49 +16,56 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import CountrySelector from './CountrySelector';
+import { followUser, unfollowUser, useUserFollowings } from '../../../hooks';
+import { useAppSelector } from '../../../store';
 
 
 export default function UserProfile({ profileData, isChatLoading, isLoading, formattedPhoneNumber, nameInput, surnameInput, setIsChatLoading, checkAndAddChat }) {
-    // const { profileData } = props;
-    const navigate = useNavigate();
-return (
-    <Box sx={{ flex: 1,         width: '100vw', }}>
-    <Box
-      sx={{
-        position: 'sticky',
-        top: { sm: -100, md: -110 },
-        bgcolor: 'background.body',
-        zIndex: 9995,
-      }}
-    >
-      <Box sx={{ px: { xs: 2, md: 6 } }}>
+  // const { profileData } = props;
+  const navigate = useNavigate();
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
+  const { data: followers, refetch } = useUserFollowings(userId)
+  const isFollowed = followers?.find(f => f.follow_user_id === profileData?.id)
+  console.log(followers);
+  
+  return (
+    <Box sx={{ flex: 1, width: '100vw', }}>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: { sm: -100, md: -110 },
+          bgcolor: 'background.body',
+          zIndex: 9995,
+        }}
+      >
+        <Box sx={{ px: { xs: 2, md: 6 } }}>
 
-      <Typography level="h3" component="h1" sx={{ mt: 1 }}>
-      <IconButton
-    variant="plain"
-    color="neutral"
-    size="sm"
-    sx={{
-      display: { xs: 'inline-flex', sm: 'none' },
-    }}
-    onClick={() =>  navigate(-1)}
-  >
-   {isChatLoading || isLoading ? (''):  <ArrowBackIosNewRoundedIcon />}
-  </IconButton>
-    </Typography>
+          <Typography level="h3" component="h1" sx={{ mt: 1 }}>
+            <IconButton
+              variant="plain"
+              color="neutral"
+              size="sm"
+              sx={{
+                display: { xs: 'inline-flex', sm: 'none' },
+              }}
+              onClick={() => navigate(-1)}
+            >
+              {isChatLoading || isLoading ? ('') : <ArrowBackIosNewRoundedIcon />}
+            </IconButton>
+          </Typography>
+        </Box>
       </Box>
-    </Box>
-    <Stack
+      <Stack
 
-      sx={{
-        display: 'flex',
-        maxWidth: '800px',
-        mx: 'auto',
-        px: { xs: 2, md: 6 },
-        py: { xs: 2, md: 3 },
-      }}
-    >
- 
+        sx={{
+          display: 'flex',
+          maxWidth: '800px',
+          mx: 'auto',
+          px: { xs: 2, md: 6 },
+          py: { xs: 2, md: 3 },
+        }}
+      >
+
         <Stack
           direction="row"
           spacing={3}
@@ -72,7 +79,7 @@ return (
             >
               <img
                 src={profileData.avatar}
-          
+
                 loading="lazy"
                 alt=""
               />
@@ -101,7 +108,7 @@ return (
               <CountrySelector />
             </div>
             <div>
-              
+
             </div>
           </Stack>
         </Stack>
@@ -119,23 +126,23 @@ return (
               >
                 <img
                   src={profileData.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
-            
+
                   loading="lazy"
                   alt=""
                 />
               </AspectRatio>
 
             </Stack>
-            <Stack spacing={1} sx={{ flexGrow: 1, justifyContent:'center' }}>
-          <Box>
-          {nameInput}{' '}{surnameInput}
-          </Box>
-        </Stack>
+            <Stack spacing={1} sx={{ flexGrow: 1, justifyContent: 'center' }}>
+              <Box>
+                {nameInput}{' '}{surnameInput}
+              </Box>
+            </Stack>
           </Stack>
           <FormControl>
-        <FormLabel>Номер телефона</FormLabel>
-        <div>{formattedPhoneNumber}</div>
-      </FormControl>
+            <FormLabel>Номер телефона</FormLabel>
+            <div>{formattedPhoneNumber}</div>
+          </FormControl>
           <FormControl sx={{ flexGrow: 1 }}>
 
             {/* { profileData ? (<SendIcon2 onClick={checkAndAddChat}/>):('')} */}
@@ -147,82 +154,95 @@ return (
 
 
 
-    </Stack>
-    <Box sx={{ 
-display: 'flex', 
-gap: '10px', 
-padding: '0px 8px', 
-margin: '0 auto', 
-justifyContent: 'space-between', 
-flexWrap: 'wrap',
-fontSize:'small'
-}}>
-<Box sx={{ 
-  flex: '1 1 0', 
-  backgroundColor: '#f1eded', 
-  borderRadius: '6px', 
-  color: '#0796e1', 
-  padding: '15px 5px', 
-  display: 'flex', 
-  justifyContent: 'center', 
-  alignItems: 'center', 
-  minWidth: '70px',
-  maxWidth: 'calc(25% - 10px)',
-  flexBasis: 'calc(25% - 10px)'
-}}>
-  Подписаться
-</Box>
-<Box sx={{ 
-  flex: '1 1 0', 
-  backgroundColor: '#f1eded', 
-  borderRadius: '6px', 
-  color: '#0796e1', 
-  padding: '15px 5px', 
-  display: 'flex', 
-  justifyContent: 'center', 
-  alignItems: 'center', 
-  minWidth: '70px',
-  maxWidth: 'calc(25% - 10px)',
-  flexBasis: 'calc(25% - 10px)'
-}}
-onClick={() => {if (profileData){
-  setIsChatLoading(true)
-  checkAndAddChat()
-}}}
->
-  Написать
-</Box>
-<Box sx={{ 
-  flex: '1 1 0', 
-  backgroundColor: '#f1eded', 
-  borderRadius: '6px', 
-  color: '#0796e1', 
-  padding: '15px 5px', 
-  display: 'flex', 
-  justifyContent: 'center', 
-  alignItems: 'center', 
-  minWidth: '70px',
-  maxWidth: 'calc(25% - 10px)',
-  flexBasis: 'calc(25% - 10px)'
-}}>
-  Покупки
-</Box>
-<Box sx={{ 
-  flex: '1 1 0', 
-  backgroundColor: '#f1eded', 
-  borderRadius: '6px', 
-  color: '#0796e1', 
-  padding: '15px 5px', 
-  display: 'flex', 
-  justifyContent: 'center', 
-  alignItems: 'center', 
-  minWidth: '70px',
-  maxWidth: 'calc(25% - 10px)',
-  flexBasis: 'calc(25% - 10px)'
-}}>
-  Поделиться
-</Box>
-</Box>
-  </Box>
-)
+      </Stack>
+      <Box sx={{
+        display: 'flex',
+        gap: '10px',
+        padding: '0px 8px',
+        margin: '0 auto',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        fontSize: 'small'
+      }}>
+        <Button sx={{
+          flex: '1 1 0',
+          backgroundColor: '#f1eded',
+          borderRadius: '6px',
+          color: '#0796e1',
+          padding: '15px 5px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: '70px',
+          maxWidth: 'calc(25% - 10px)',
+          flexBasis: 'calc(25% - 10px)'
+        }}
+          onClick={async () => {
+            if (isFollowed) {
+              await unfollowUser(userId, profileData?.id)
+              refetch()
+            } else {
+              await followUser(userId, profileData?.id)
+              refetch()
+            }
+            
+          }}
+        >
+           { isFollowed ? 'Отписаться' : 'Подписаться' } 
+        </Button>
+        <Box sx={{
+          flex: '1 1 0',
+          backgroundColor: '#f1eded',
+          borderRadius: '6px',
+          color: '#0796e1',
+          padding: '15px 5px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: '70px',
+          maxWidth: 'calc(25% - 10px)',
+          flexBasis: 'calc(25% - 10px)'
+        }}
+          onClick={() => {
+            if (profileData) {
+              setIsChatLoading(true)
+              checkAndAddChat()
+            }
+          }}
+        >
+          Написать
+        </Box>
+        <Box sx={{
+          flex: '1 1 0',
+          backgroundColor: '#f1eded',
+          borderRadius: '6px',
+          color: '#0796e1',
+          padding: '15px 5px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: '70px',
+          maxWidth: 'calc(25% - 10px)',
+          flexBasis: 'calc(25% - 10px)'
+        }}>
+          Покупки
+        </Box>
+        <Box sx={{
+          flex: '1 1 0',
+          backgroundColor: '#f1eded',
+          borderRadius: '6px',
+          color: '#0796e1',
+          padding: '15px 5px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: '70px',
+          maxWidth: 'calc(25% - 10px)',
+          flexBasis: 'calc(25% - 10px)'
+        }}>
+          Поделиться
+        </Box>
+      </Box>
+    </Box>
+  )
 }

@@ -1,4 +1,5 @@
 import { supabase } from "./api";
+import { useQuery } from 'react-query';
 
 // Функция регистрации пользователя
 export async function registerUser(phone) {
@@ -391,4 +392,61 @@ export async function deletePost(postId) {
   }
 
   return { data: deletedPost };
+}
+
+
+async function fetchUserFollowings(userId) {
+  const { data, error } = await supabase
+    .from('user_followings')
+    .select(`*,
+        follow_user:user_profiles!user_followings_follow_user_id_fkey(*)
+      `)
+    .eq('user_id', userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export function useUserFollowings(userId) {
+  return useQuery(['userFollowings', userId], () => fetchUserFollowings(userId), {
+    enabled: !!userId 
+  });
+}
+
+export async function followUser(userId, followUserId) {
+  let { data, error } = await supabase
+    .from('user_followings')
+    .insert({
+      user_id: userId,
+      follow_user_id: followUserId
+    })
+    .select('*')
+
+
+  if (error) {
+    console.error(error.message);
+    return { error };
+  }
+
+  return data;
+}
+
+export async function unfollowUser(userId, followUserId) {
+  const { data, error } = await supabase
+    .from('user_followings')
+    .delete()
+    .match({
+      user_id: userId,
+      follow_user_id: followUserId
+    });
+
+  if (error) {
+    console.error('Ошибка при отписке:', error.message);
+    return { error };
+  }
+
+  return { data };
 }
