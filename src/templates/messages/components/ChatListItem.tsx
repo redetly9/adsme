@@ -24,18 +24,17 @@ type ChatListItemProps = ListItemButtonProps & {
 };
 
 export default function ChatListItem(props: ChatListItemProps) {
-  const { id, sender, messages, selectedChatId, setSelectedChat } = props;
-    const userId = useAppSelector(state => state.user.user) || localStorage.user
+  const { id, messages, selectedChatId, setSelectedChat } = props;
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
   const selected = selectedChatId === id;
   const [senderData, setSenderData] = React.useState(null)
   const navigate = useNavigate();
-console.log('messages', messages);
+
   const lastMessage = messages?.at(-1)
-  console.log('lastMessage', lastMessage);
-  
+
   const getSenders = async () => {
     const { data: sender } = await getChatParticipants(+id)
-    const senderApiData = sender?.filter((s) => (s?.user_profile_id !=  +userId  ))
+    const senderApiData = sender?.filter((s) => (s?.user_profile_id != +userId))
     setSenderData(senderApiData)
 
 
@@ -46,11 +45,11 @@ console.log('messages', messages);
       getSenders()
     }
   }, [id])
-  
+
 
   return (
     <React.Fragment>
-{senderData ?       <ListItem>
+      {senderData ? <ListItem>
         <ListItemButton
           onClick={() => {
             toggleMessagesPane();
@@ -63,17 +62,19 @@ console.log('messages', messages);
             flexDirection: 'column',
             alignItems: 'initial',
             gap: 1,
-            overflow:'hidden',
-            maxWidth:'100%'
+            overflow: 'hidden',
+            maxWidth: '100%'
           }}
         >
           <Stack direction="row" spacing={1.5}>
-            <AvatarWithStatus online={false} src={senderData?.[0]?.user_profiles?.avatar} onClick={() => {if(senderData?.[0]?.user_profile_id){
-              navigate(`/profile/${senderData?.[0]?.user_profile_id}`)
-            }}} />
+            <AvatarWithStatus online={false} src={senderData?.[0]?.user_profiles?.avatar} onClick={() => {
+              if (senderData?.[0]?.user_profile_id) {
+                navigate(`/profile/${senderData?.[0]?.user_profile_id}`)
+              }
+            }} />
             <Box sx={{ flex: 1, }}>
-              <Typography level="title-sm">{senderData?.[0]?.user_profiles?.name}</Typography>
-              <Typography level="body-sm">{lastMessage?.text ? lastMessage?.text : 'Последнее сообщение' }</Typography>
+              <Typography level="title-sm">{senderData?.[0]?.user_profiles?.name ?? 'General Chat'}</Typography>
+              <Typography level="body-sm">{lastMessage?.text ? lastMessage?.text : 'Последнее сообщение'}</Typography>
             </Box>
             <Box
               sx={{
@@ -81,17 +82,6 @@ console.log('messages', messages);
                 textAlign: 'right',
               }}
             >
-              
-              {/* {messages && (
-                <CircleIcon sx={{ fontSize: 12 }} color="primary" />
-              )} */}
-              {/* <Typography
-                level="body-xs"
-                display={{ xs: 'none', md: 'block' }}
-                noWrap
-              >
-                5 mins ago
-              </Typography> */}
             </Box>
           </Stack>
           <Typography
@@ -108,7 +98,7 @@ console.log('messages', messages);
           </Typography>
         </ListItemButton>
       </ListItem> : (<LoadingOverlay
-      noFull={80}
+        noFull={80}
       />)}
       <ListDivider sx={{ margin: 0 }} />
     </React.Fragment>

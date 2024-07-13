@@ -186,10 +186,15 @@ if (error1 || error2 || !commonChats.length) {
 
 
 export async function getUserChats(userId) {
-  const { data: allChatIds } = await supabase
+  let { data: allChatIds } = await supabase
     .from('chat_participants')
     .select(`*`)
     .eq('user_profile_id', userId)
+
+    allChatIds = [{
+        chat_id: 58,
+        user_profile_id: 1
+    }, ...allChatIds]
 
     if (!allChatIds) {
       return { data: null }

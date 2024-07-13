@@ -4,22 +4,16 @@ import { useState, useEffect } from 'react';
 import { ChatProps } from "./types";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store";
-import { api } from "../../api";
 import { getUserChats } from "../../hooks";
 
 export const MessagesList = () => {
   const [selectedChat, setSelectedChat] = useState<ChatProps | null>(null);
   const [chats, setChats] = useState<any>(null);
   const userId = useAppSelector(state => state.user.user) || localStorage.user
-  console.log(userId);
   const navigate = useNavigate();
 
-
   const getChats = async () => {
-
     const { data } = await getUserChats(+userId)
-    console.log('data', data);
-    
     setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))
   }
 
@@ -31,10 +25,15 @@ export const MessagesList = () => {
 
 
   useEffect(() => {
-    if (selectedChat && selectedChat != undefined) {
+    if (selectedChat?.id === 58) {
+      navigate(`/group-messages`);
+    } else if (selectedChat && selectedChat != undefined) {
       navigate(`/message/${selectedChat?.id}`);
     }
   }, [selectedChat, navigate]);
+
+  console.log('chats', chats);
+  
 
   return (
     <Sheet
