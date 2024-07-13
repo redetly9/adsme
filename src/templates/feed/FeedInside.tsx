@@ -1,118 +1,109 @@
-import * as React from 'react';
-import Feed from './Feed';
-import { Dropdown, Menu, MenuButton, MenuItem, Sheet, Skeleton } from "@mui/joy"
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-import { api } from '../../api';
-import { getCurrentLocation } from '../../utils/geo';
-import Box from '@mui/joy/Box';
-import { useAppSelector } from '../../store';
-import Slider from '@mui/joy/Slider';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-import { getPostsByLocation, getUserChats } from '../../hooks';
-import FeedInsideChild from './FeedInsideChild';
-import { useParams } from 'react-router-dom';
+import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
+import { Sheet, Skeleton } from '@mui/joy'
+import Box from '@mui/joy/Box'
+import Button from '@mui/joy/Button'
+import Divider from '@mui/joy/Divider'
+import Typography from '@mui/joy/Typography'
+import * as React from 'react'
+import { useParams } from 'react-router-dom'
+
+import { getPostsByLocation, getUserChats } from '../../hooks'
+import { useAppSelector } from '../../store'
+import FeedInsideChild from './FeedInsideChild'
 
 export default function FeedInside() {
 
   const [posts, setPosts] = React.useState(null)
   const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
-console.log('posts', posts);
- 
-const { userId} = useParams()
-console.log('userId', userId);
+  console.log('posts', posts)
 
+  const { userId } = useParams()
+  console.log('userId', userId)
 
-  const [chats, setChats] = React.useState(null);
-const getChats = async () => {
-  const { data } = await getUserChats(+localStorage.user)
-  setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
-}
-React.useEffect(() => {
-  if (localStorage.user) {
-    
-    getChats()
+  const [chats, setChats] = React.useState(null)
+  const getChats = async () => {
+    const { data } = await getUserChats(+localStorage.user)
+    setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
   }
-}, [])
+  React.useEffect(() => {
+    if (localStorage.user) {
+
+      getChats()
+    }
+  }, [])
 
   const marks = [
     {
       value: 0,
-      label: '0',
+      label: '0'
     },
     {
       value: 100,
-      label: '',
+      label: ''
     },
     {
       value: 200,
-      label: '',
+      label: ''
     },
     {
       value: 300,
-      label: '',
+      label: ''
     },
     {
       value: 400,
-      label: '',
+      label: ''
     },
     {
       value: 500,
-      label: '',
+      label: ''
     },
     {
       value: 600,
-      label: '',
+      label: ''
     },
     {
       value: 700,
-      label: '',
+      label: ''
     },
     {
       value: 800,
-      label: '',
+      label: ''
     },
     {
       value: 900,
-      label: '',
+      label: ''
     },
     {
       value: 1000,
-      label: '1000',
-    },
-  ];
+      label: '1000'
+    }
+  ]
 
   function valueText(value: number) {
-    return `${value}`;
+    return `${value}`
   }
 
   const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`,`${latitude}`, radius || 1000,
-)
-console.log('longitude', longitude);
-console.log('latitude', latitude);
+    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000)
+    console.log('longitude', longitude)
+    console.log('latitude', latitude)
 
-    const sortedPosts = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    console.log('sortedPosts', sortedPosts);
+    const sortedPosts = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    console.log('sortedPosts', sortedPosts)
 
-
-    setPosts(sortedPosts);
+    setPosts(sortedPosts)
     // setPosts(data.slice().reverse())
   }
-
 
   React.useEffect(() => {
     if (latitude && longitude) {
       getPosts()
     }
-  }, [latitude, longitude, radius,])
+  }, [latitude, longitude, radius])
 
-
-  const userPost = posts?.filter((v) => v.author.id === +userId);
-  console.log('userPost', userPost);
-
+  const userPost = posts?.filter((v) => v.author.id === +userId)
+  console.log('userPost', userPost)
 
   return (
     <Sheet
@@ -124,7 +115,7 @@ console.log('latitude', latitude);
         height: 'calc(100dvh - 81.6px)',
         width: '100vw',
         gap: 1,
-        overflow: 'auto',
+        overflow: 'auto'
       }}
     >
 
@@ -158,219 +149,308 @@ console.log('latitude', latitude);
 
         </Menu>
       </Dropdown> */}
-      
 
-
-      {posts === null ? (
-           <Box>
+      {posts === null
+        ? (
+          <Box>
             <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
-               >
-              <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+              variant='outlined'
+              sx={{
+                borderRadius: 'sm',
+                border: 'none',
+                p: 2,
+                mb: 3
+              }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 2
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Skeleton
+                    variant='circular'
+                    width={40}
+                    height={40} />
+                  <Box sx={{ ml: 2 }}>
+                    <Typography
+                      level='title-sm'
+                      textColor='text.primary'
+                      mb={0.5}>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 60, borderRadius: '5px' }} />
+                    </Typography>
+                    <Typography
+                      level='body-xs'
+                      textColor='text.tertiary'>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 70, borderRadius: '5px' }} />
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+                >
+                  <Button
+                    size='sm'
+                    variant='plain'
+                    color='neutral'
+                    startDecorator={<ReplyRoundedIcon />}
+                  >
+                    <Skeleton
+                      animation='wave'
+                      variant='text'
+                      sx={{ width: 35, borderRadius: '5px' }} />
+                  </Button>
+                </Box>
+              </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
-    </Box>
-           </Box>
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {<Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />}
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
+              <Box
+                sx={{ marginTop: '15px' }}
+              >
+                <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+                  <Skeleton
+                    variant='rectangular'
+                    animation='wave'
+                    sx={{ width: '100%', height: '100%', borderRadius: '5px' }}
+                  />
+                </Box>
+              </Box>
+              <Divider />
+              <Typography
+                level='body-sm'
+                mt={2}
+                mb={2}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: '100%', borderRadius: '5px' }} />
+              </Typography>
+              <Box sx={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+              </Box>
+            </Sheet>
 
+            <Sheet
+              variant='outlined'
+              sx={{
+                borderRadius: 'sm',
+                border: 'none',
+                p: 2,
+                mb: 3
+              }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 2
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Skeleton
+                    variant='circular'
+                    width={40}
+                    height={40} />
+                  <Box sx={{ ml: 2 }}>
+                    <Typography
+                      level='title-sm'
+                      textColor='text.primary'
+                      mb={0.5}>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 60, borderRadius: '5px' }} />
+                    </Typography>
+                    <Typography
+                      level='body-xs'
+                      textColor='text.tertiary'>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 70, borderRadius: '5px' }} />
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+                >
+                  <Button
+                    size='sm'
+                    variant='plain'
+                    color='neutral'
+                    startDecorator={<ReplyRoundedIcon />}
 
-         <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
-                 
-               >
-                                  <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+                  >
+                    <Skeleton
+                      animation='wave'
+                      variant='text'
+                      sx={{ width: 35, borderRadius: '5px' }} />
+                  </Button>
+                </Box>
+              </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
+              <Box
+                sx={{ marginTop: '15px' }}
+              >
+                <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+                  <Skeleton
+                    variant='rectangular'
+                    animation='wave'
+                    sx={{ width: '100%', height: '100%', borderRadius: '5px' }}
+                  />
 
-    </Box>
-           </Box>
-     
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {
-                 <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-             }
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
-         <Sheet
-           variant="outlined"
-           sx={{
-             borderRadius: 'sm',
-             border:"none",
-             p: 2,
-             mb: 3,
-           }}>
-           <Box
-             sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               flexWrap: 'wrap',
-               gap: 2,
-             }}
-           >
-             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-             <Skeleton variant="circular" width={40} height={40} />
-               <Box sx={{ ml: 2 }}>
-                 <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-                 <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-                 </Typography>
-                 <Typography level="body-xs" textColor="text.tertiary">
-                 <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-                 </Typography>
-               </Box>
-             </Box>
-             <Box
-               sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-             >
-               <Button
-                 size="sm"
-                 variant="plain"
-                 color="neutral"
-                 startDecorator={<ReplyRoundedIcon />}
-                 
-               >
-                                  <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-               </Button>
-             </Box>
-           </Box>
+                </Box>
+              </Box>
 
-           <Box
-             sx={{marginTop:'15px'}}
-           >
-<Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-      <Skeleton
-        variant="rectangular"
-        animation="wave"
-        sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-      />
+              <Divider />
+              <Typography
+                level='body-sm'
+                mt={2}
+                mb={2}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: '100%', borderRadius: '5px' }} />
+              </Typography>
+              <Box sx={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+              </Box>
+            </Sheet>
+            <Sheet
+              variant='outlined'
+              sx={{
+                borderRadius: 'sm',
+                border: 'none',
+                p: 2,
+                mb: 3
+              }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 2
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Skeleton
+                    variant='circular'
+                    width={40}
+                    height={40} />
+                  <Box sx={{ ml: 2 }}>
+                    <Typography
+                      level='title-sm'
+                      textColor='text.primary'
+                      mb={0.5}>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 60, borderRadius: '5px' }} />
+                    </Typography>
+                    <Typography
+                      level='body-xs'
+                      textColor='text.tertiary'>
+                      <Skeleton
+                        animation='wave'
+                        variant='text'
+                        sx={{ width: 70, borderRadius: '5px' }} />
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
+                >
+                  <Button
+                    size='sm'
+                    variant='plain'
+                    color='neutral'
+                    startDecorator={<ReplyRoundedIcon />}
 
-    </Box>
-           </Box>
-     
-           <Divider />
-           <Typography level="body-sm" mt={2} mb={2}>
-             {
-                 <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-             }
-           </Typography>
-     <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-     </Box>
-         </Sheet>
-           </Box>
-         
-      ) : userPost.length > 0 ? (
-        userPost?.map(p => <FeedInsideChild post={p} key={p.id} chats={chats} />)
-      ) : (
-        <div style={{marginLeft: '145px',
-          marginTop: '120px'}}>No posts found</div>
-      )}
+                  >
+                    <Skeleton
+                      animation='wave'
+                      variant='text'
+                      sx={{ width: 35, borderRadius: '5px' }} />
+                  </Button>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{ marginTop: '15px' }}
+              >
+                <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
+                  <Skeleton
+                    variant='rectangular'
+                    animation='wave'
+                    sx={{ width: '100%', height: '100%', borderRadius: '5px' }}
+                  />
+
+                </Box>
+              </Box>
+
+              <Divider />
+              <Typography
+                level='body-sm'
+                mt={2}
+                mb={2}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: '100%', borderRadius: '5px' }} />
+              </Typography>
+              <Box sx={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+                <Skeleton
+                  animation='wave'
+                  variant='text'
+                  sx={{ width: 50, borderRadius: '99px' }} />
+              </Box>
+            </Sheet>
+          </Box>
+
+        )
+        : userPost.length > 0
+          ? (
+            userPost?.map(p => (<FeedInsideChild
+              post={p}
+              key={p.id}
+              chats={chats} />))
+          )
+          : (
+            <div style={{ marginLeft: '145px',
+              marginTop: '120px' }}>
+              No posts found
+            </div>
+          )}
 
     </Sheet>
 
-  );
+  )
 }

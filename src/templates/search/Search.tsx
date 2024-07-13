@@ -1,34 +1,21 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-import Avatar from '@mui/joy/Avatar';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-import Chip from '@mui/joy/Chip';
-
+import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
+import Avatar from '@mui/joy/Avatar'
+import Box from '@mui/joy/Box'
+import Button from '@mui/joy/Button'
+import Chip from '@mui/joy/Chip'
+import Divider from '@mui/joy/Divider'
+import Sheet from '@mui/joy/Sheet'
+import Typography from '@mui/joy/Typography'
 import moment from 'moment'
-import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
-import { createChat } from '../../hooks';
+import { useNavigate } from 'react-router-dom'
 
+import { createChat } from '../../hooks'
 
 export default function Search({ post, chats }) {
 
   const checkAndAddChat = async () => {
-    const currentUserId = +localStorage.user;
-    const otherUserId = post?.author?.id;
-
-    // const existingChat = chats.find(chat =>
-    //   chat.participants.find(p => p.id === currentUserId) &&
-    //   chat.participants.find(p => p.id === otherUserId)
-    // );
-
-    // if (existingChat) {
-    //   navigate(`/message/${existingChat.id}`);
-    // } else {
+    const currentUserId = +localStorage.user
+    const otherUserId = post?.author?.id
 
     try {
       const { data, error } = await createChat([currentUserId, otherUserId])
@@ -36,27 +23,24 @@ export default function Search({ post, chats }) {
         console.log('error', error)
       }
       if (data) {
-        console.log('datasasasasaa', data);
-        navigate(`/message/${data?.id}`);
+        navigate(`/message/${data?.id}`)
       }
     } catch (error) {
-      console.error("Ошибка при создании чата:", error);
+      console.error('Ошибка при создании чата:', error)
     }
-    // }
-  };
-  const navigate = useNavigate();
-  console.log('post1111', post);
-  console.log('post1111', post);
+  }
+  const navigate = useNavigate()
+
   return (
     <Sheet
-      variant="outlined"
+      variant='outlined'
       sx={{
         borderRadius: 'sm',
-        border: "none",
+        border: 'none',
         p: 2,
         mb: 3,
         pt: 0,
-        pb: 0,
+        pb: 0
       }}
     >
       <Box
@@ -65,7 +49,7 @@ export default function Search({ post, chats }) {
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: 2,
+          gap: 2
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -77,21 +61,28 @@ export default function Search({ post, chats }) {
               }
             }}
           />
-          <Box sx={{ ml: 2 }}
+          <Box
+            sx={{ ml: 2 }}
             onClick={() => {
-              navigate(`/feed/${post?.author?.id}`);
+              navigate(`/feed/${post?.author?.id}`)
             }}
           >
-            <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-              {post?.author?.surname}{' '}
-              {post?.author?.name}{' '}
+            <Typography
+              level='title-sm'
+              textColor='text.primary'
+              mb={0.5}>
+              {post?.author?.surname}
+              {' '}
+              {post?.author?.name}
+              {' '}
               {post?.author?.lastname}
-
               {
                 !post?.author?.surname && !post?.author?.name && !post?.author?.lastname && 'User'
               }
             </Typography>
-            <Typography level="body-xs" textColor="text.tertiary">
+            <Typography
+              level='body-xs'
+              textColor='text.tertiary'>
               {moment(post.created_at).fromNow()}
             </Typography>
           </Box>
@@ -100,15 +91,17 @@ export default function Search({ post, chats }) {
           sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
         >
           {
-            post?.author?.id != localStorage.user ? (<Button
-              size="sm"
-              variant="plain"
-              color="neutral"
-              startDecorator={<ReplyRoundedIcon />}
-              onClick={checkAndAddChat}
-            >
-              Reply
-            </Button>) : ('')
+            post?.author?.id != localStorage.user
+              ? (<Button
+                size='sm'
+                variant='plain'
+                color='neutral'
+                startDecorator={<ReplyRoundedIcon />}
+                onClick={checkAndAddChat}
+              >
+                Reply
+              </Button>)
+              : ('')
           }
         </Box>
       </Box>
@@ -116,13 +109,13 @@ export default function Search({ post, chats }) {
       <Box sx={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
         {post?.tags ?
           post?.tags?.split(' ').map(tag => (
-            <Chip sx={{ overflow: 'hidden' }}>{tag}</Chip>
-          )) : ''
+            <Chip sx={{ overflow: 'hidden' }}>
+              {tag}
+            </Chip>
+          ))
+          : ''
         }
-
-
       </Box>
-
     </Sheet>
-  );
+  )
 }
