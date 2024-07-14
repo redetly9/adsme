@@ -28,7 +28,7 @@ export const TagsSlider = ({ title, pikedTags, onClick, isWrapped }: TagsSliderP
               <Chip
                 key={tag}
                 variant={pikedTags.some(t => t === tag) ? 'solid' : 'soft'}
-                sx={{ overflow: 'hidden' }}
+                sx={{ overflow: 'hidden', p: 1, fontSize: '16px' }}
                 onClick={onClick.bind(null, tag)}
               >
                 {tag}

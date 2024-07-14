@@ -1,5 +1,5 @@
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
-import AspectRatio from '@mui/joy/AspectRatio'
+import { CircularProgress } from '@mui/joy'
 import Button from '@mui/joy/Button'
 import FormControl from '@mui/joy/FormControl'
 import FormLabel from '@mui/joy/FormLabel'
@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { EditProfile } from '../../../components/edit-profile'
 import { updateUser, useUserFollowings } from '../../../hooks.ts'
+import { uploadImage } from '../../../lib/upload-image/'
 import { useAppSelector } from '../../../store.ts'
 import SwipeableEdgeDrawer from '../../feed/Drawer.tsx'
 
@@ -32,6 +33,7 @@ export default function OwnProfile(props) {
 
   const navigate = useNavigate()
   const [isEditProfile, setIsEditProfile] = useState(false)
+  const [isLoadingImg, setIsLoadingImg] = useState(false)
 
   /**
    * Followers
@@ -42,7 +44,12 @@ export default function OwnProfile(props) {
     navigate('/subscribes-page')
   }
 
-  const updateProfile = async (name: string, surname: string, lastname: string, avatar: any, phone: string, setPhoneInputError: (val: boolean) => void) => {
+  const updateProfileData = () => {
+    setProfileData('') //FIXME: это сделано просто чтоб отработал useEffect выше
+    onProfile(profileData.id) //FIXME: это сделано просто чтоб отработал useEffect выше
+  }
+
+  const updateProfile = async (name: string, surname: string, lastname: string, phone: string, setPhoneInputError: (val: boolean) => void) => {
     if (phone.length !== 11) {
       setPhoneInputError(true)
       return
@@ -56,19 +63,30 @@ export default function OwnProfile(props) {
         phone: phone.replace(/\D/g, '')
       }
 
-      if (avatar) {
-        data.avatar = avatar
-      }
-
       await updateUser(profileData.id, data)
-      setProfileData('') //FIXME: это сделано просто чтоб отработал useEffect выше
-      onProfile(profileData.id) //FIXME: это сделано просто чтоб отработал useEffect выше
+      updateProfileData()
       setIsEditProfile(false)
     } catch (error) {
       if ((error)) {
         console.error('Ошибка запроса:', error || error)
       } else {
         console.error('Непредвиденная ошибка:', error)
+      }
+    }
+  }
+
+  const handleAvatarChange = async (e: any) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setIsLoadingImg(true)
+      try {
+        const secureImgUrl = await uploadImage(file)
+        await updateUser(profileData.id, { avatar: secureImgUrl })
+        updateProfileData()
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setIsLoadingImg(false)
       }
     }
   }
@@ -125,32 +143,35 @@ export default function OwnProfile(props) {
         >
           <Stack
             direction='row'
-            spacing={2}>
-            <Stack
-              direction='column'
-              spacing={1}>
-              <AspectRatio
-                ratio='1'
-                maxHeight={75}
-                sx={{ flex: 1, minWidth: 75, borderRadius: '100%' }}
-              >
-                <img
+            spacing={2}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90px', height: '90px', borderRadius: '100%', overflow: 'hidden' }} >
+              <input
+                type='file'
+                onChange={handleAvatarChange}
+                accept='image/*'
+                style={{ opacity: 0, position: 'absolute', width: '90px', height: '90px', cursor: 'pointer' }}
+              />
+              {isLoadingImg
+                ? <CircularProgress />
+                : <img
+                  style={{ width: '90px', height: '90px' }}
+                  onChange={handleAvatarChange}
                   src={profileData?.avatar || imageUrl || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
                   loading='lazy'
-                  alt=''
-                />
-              </AspectRatio>
-            </Stack>
+                  alt='user avatar'
+                />}
+            </Box>
             <Stack
               spacing={1}
-              sx={{ flexGrow: 1, justifyContent: 'center' }}>
-              <Box>
+              sx={{ flex: 1, justifyContent: 'center' }}>
+              <Typography sx={{ wordWrap: 'break-word' }}>
                 {nameInput}
                 {' '}
                 {surnameInput}
                 {' '}
                 {lastnameInput ? lastnameInput : ''}
-              </Box>
+              </Typography>
             </Stack>
           </Stack>
           <FormControl>

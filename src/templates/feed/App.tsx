@@ -110,9 +110,10 @@ export default function FeedList() {
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '20px' }} >
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 2, gap: 1 }}>
           <Input
             size='sm'
+            sx={{ width: '100%' }}
             startDecorator={<SearchRoundedIcon />}
             placeholder='Search'
             aria-label='Search'
@@ -121,7 +122,6 @@ export default function FeedList() {
           <Button
             variant='outlined'
             color='neutral'
-            startDecorator={<TuneIcon />}
             onClick={() => setFilterOpen(true)}
             sx={{
               '&:hover': {
@@ -132,7 +132,7 @@ export default function FeedList() {
               }
             }}
           >
-            Change filters
+            <TuneIcon />
           </Button>
         </Box>
         <TagsSlider

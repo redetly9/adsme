@@ -18,7 +18,7 @@ export default function NavBar() {
 
   useEffect(() => {
     const pathname = window.location.pathname
-    const tabs = ['/feed', '/messages', '/group-messages', `/profile/${id}`]
+    const tabs = ['/group-messages', '/feed', '/messages', `/profile/${id}`]
     const tabIndex = tabs.findIndex(tab => pathname.startsWith(tab))
     if (tabIndex !== -1) {
       setIndex(tabIndex)
@@ -71,6 +71,20 @@ export default function NavBar() {
         >
           <Link
             style={{ width: '25%', maxWidth: '25%' }}
+            to='/group-messages'>
+            <Tab
+              sx={{ width: '100%' }}
+              disableIndicator
+              orientation='vertical'
+            >
+              <ListItemDecorator>
+                <ForumIcon />
+              </ListItemDecorator>
+              Chat
+            </Tab>
+          </Link>
+          <Link
+            style={{ width: '25%', maxWidth: '25%' }}
             to='/feed'>
             <Tab
               sx={{ width: '100%' }}
@@ -96,20 +110,6 @@ export default function NavBar() {
                 <MessageRounded />
               </ListItemDecorator>
               Messages
-            </Tab>
-          </Link>
-          <Link
-            style={{ width: '25%', maxWidth: '25%' }}
-            to='/group-messages'>
-            <Tab
-              sx={{ width: '100%' }}
-              disableIndicator
-              orientation='vertical'
-            >
-              <ListItemDecorator>
-                <ForumIcon />
-              </ListItemDecorator>
-              Chat
             </Tab>
           </Link>
           <Link
