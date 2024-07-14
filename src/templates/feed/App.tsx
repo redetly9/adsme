@@ -1,23 +1,32 @@
-import * as React from 'react';
-import Feed from './Feed';
-import { Box, Sheet } from "@mui/joy"
-import Button from '@mui/joy/Button';
-import { useAppSelector } from '../../store';
-import Slider from '@mui/joy/Slider';
-import { getPostsByLocation, getUserChats } from '../../hooks';
-import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
-import SwipeableEdgeDrawer from './Drawer';
-import TuneIcon from '@mui/icons-material/TuneRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import TuneIcon from '@mui/icons-material/TuneRounded'
+import { Box, Input, Sheet } from '@mui/joy'
+import Button from '@mui/joy/Button'
+import Slider from '@mui/joy/Slider'
+import * as React from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+import { TagsSlider } from '../../components/tags-slider'
+import { getPostsByLocation, getUserChats } from '../../hooks'
+import { useAppSelector } from '../../store'
+import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
+import { marks } from './const/marks.ts'
+import SwipeableEdgeDrawer from './Drawer'
+import Feed from './Feed'
+import { uniqueByLatestDate } from './lib/unique-by-latest-date.ts'
 
 export default function FeedList() {
-  const [filterOpen, setFilterOpen] = React.useState(false)
-  const [posts, setPosts] = React.useState(null)
-  const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
+  const [filterOpen, setFilterOpen] = useState(false)
+  const [posts, setPosts] = useState<Array<any> | null>(null)
+  const [tags, setTags] = useState<string[]>([])
+  const [radius, setRadius] = useState<string | null>(localStorage?.getItem('radius'))
+  const [chats, setChats] = useState<Array<any> | null>(null)
+  const [search, setSearch] = useState('')
+
+  const typingTimeout = useRef<NodeJS.Timeout | null>(null)
+
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
-  console.log('posts', posts);
 
-
-  const [chats, setChats] = React.useState(null);
   const getChats = async () => {
     const { data } = await getUserChats(+localStorage.user)
 
@@ -30,85 +39,62 @@ export default function FeedList() {
     }
   }, [])
 
-  const marks = [
-    {
-      value: 0,
-      label: '0',
-    },
-    {
-      value: 100,
-      label: '',
-    },
-    {
-      value: 200,
-      label: '',
-    },
-    {
-      value: 300,
-      label: '',
-    },
-    {
-      value: 400,
-      label: '',
-    },
-    {
-      value: 500,
-      label: '',
-    },
-    {
-      value: 600,
-      label: '',
-    },
-    {
-      value: 700,
-      label: '',
-    },
-    {
-      value: 800,
-      label: '',
-    },
-    {
-      value: 900,
-      label: '',
-    },
-    {
-      value: 1000,
-      label: '1000',
-    },
-  ];
-
-  function valueText(value: number) {
-    return `${value}`;
+  const onAddTags = (tag: string) => {
+    setTags(prevTags => {
+      if (prevTags.some(t => t === tag)) {
+        return prevTags.filter(t => t !== tag)
+      }
+      return [...prevTags, tag]
+    })
   }
 
   const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000,
-    )
-    console.log('longitude', longitude);
-    console.log('latitude', latitude);
+    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000)
 
-    const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    //
-    const uniqueList = (ps: any[]) => {
-      const ids = ps.map((p) => p.author.id) // @ts-ignore
-      const uniqueIds = [...new Set(ids)]
-      return uniqueIds.map((i) => ps.find((p) => p.author.id === i))
-    }
-    const postssss = sortedPosts ? uniqueList(sortedPosts) : []
+    const uniquePosts = uniqueByLatestDate(data)
 
-    console.log('postssss', postssss);
-
-    //
-    setPosts(postssss);
-    // setPosts(data.slice().reverse())
+    setPosts(uniquePosts)
   }
 
-  React.useEffect(() => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.trim().toLowerCase()
+
+    if (typingTimeout.current !== null) {
+      clearTimeout(typingTimeout.current)
+    }
+
+    typingTimeout.current = setTimeout(() => {
+      setSearch(value)
+    }, 300)
+  }
+
+  useEffect(() => {
     if (latitude && longitude) {
       getPosts()
     }
-  }, [latitude, longitude, radius,])
+  }, [latitude, longitude, radius])
 
+  const filteredPosts = useMemo(() => {
+    if (posts && (search.length > 0 || tags.length > 0)) {
+      return posts.filter(post => {
+        const findSearch = post.title.toLowerCase().includes(search.toLowerCase())
+        const postTags = post.tags.split(' ')
+        const findTags = tags.some(t => postTags.includes(t))
+
+        if (tags.length === 0) {
+          return findSearch
+        }
+
+        if (search.length === 0) {
+          return findTags
+        }
+
+        return findSearch && findTags
+      })
+    }
+
+    return posts
+  }, [posts, search, tags])
 
   return (
     <Sheet
@@ -120,96 +106,80 @@ export default function FeedList() {
         height: 'calc(100dvh - 81.6px)',
         width: '100vw',
         gap: 1,
-        overflow: 'auto',
+        overflow: 'auto'
       }}
     >
-
-      {/* <Dropdown >
-        <MenuButton sx={{
-          marginLeft: 'auto', display: 'block', marginTop: '20px',
-          marginRight: '20px', '&:hover': {
-            borderColor: '#c7dff7',
-            ' &:focus': {
-              'outline': '0',
-            }
-          }
-        }}>Filter</MenuButton>
-        <Menu sx={{
-          width: '100vw', border: 'none', boxShadow: 'none',
-          backgroundColor: 'var(--joy-palette-background-surface)'
-        }}>
-          <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
-            <Slider
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              aria-label="Custom marks" //@ts-ignore
-              defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
-              getAriaValueText={valueText}
-              max={1000}
-              step={10}
-              valueLabelDisplay="auto"
-              marks={marks}
-              onChangeCommitted={(event, newValue) => {
-                setRadius(newValue);
-                localStorage.setItem('radius', newValue.toString());
-              }}
-            />
-          </Box></MenuItem>
-
-        </Menu>
-      </Dropdown> */}
-
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '20px' }}>
-        <Button
-          variant="outlined"
-          color="neutral"
-          startDecorator={<TuneIcon />}
-          onClick={() => setFilterOpen(true)}
-          sx={{
-            '&:hover': {
-              borderColor: '#c7dff7',
-              ' &:focus': {
-                'outline': '0',
-              }
-            }
-          }}
-        >
-          Change filters
-        </Button>
-      </Box>
-
-      <SwipeableEdgeDrawer open={filterOpen} setOpen={setFilterOpen}>
-        <Slider
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            aria-label="Custom marks" //@ts-ignore
-            defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
-            getAriaValueText={valueText}
-            max={1000}
-            step={10}
-            valueLabelDisplay="auto"
-            marks={marks}
-            onChangeCommitted={(event, newValue) => {
-              setRadius(newValue);
-              localStorage.setItem('radius', newValue.toString());
-            }}
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '20px' }} >
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 2, gap: 1 }}>
+          <Input
+            size='sm'
+            sx={{ width: '100%' }}
+            startDecorator={<SearchRoundedIcon />}
+            placeholder='Search'
+            aria-label='Search'
+            onChange={handleSearch}
           />
-      </SwipeableEdgeDrawer>
-
-
-
-      {posts === null ? (
-        <LoadingOverlay
-          noFull={80}
+          <Button
+            variant='outlined'
+            color='neutral'
+            onClick={() => setFilterOpen(true)}
+            sx={{
+              '&:hover': {
+                borderColor: '#c7dff7',
+                ' &:focus': {
+                  'outline': '0'
+                }
+              }
+            }}
+          >
+            <TuneIcon />
+          </Button>
+        </Box>
+        <TagsSlider
+          pikedTags={tags}
+          onClick={onAddTags}
         />
-      ) : posts?.length > 0 ? (
-        posts?.map(p => <Feed post={p} key={p.id} chats={chats} />)
-      ) : (
-        <div style={{
-          marginLeft: '145px',
-          marginTop: '120px'
-        }}>No posts found</div>
-      )}
-
+      </Box>
+      <SwipeableEdgeDrawer
+        open={filterOpen}
+        setOpen={setFilterOpen}>
+        <Slider
+          aria-label='Custom marks'
+          defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
+          getAriaValueText={v => v.toString()}
+          max={1000}
+          step={10}
+          valueLabelDisplay='auto'
+          marks={marks}
+          onChangeCommitted={(event, newValue) => {
+            setRadius(newValue)
+            localStorage.setItem('radius', newValue.toString())
+          }}
+        />
+      </SwipeableEdgeDrawer>
+      <Box>
+        {posts === null
+          ? (
+            <LoadingOverlay
+              noFull={80}
+            />
+          )
+          : filteredPosts && filteredPosts?.length > 0
+            ? (
+              filteredPosts.map(p => (<Feed
+                post={p}
+                key={p.id}
+                chats={chats} />))
+            )
+            : (
+              <div style={{
+                marginLeft: '145px',
+                marginTop: '120px'
+              }}>
+                No posts found
+              </div>
+            )}
+      </Box>
     </Sheet>
-
-  );
+  )
 }

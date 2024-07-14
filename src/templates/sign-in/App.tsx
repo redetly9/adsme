@@ -1,31 +1,30 @@
-import * as React from 'react';
-import { CssVarsProvider } from '@mui/joy/styles';
-import GlobalStyles from '@mui/joy/GlobalStyles';
-import CssBaseline from '@mui/joy/CssBaseline';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Typography from '@mui/joy/Typography';
-import Stack from '@mui/joy/Stack';
-import { api } from '../../api';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { add } from '../../slices';
-import { useAppDispatch } from '../../store';
-import { registerUser, verifyUser } from '../../hooks';
-import InputMask from 'react-input-mask';
+import Box from '@mui/joy/Box'
+import Button from '@mui/joy/Button'
+import CssBaseline from '@mui/joy/CssBaseline'
+import FormControl from '@mui/joy/FormControl'
+import FormLabel from '@mui/joy/FormLabel'
+import GlobalStyles from '@mui/joy/GlobalStyles'
+import Input from '@mui/joy/Input'
+import Stack from '@mui/joy/Stack'
+import { CssVarsProvider } from '@mui/joy/styles'
+import Typography from '@mui/joy/Typography'
+import * as React from 'react'
+import { useState } from 'react'
+import InputMask from 'react-input-mask'
+import { useNavigate } from 'react-router-dom'
+
+import { registerUser, verifyUser } from '../../hooks'
+import { add } from '../../slices'
+import { useAppDispatch } from '../../store'
+
 interface FormElements extends HTMLFormControlsCollection {
-  phone: HTMLInputElement;
-  persistent: HTMLInputElement;
-  smsCode: HTMLInputElement;
+  phone: HTMLInputElement,
+  persistent: HTMLInputElement,
+  smsCode: HTMLInputElement
 }
 interface SignInFormElement extends HTMLFormElement {
-  readonly elements: FormElements;
+  readonly elements: FormElements
 }
-
-
 
 export default function JoySignInSideTemplate() {
   const [ code, setCode] = useState(false)
@@ -35,110 +34,91 @@ export default function JoySignInSideTemplate() {
   const [ codeInputError, setCodeInputError] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  
+
   const onSubmit = async (event: React.FormEvent<SignInFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     // const formElements = event.currentTarget.elements;
     if (phoneInput.length != 11) {
       setInputError(true)
-      throw console.error();
-      
-      
+      throw console.error()
     }
 
     const data = {
-      phone: phoneInput,
-    };
-    console.log('phoneInput', phoneInput);
-
+      phone: phoneInput
+    }
     await registerUser(data.phone)
     setCode(true)
-    // navigate('/confirm')
   }
   const onConfirm = async (event: React.FormEvent<SignInFormElement>) => {
-    event.preventDefault();
-    // const formElements = event.currentTarget.elements;
+    event.preventDefault()
 
     if (codeInput.length != 4) {
       setCodeInputError(true)
-      throw console.error();
-      
-      
+      throw console.error()
+
     }
     const data = {
       phone: phoneInput,
-      code: codeInput,
-    };
-    console.log('phoneInput', phoneInput);
-    console.log('codeInput', codeInput);
+      code: codeInput
+    }
 
     const response = await verifyUser(data.phone, data.code)
-    console.log('response', response);
-    
+
     dispatch(add(response?.data?.user?.id))
     localStorage.token = response?.data?.token
     localStorage.user = response?.data?.user.id
     localStorage.phone = response?.data?.user.phone
-//     document.cookie = `token=${response?.data?.token}; path=/; max-age=31536000; secure`;
-// // Установка cookie с идентификатором пользователя, срок действия 1 год
-// document.cookie = `user=${response?.data?.user.id}; path=/; max-age=31536000; secure`;
-// // Установка cookie с номером телефона пользователя, срок действия 1 год
-// document.cookie = `phone=${response?.data?.user.phone}; path=/; max-age=31536000; secure`;
-        navigate('/feed')
+    navigate('/feed')
   }
 
   const handleChange = (e) => {
     // Получаем значение из input, введенное пользователем
-    const input = e.target.value;
-  
+    const input = e.target.value
+
     // Удаляем все символы, кроме цифр
-    const cleanedInput = input.replace(/\D/g, '');
-  
+    const cleanedInput = input.replace(/\D/g, '')
+
     // Устанавливаем обработанное значение в состояние
-    setPhoneInput(cleanedInput);
-  };
+    setPhoneInput(cleanedInput)
+  }
 
-
-    React.useEffect(() => {
- if(phoneInput.length === 11) {
-  setInputError(false)
- }
- if(phoneInput.length != 11) {
-  setInputError(true)
- }
- if(phoneInput.length === 1 || !phoneInput.length) {
-  setInputError(false)
- }
+  React.useEffect(() => {
+    if (phoneInput.length === 11) {
+      setInputError(false)
+    }
+    if (phoneInput.length != 11) {
+      setInputError(true)
+    }
+    if (phoneInput.length === 1 || !phoneInput.length) {
+      setInputError(false)
+    }
   }, [phoneInput])
 
   React.useEffect(() => {
-    if(codeInput.length === 4) {
-      console.log('da');
-      
-     setCodeInputError(false)
+    if (codeInput.length === 4) {
+      setCodeInputError(false)
     }
-    if(codeInput.length != 4) {
-      console.log('da2');
-     setCodeInputError(true)
+    if (codeInput.length != 4) {
+
+      setCodeInputError(true)
     }
-    if(!codeInput.length) {
-      console.log('da3');
-     setCodeInputError(false)
+    if (!codeInput.length) {
+      setCodeInputError(false)
     }
-     }, [codeInput])
-  
-console.log('codeInput', codeInput);
+  }, [codeInput])
 
   return (
-    <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
+    <CssVarsProvider
+      defaultMode='dark'
+      disableTransitionOnChange>
       <CssBaseline />
       <GlobalStyles
         styles={{
 
           ':root': {
             '--Form-maxWidth': '800px',
-            '--Transition-duration': '0.4s',
-          },
+            '--Transition-duration': '0.4s'
+          }
         }}
       />
       <Box
@@ -153,8 +133,8 @@ console.log('codeInput', codeInput);
           backdropFilter: 'blur(12px)',
           backgroundColor: 'rgba(255 255 255 / 0.2)',
           [theme.getColorSchemeSelector('dark')]: {
-            backgroundColor: 'rgba(19 19 24 / 0.4)',
-          },
+            backgroundColor: 'rgba(19 19 24 / 0.4)'
+          }
         })}
       >
         <Box
@@ -162,142 +142,182 @@ console.log('codeInput', codeInput);
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            px: 2,
+            px: 2
           }}
         >
           <Box
-            component="header"
+            component='header'
             sx={{
               py: 3,
               display: 'flex',
-              justifyContent: 'space-between',
+              justifyContent: 'space-between'
             }}
           >
-            <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-            </Box>
+            <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }} />
           </Box>
-          { !code ? ( 
-          <Box
-            component="main"
-            sx={{
-              my: 'auto',
-              py: 2,
-              pb: 5,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              width: '100%',
-              maxWidth: '100%',
-              mx: 'auto',
-              borderRadius: 'sm',
-              '& form': {
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-              },
-              [`& .MuiFormLabel-asterisk`]: {
-                visibility: 'hidden',
-              },
-            }}
-          >
-            <Stack gap={4} sx={{ mb: 2 }}>
-              <Stack gap={1}>
-                <Typography component="h1" level="h3" sx={{ margin: '0 auto' }}>
-                  Sign in
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack gap={4} sx={{ mt: 2 }}>
-                   <form
-                onSubmit={onSubmit}
+          {!code
+            ? (
+              <Box
+                component='main'
+                sx={{
+                  my: 'auto',
+                  py: 2,
+                  pb: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  width: '100%',
+                  maxWidth: '100%',
+                  mx: 'auto',
+                  borderRadius: 'sm',
+                  '& form': {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2
+                  },
+                  ['& .MuiFormLabel-asterisk']: {
+                    visibility: 'hidden'
+                  }
+                }}
               >
-         <FormControl required>
-      <FormLabel>Phone</FormLabel>
-      <InputMask
-        mask="+7 999 999 99 99"
-        value={phoneInput}
-        onChange={handleChange}
-        maskChar=" "
-      >
-        {(inputProps) => <Input {...inputProps} type="tel" name="phone" error={inputError} />}
-      </InputMask>
-    </FormControl>
-                <Stack gap={4} sx={{ mt: 2 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                  </Box>
-                  <Button type="submit" fullWidth>
-                    Sign in
-                  </Button>
+                <Stack
+                  gap={4}
+                  sx={{ mb: 2 }}>
+                  <Stack gap={1}>
+                    <Typography
+                      component='h1'
+                      level='h3'
+                      sx={{ margin: '0 auto' }}>
+                      Sign in
+                    </Typography>
+                  </Stack>
                 </Stack>
-              </form>
+                <Stack
+                  gap={4}
+                  sx={{ mt: 2 }}>
+                  <form
+                    onSubmit={onSubmit}
+                  >
+                    <FormControl required>
+                      <FormLabel>
+                        Phone
+                      </FormLabel>
+                      <InputMask
+                        mask='+7 999 999 99 99'
+                        value={phoneInput}
+                        onChange={handleChange}
+                        maskChar=' '
+                      >
+                        {(inputProps) => (<Input
+                          {...inputProps}
+                          type='tel'
+                          name='phone'
+                          error={inputError} />)}
+                      </InputMask>
+                    </FormControl>
+                    <Stack
+                      gap={4}
+                      sx={{ mt: 2 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      />
+                      <Button
+                        type='submit'
+                        fullWidth>
+                        Sign in
+                      </Button>
+                    </Stack>
+                  </form>
 
-            </Stack>
-          </Box> ) : (
+                </Stack>
+              </Box>)
+            : (
+
+              <Box
+                component='main'
+                sx={{
+                  my: 'auto',
+                  py: 2,
+                  pb: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  width: '100%',
+                  maxWidth: '100%',
+                  mx: 'auto',
+                  borderRadius: 'sm',
+                  '& form': {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2
+                  },
+                  ['& .MuiFormLabel-asterisk']: {
+                    visibility: 'hidden'
+                  }
+                }}
+              >
+                <Stack
+                  gap={4}
+                  sx={{ mb: 2 }}>
+                  <Stack gap={1}>
+                    <Typography
+                      component='h1'
+                      level='h3'
+                      sx={{ margin: '0 auto' }}>
+                      Confirm your phone
+                    </Typography>
+                  </Stack>
+                </Stack>
+                <Stack
+                  gap={4}
+                  sx={{ mt: 2 }}>
+                  <form
+                    onSubmit={onConfirm}
+                  >
+                    <FormControl required>
+                      <FormLabel>
+                        Code
+                      </FormLabel>
+                      <Input
+                        type='smsCode'
+                        name='smsCode'
+                        value={codeInput}
+                        onChange={e => setCodeInput(e.target.value)}
+                        error={codeInputError} />
+                    </FormControl>
+                    <Stack
+                      gap={4}
+                      sx={{ mt: 2 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      />
+                      <Button
+                        type='submit'
+                        fullWidth>
+                        Confirm
+                      </Button>
+                    </Stack>
+                  </form>
+                </Stack>
+              </Box>)}
 
           <Box
-            component="main"
-            sx={{
-              my: 'auto',
-              py: 2,
-              pb: 5,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              width: '100%',
-              maxWidth: '100%',
-              mx: 'auto',
-              borderRadius: 'sm',
-              '& form': {
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-              },
-              [`& .MuiFormLabel-asterisk`]: {
-                visibility: 'hidden',
-              },
-            }}
-          >
-            <Stack gap={4} sx={{ mb: 2 }}>
-              <Stack gap={1}>
-                <Typography component="h1" level="h3" sx={{ margin: '0 auto' }}>
-                  Confirm your phone
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack gap={4} sx={{ mt: 2 }}>
-              <form
-                onSubmit={onConfirm}
-              >
-                <FormControl required>
-                  <FormLabel>Code</FormLabel>
-                  <Input type="smsCode" name="smsCode" value={codeInput} onChange={e => setCodeInput(e.target.value)} error={codeInputError}  />
-                </FormControl>
-                <Stack gap={4} sx={{ mt: 2 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                  </Box>
-                  <Button type="submit" fullWidth>
-                    Confirm
-                  </Button>
-                </Stack>
-              </form>
-            </Stack>
-          </Box>)}
-
-          <Box component="footer" sx={{ py: 3 }}>
-            <Typography level="body-xs" textAlign="center">
-              © Adsme {new Date().getFullYear()}
+            component='footer'
+            sx={{ py: 3 }}>
+            <Typography
+              level='body-xs'
+              textAlign='center'>
+              © Adsme
+              {' '}
+              {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>
@@ -319,10 +339,10 @@ console.log('codeInput', codeInput);
           backgroundRepeat: 'no-repeat',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
-          },
+              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)'
+          }
         })}
       />
     </CssVarsProvider>
-  );
+  )
 }

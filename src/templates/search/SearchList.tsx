@@ -1,31 +1,20 @@
-import * as React from 'react';
-import { Box, Input, Sheet, Skeleton } from "@mui/joy";
-// import { getCurrentLocation } from '../../utils/geo';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Search from './Search';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import { Box, Input, Sheet } from '@mui/joy'
+import * as React from 'react'
+import { useState } from 'react'
 
-
-
-
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-
-
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-
-
-import { useAppSelector } from '../../store';
-import { getPostsByLocation, getPostsByTag } from '../../hooks';
-import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay';
+import { getPostsByLocation, getPostsByTag } from '../../hooks'
+import { useAppSelector } from '../../store'
+import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
+import Search from './Search'
 
 export default function SearchList() {
-  const [posts, setPosts] = React.useState(null);
-  const [tag, setTag] = React.useState('');
-  const { latitude, longitude } = useAppSelector(state => state.user.geo);
-  console.log(posts);
+  const [posts, setPosts] = useState(null)
+  const [tag, setTag] = useState('')
+  const { latitude, longitude } = useAppSelector(state => state.user.geo)
+  console.log(posts)
 
-  const [chats, setChats] = React.useState<any>(null);
+  const [chats, setChats] = useState<any>(null)
   const getChats = async () => {
 
     // setChats(data.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== localStorage.user) }) })))
@@ -35,298 +24,101 @@ export default function SearchList() {
       getChats()
     }
   }, [])
-  console.log('chats', chats);
-  
+
   const getPostsByTagApi = async () => {
     try {
-      const response = await getPostsByTag(tag);
-      setPosts(response.data.slice().reverse());
+      const response = await getPostsByTag(tag)
+      setPosts(response.data.slice().reverse())
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        console.log(error.response.data.message);
-        setPosts([]);
+        console.log(error.response.data.message)
+        setPosts([])
       } else {
-        console.error('Error fetching posts by tag:', error);
+        console.error('Error fetching posts by tag:', error)
       }
     }
-  };
+  }
   const radius = localStorage?.getItem('radius') || 10
   const getAllPosts = async () => {
     try {
-      const response = await getPostsByLocation(`${longitude}`,`${latitude}`, radius,
-    )
-      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const response = await getPostsByLocation(`${longitude}`, `${latitude}`, radius)
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
       const uniqueList = (ps: any[]) => {
-        const ids = ps.map((p) => p.author.id) // @ts-ignore
+        const ids = ps.map((p) => p.author.id)
         const uniqueIds = [...new Set(ids)]
         return uniqueIds.map((i) => ps.find((p) => p.author.id === i))
       }
       const postssss = sortedPosts ? uniqueList(sortedPosts) : []
-  
-      console.log('postssss', postssss);
-      setPosts(postssss);
+      setPosts(postssss)
     } catch (error) {
-      console.error('Error fetching all posts:', error);
+      console.error('Error fetching all posts:', error)
     }
-  };
+  }
 
   React.useEffect(() => {
     if (tag) {
-      getPostsByTagApi();
+      getPostsByTagApi()
     } else if (latitude & longitude) {
-      getAllPosts();
+      getAllPosts()
     }
-  }, [tag, latitude, longitude]);
+  }, [tag, latitude, longitude])
 
-  const [typingTimeout, setTypingTimeout] = React.useState(null);
+  const [typingTimeout, setTypingTimeout] = useState(null)
 
   const handleSearch = (event) => {
-    const value = event.target.value.trim();
+    const value = event.target.value.trim()
 
     if (typingTimeout) {
-      clearTimeout(typingTimeout);
+      clearTimeout(typingTimeout)
     }
 
     setTypingTimeout(setTimeout(() => {
-      setTag(value);
-    }, 300));
-  };
+      setTag(value)
+    }, 300))
+  }
 
   return (
     <Sheet sx={{
-        pt: { xs: 'calc(12px + var(--Header-height))', md: 3 },
-        pb: { xs: 2, sm: 2, md: 3 },
-        flex: 1,
-        minWidth: 0,
-        height: 'calc(100vh - 81.6px)',
-        width: '100vw',
-        gap: 1,
-        overflow: 'auto',
-      }}
+      pt: { xs: 'calc(12px + var(--Header-height))', md: 3 },
+      pb: { xs: 2, sm: 2, md: 3 },
+      flex: 1,
+      minWidth: 0,
+      height: 'calc(100vh - 81.6px)',
+      width: '100vw',
+      gap: 1,
+      overflow: 'auto'
+    }}
     >
-      <Box sx={{ px: 2, pb: 1.5, margin:'0 auto', marginTop: '30px', }}>
+      <Box sx={{ px: 2, pb: 1.5, margin: '0 auto', marginTop: '30px' }}>
         <Input
-          size="sm"
+          size='sm'
           startDecorator={<SearchRoundedIcon />}
-          placeholder="Search tags"
-          aria-label="Search"
+          placeholder='Search tags'
+          aria-label='Search'
           onChange={handleSearch}
         />
       </Box>
 
-      {posts === null ? (
-//            <Box>
-//             <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-//                >
-//               <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-//     </Box>
-//            </Box>
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {<Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />}
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-
-
-//          <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-                 
-//                >
-//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-
-//     </Box>
-//            </Box>
-     
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {
-//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-//              }
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-//          <Sheet
-//            variant="outlined"
-//            sx={{
-//              borderRadius: 'sm',
-//              border:"none",
-//              p: 2,
-//              mb: 3,
-//            }}>
-//            <Box
-//              sx={{
-//                display: 'flex',
-//                justifyContent: 'space-between',
-//                alignItems: 'center',
-//                flexWrap: 'wrap',
-//                gap: 2,
-//              }}
-//            >
-//              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-//              <Skeleton variant="circular" width={40} height={40} />
-//                <Box sx={{ ml: 2 }}>
-//                  <Typography level="title-sm" textColor="text.primary" mb={0.5}>
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 60, borderRadius:'5px' }} />
-//                  </Typography>
-//                  <Typography level="body-xs" textColor="text.tertiary">
-//                  <Skeleton animation="wave" variant="text" sx={{ width: 70, borderRadius:'5px' }} />
-//                  </Typography>
-//                </Box>
-//              </Box>
-//              <Box
-//                sx={{ display: 'flex', height: '32px', flexDirection: 'row', gap: 1.5 }}
-//              >
-//                <Button
-//                  size="sm"
-//                  variant="plain"
-//                  color="neutral"
-//                  startDecorator={<ReplyRoundedIcon />}
-                 
-//                >
-//                                   <Skeleton animation="wave" variant="text" sx={{ width: 35, borderRadius:'5px' }} />
-//                </Button>
-//              </Box>
-//            </Box>
-
-//            <Box
-//              sx={{marginTop:'15px'}}
-//            >
-// <Box sx={{ width: '100%', height: '238px', position: 'relative' }}>
-//       <Skeleton
-//         variant="rectangular"
-//         animation="wave"
-//         sx={{ width: '100%', height: '100%',borderRadius:'5px'  }}
-//       />
-
-//     </Box>
-//            </Box>
-     
-//            <Divider />
-//            <Typography level="body-sm" mt={2} mb={2}>
-//              {
-//                  <Skeleton animation="wave" variant="text" sx={{ width: '100%', borderRadius:'5px' }} />
-//              }
-//            </Typography>
-//      <Box sx={{display:'flex', gap:'5px', flexWrap:'wrap'}}>
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      <Skeleton animation="wave" variant="text" sx={{ width: 50, borderRadius:'99px' }} />
-//      </Box>
-//          </Sheet>
-//            </Box>
-
-<LoadingOverlay
-      noFull={80}
-      />
-         
-      ) : posts.length > 0 ? (
-        posts.map(p =>  <Search post={p} key={p.id} chats={chats} />)
-      ) : (
-        <div style={{marginLeft: '145px',
-          marginTop: '120px'}}>No posts found</div>
-      )}
+      {posts === null
+        ? (
+          <LoadingOverlay
+            noFull={80}
+          />
+        )
+        : posts.length > 0
+          ? (
+            posts.map(p => (<Search
+              post={p}
+              key={p.id}
+              chats={chats} />))
+          )
+          : (
+            <div style={{ marginLeft: '145px',
+              marginTop: '120px' }}>
+              No posts found
+            </div>
+          )}
     </Sheet>
-  );
+  )
 }

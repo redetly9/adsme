@@ -1,7 +1,6 @@
-import React from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material'
 
-const LoadingOverlay = ({ noFull }) => {
+const LoadingOverlay = ({ noFull }: {noFull?: number}) => {
   return (
     <Box
       sx={{
@@ -15,12 +14,12 @@ const LoadingOverlay = ({ noFull }) => {
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1000,
-        backdropFilter: 'blur(5px)',
+        backdropFilter: 'blur(5px)'
       }}
     >
       <CircularProgress />
     </Box>
-  );
+  )
 }
 
-export default LoadingOverlay;
+export default LoadingOverlay

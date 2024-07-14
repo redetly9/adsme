@@ -1,0 +1,1 @@
+export { TagsSlider } from './ui'

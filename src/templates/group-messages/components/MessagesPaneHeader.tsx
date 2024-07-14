@@ -1,21 +1,20 @@
-import * as React from 'react';
-import Avatar from '@mui/joy/Avatar';
-import Button from '@mui/joy/Button';
-import IconButton from '@mui/joy/IconButton';
-import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { useNavigate } from 'react-router-dom';
-
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded'
+import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded'
+import Avatar from '@mui/joy/Avatar'
+import Button from '@mui/joy/Button'
+import IconButton from '@mui/joy/IconButton'
+import Stack from '@mui/joy/Stack'
+import Typography from '@mui/joy/Typography'
+import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function MessagesPaneHeader() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <Stack
-      direction="row"
-      justifyContent="space-between"
+      direction='row'
+      justifyContent='space-between'
       sx={{
         width: '100%',
         zIndex: '1000',
@@ -24,62 +23,75 @@ export default function MessagesPaneHeader() {
         position: 'fixed',
         borderBottom: '1px solid',
         borderColor: 'divider',
-        backgroundColor: 'background.body',
+        backgroundColor: 'background.body'
       }}
       py={{ xs: 2, md: 2 }}
       px={{ xs: 1, md: 2 }}
     >
-      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center" >
+      <Stack
+        direction='row'
+        spacing={{ xs: 1, md: 2 }}
+        alignItems='center' >
         <IconButton
-          variant="plain"
-          color="neutral"
-          size="sm"
+          variant='plain'
+          color='neutral'
+          size='sm'
           sx={{
-            display: { xs: 'inline-flex', sm: 'none' },
+            display: { xs: 'inline-flex', sm: 'none' }
           }}
-          onClick={() => navigate(`/messages`)}
+          onClick={() => navigate('/messages')}
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <Avatar size="lg" src={''} />
+        <Avatar
+          size='lg'
+          src='' />
         <div>
           <Typography
-            fontWeight="lg"
-            fontSize="lg"
-            component="h2"
+            fontWeight='lg'
+            fontSize='lg'
+            component='h2'
             noWrap
           >
-              General Chat
+            General Chat
           </Typography>
-          <Typography level="body-sm">12 subscribers</Typography>
+          <Typography level='body-sm'>
+            12 subscribers
+          </Typography>
         </div>
       </Stack>
-      <Stack spacing={1} direction="row" alignItems="center">
+      <Stack
+        spacing={1}
+        direction='row'
+        alignItems='center'>
         <Button
           startDecorator={<PhoneInTalkRoundedIcon />}
-          color="neutral"
-          variant="outlined"
-          size="sm"
+          color='neutral'
+          variant='outlined'
+          size='sm'
           sx={{
-            display: { xs: 'none', md: 'inline-flex' },
+            display: { xs: 'none', md: 'inline-flex' }
           }}
         >
           Call
         </Button>
         <Button
-          color="neutral"
-          variant="outlined"
-          size="sm"
+          color='neutral'
+          variant='outlined'
+          size='sm'
           sx={{
-            display: { xs: 'none', md: 'inline-flex' },
+            display: { xs: 'none', md: 'inline-flex' }
           }}
         >
           View profile
         </Button>
-        <IconButton size="sm" variant="plain" color="neutral">
+        <IconButton
+          size='sm'
+          variant='plain'
+          color='neutral'>
           <MoreVertRoundedIcon />
         </IconButton>
       </Stack>
     </Stack>
-  );
+  )
 }

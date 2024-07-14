@@ -1,0 +1,244 @@
+{
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier",
+    "simple-import-sort"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": "off",
+    //сортировка импортов
+    "simple-import-sort/imports": "error",
+    // Табуляция 2 пробела,
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    //внутри jsx должен быть отступ в 2 пробела
+    "react/jsx-indent": [
+      "warn",
+      2
+    ],
+    // Убирает лишние пробелы,
+    "no-multi-spaces": "error",
+    // Запрещает пробелы в конце строк,
+    "no-trailing-spaces": "error",
+    // Запрещает несколько пустых строк подряд,
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 1,
+        "maxEOF": 0
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "no-empty": "warn",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-uses-react": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": "warn",
+    "no-empty-pattern": "warn",
+    "no-extra-boolean-cast": "warn",
+    "no-constant-condition": "warn",
+    "no-invalid-this": "warn",
+    "max-len": [
+      "warn",
+      {
+        "code": 200,
+        "ignoreStrings": true
+      }
+    ],
+    "no-duplicate-imports": "off",
+    "eqeqeq": [
+      "warn",
+      "always"
+    ],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "rest-spread-spacing": "warn",
+    "semi-spacing": "warn",
+    "semi-style": "warn",
+    "space-before-blocks": "warn",
+    "space-before-function-paren": [
+      "warn",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "space-in-parens": "warn",
+    "space-infix-ops": "warn",
+    "space-unary-ops": "warn",
+    "switch-colon-spacing": "warn",
+    "template-curly-spacing": "warn",
+    "wrap-regex": "warn",
+    "no-else-return": "warn",
+    "no-undef-init": "warn",
+    "no-unneeded-ternary": "warn",
+    "no-useless-rename": "warn",
+    "no-useless-return": "warn",
+    "no-var": "error",
+    "prefer-const": "warn",
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "arrow-spacing": "warn",
+    "block-spacing": "warn",
+    "yoda": "warn",
+    "brace-style": [
+      "warn",
+      "1tbs"
+    ],
+    "comma-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "comma-dangle": "off",
+    "computed-property-spacing": "warn",
+    "dot-location": [
+      "warn",
+      "property"
+    ],
+    "eol-last": "warn",
+    "func-call-spacing": "warn",
+    "function-paren-newline": "warn",
+    "implicit-arrow-linebreak": "warn",
+    "key-spacing": "warn",
+    "keyword-spacing": "warn",
+    "multiline-ternary": [
+      "warn",
+      "always-multiline"
+    ],
+    "linebreak-style": [
+      "warn",
+      "unix"
+    ],
+    "no-whitespace-before-property": "warn",
+    "nonblock-statement-body-position": "warn",
+    "object-curly-newline": "warn",
+    "max-statements-per-line": [
+      "warn",
+      {
+        "max": 1
+      }
+    ],
+    "newline-per-chained-call": [
+      "warn",
+      {
+        "ignoreChainWithDepth": 3
+      }
+    ],
+    "prefer-object-spread": "warn",
+    "react/jsx-no-duplicate-props": "warn",
+    "react/jsx-no-leaked-render": "warn",
+    "react/jsx-no-script-url": "error",
+    "react/jsx-no-target-blank": "warn",
+    "react/jsx-no-useless-fragment": [
+      "off"
+    ],
+    "react/jsx-one-expression-per-line": "warn",
+    "react/jsx-pascal-case": "warn",
+    "react/jsx-tag-spacing": "warn",
+    "react/jsx-wrap-multilines": "warn",
+    "func-style": [
+      "warn",
+      "expression",
+      {
+        "allowArrowFunctions": true
+      }
+    ],
+    "import-newlines/enforce": "off", // включить после переписывани на fsd ["warn",{"items": 1,"max-len": 100,"semi": false}]
+    "react/no-children-prop": "error",
+    "react/jsx-curly-brace-presence": "warn",
+    "react/jsx-curly-spacing": [
+      "warn",
+      {
+        "when": "never",
+        "children": true
+      }
+    ],
+    "react/jsx-equals-spacing": "warn",
+    "react/jsx-filename-extension": [
+      "warn",
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/jsx-key": "warn",
+    "react/jsx-fragments": "warn",
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-max-props-per-line": [
+      "warn",
+      {
+        "maximum": 1
+      }
+    ],
+    "react/jsx-first-prop-new-line": [
+      "warn",
+      "multiline-multiprop"
+    ],
+    "react/self-closing-comp": [
+      "warn",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "@typescript-eslint/no-duplicate-imports": "off", // "warn" включить после переписывания на fsd
+    "@typescript-eslint/no-shadow": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/comma-dangle": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/member-delimiter-style": [
+      "warn",
+      {
+        "multiline": {
+          "delimiter": "comma",
+          "requireLast": false
+        },
+        "singleline": {
+          "delimiter": "comma",
+          "requireLast": false
+        }
+      }
+    ]
+  }
+}
