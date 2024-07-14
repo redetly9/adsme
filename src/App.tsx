@@ -2,6 +2,7 @@ import { CssBaseline, CssVarsProvider } from '@mui/joy'
 import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+import { SubscribesPage } from './components/subscribes-page'
 import { Main } from './layouts/Main'
 import { addGeo } from './slices'
 import { useAppDispatch, useAppSelector } from './store'
@@ -13,7 +14,6 @@ import GroupChat from './templates/group-messages/App'
 import JoyMessagesTemplate from './templates/messages/App'
 import { MessagesList } from './templates/messages/MessageList'
 import JoyOrderDashboardTemplate from './templates/profile-dashboard/App'
-import SearchList from './templates/search/SearchList'
 import JoySignInSideTemplate from './templates/sign-in/App'
 import { getCurrentLocation } from './utils/geo'
 
@@ -34,51 +34,55 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         {
-          !userId ? (
-            <Routes>
-              {/* <Route path="/confirm" element={<Confirm />} /> */}
-              <Route
-                path='*'
-                element={<JoySignInSideTemplate />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route element={<Main />}>
+          !userId
+            ? (
+              <Routes>
                 <Route
-                  path='/'
-                  element={<FeedList />} />
-                <Route
-                  path='/messages'
-                  element={<MessagesList />} />
-                <Route
-                  path='/profile/:id'
-                  element={<JoyOrderDashboardTemplate />} />
-                <Route
-                  path='/feed'
-                  element={<FeedList />} />
-                <Route
-                  path='/post'
-                  element={<PostList />} />
-                <Route
-                  path='/post/create'
-                  element={<CreatePost />} />
-                <Route
-                  path='/search'
-                  element={<SearchList />} />
-                <Route
-                  path='/feed/:userId'
-                  element={<FeedInside />} />
-              </Route>
-              <Route>
-                <Route
-                  path='/message/:id'
-                  element={<JoyMessagesTemplate />} />
-                <Route
-                  path='/group-messages'
-                  element={<GroupChat />} />
-              </Route>
-            </Routes>
-          )
+                  path='*'
+                  element={<JoySignInSideTemplate />} />
+              </Routes>
+            )
+            : (
+              <Routes>
+                <Route element={<Main />}>
+                  <Route
+                    path='/'
+                    element={<FeedList />} />
+                  <Route
+                    path='/messages'
+                    element={<MessagesList />} />
+                  <Route
+                    path='/profile/:id'
+                    element={<JoyOrderDashboardTemplate />} />
+                  <Route
+                    path='/feed'
+                    element={<FeedList />} />
+                  <Route
+                    path='/post'
+                    element={<PostList />} />
+                  <Route
+                    path='/post/create'
+                    element={<CreatePost />} />
+                  <Route
+                    path='/feed/:userId'
+                    element={<FeedInside />} />
+                </Route>
+                <Route>
+                  <Route
+                    path='/message/:id'
+                    element={<JoyMessagesTemplate />}
+                  />
+                  <Route
+                    path='/group-messages'
+                    element={<GroupChat />}
+                  />
+                  <Route
+                    path='/subscribes-page'
+                    element={<SubscribesPage />}
+                  />
+                </Route>
+              </Routes>
+            )
         }
       </BrowserRouter>
     </CssVarsProvider>

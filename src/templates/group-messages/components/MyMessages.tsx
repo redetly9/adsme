@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Sheet from '@mui/joy/Sheet';
-import MessagesPane from './MessagesPane';
+import Sheet from '@mui/joy/Sheet'
+
+import MessagesPane from './MessagesPane'
 
 export default function MyMessages() {
   return (
@@ -13,11 +13,11 @@ export default function MyMessages() {
         display: 'grid',
         gridTemplateColumns: {
           xs: '1fr',
-          sm: 'minmax(min-content, min(30%, 400px)) 1fr',
-        },
+          sm: 'minmax(min-content, min(30%, 400px)) 1fr'
+        }
       }}
     >
       <MessagesPane />
     </Sheet>
-  );
+  )
 }

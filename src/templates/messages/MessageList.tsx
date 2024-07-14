@@ -1,5 +1,5 @@
 import { Sheet } from '@mui/joy'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { getUserChats } from '../../hooks'
@@ -13,26 +13,27 @@ export const MessagesList = () => {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const navigate = useNavigate()
 
-  const getChats = async () => {
+  const getChats = useCallback(async () => {
     const { data } = await getUserChats(+userId)
-    setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) })))
-  }
+    const formatedChatsData = data
+      ?.filter(c => c.id !== 58)
+      .reverse()
+      .map(c => ({ ...c, ...({ sender: c.participants?.find(p => p.id !== userId) }) }))
+
+    setChats(formatedChatsData)
+  }, [userId])
 
   useEffect(() => {
     if (userId) {
       getChats()
     }
-  }, [userId])
+  }, [getChats, userId])
 
   useEffect(() => {
-    if (selectedChat?.id === 58) {
-      navigate('/group-messages')
-    } else if (selectedChat && selectedChat != undefined) {
+    if (selectedChat) {
       navigate(`/message/${selectedChat?.id}`)
     }
   }, [selectedChat, navigate])
-
-  console.log('chats', chats)
 
   return (
     <Sheet

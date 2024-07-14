@@ -1,26 +1,26 @@
 export type UserProps = {
-    name: string;
-    username: string;
-    avatar: string;
-    online: boolean;
-    _id: string;
+    name: string,
+    username: string,
+    avatar: string,
+    online: boolean,
+    _id: string
   };
-  
-  export type MessageProps = {
-    id: string;
-    content: string;
-    timestamp: string;
-    unread?: boolean;
-    sender: UserProps | 'You';
+
+export type MessageProps = {
+    id: string,
+    content: string,
+    timestamp: string,
+    unread?: boolean,
+    sender: UserProps | 'You',
     attachment?: {
-      fileName: string;
-      type: string;
-      size: string;
-    };
+      fileName: string,
+      type: string,
+      size: string
+    }
   };
-  
-  export type ChatProps = {
-    id: string;
-    sender: UserProps;
-    messages: MessageProps[];
+
+export type ChatProps = {
+    id: string,
+    sender: UserProps,
+    messages: MessageProps[]
   };

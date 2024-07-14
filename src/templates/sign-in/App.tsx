@@ -96,21 +96,16 @@ export default function JoySignInSideTemplate() {
 
   React.useEffect(() => {
     if (codeInput.length === 4) {
-      console.log('da')
-
       setCodeInputError(false)
     }
     if (codeInput.length != 4) {
-      console.log('da2')
+
       setCodeInputError(true)
     }
     if (!codeInput.length) {
-      console.log('da3')
       setCodeInputError(false)
     }
   }, [codeInput])
-
-  console.log('codeInput', codeInput)
 
   return (
     <CssVarsProvider

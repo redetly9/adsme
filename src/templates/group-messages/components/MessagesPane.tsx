@@ -1,26 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
-import { useAppSelector } from '../../../store';
-import { getChatMessages, sendMessage } from '../../../hooks';
-import MessagesPaneHeader from './MessagesPaneHeader';
-import MessageInput from '../../messages/components/MessageInput';
-import ChatBubble from '../../messages/components/ChatBubble';
+import Box from '@mui/joy/Box'
+import Sheet from '@mui/joy/Sheet'
+import Stack from '@mui/joy/Stack'
+import { useEffect, useState } from 'react'
+
+import { getChatMessages, sendMessage } from '../../../hooks'
+import { useAppSelector } from '../../../store'
+import ChatBubble from '../../messages/components/ChatBubble'
+import MessageInput from '../../messages/components/MessageInput'
+import type { MessageProps } from '../../messages/types.tsx'
+import MessagesPaneHeader from './MessagesPaneHeader'
 
 export default function MessagesPane() {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const chatId = 58
-  const [chatMessages, setChatMessages] = React.useState(null);
-  const [textAreaValue, setTextAreaValue] = React.useState('');
+  const [chatMessages, setChatMessages] = useState(null)
+  const [textAreaValue, setTextAreaValue] = useState('')
 
   const getChatsMessagesApi = async () => {
 
-  const { data } = await getChatMessages(chatId)
-  setChatMessages(data)
+    const { data } = await getChatMessages(chatId)
+    setChatMessages(data)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (chatId) {
       getChatsMessagesApi()
     }
@@ -29,11 +31,11 @@ export default function MessagesPane() {
   return (
     <Sheet
       sx={{
-        height: { xs: 'calc(100dvh - var(--Header-height))', lg: '100dvh' },
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '100vh',
-        backgroundColor: 'background.level1',
+        backgroundColor: 'background.level1'
       }}
     >
       <MessagesPaneHeader />
@@ -48,23 +50,28 @@ export default function MessagesPane() {
           py: 3,
           pb: '200px',
           overflowY: 'auto',
-          flexDirection: 'column-reverse',
+          flexDirection: 'column-reverse'
         }}
       >
-        <Stack spacing={2} justifyContent="flex-end" sx={{ minHeight:'55vh'}}>
+        <Stack
+          spacing={2}
+          justifyContent='flex-end'
+          sx={{ minHeight: '55vh' }}>
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = Number(message.sender_id ) === Number(userId);
-            
+            const isYou = Number(message.sender_id) === Number(userId)
+
             return (
               <Stack
                 key={index}
-                direction="row"
+                direction='row'
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                <ChatBubble variant={isYou ? 'sent' : 'received'} {...message} />
+                <ChatBubble
+                  variant={isYou ? 'sent' : 'received'}
+                  {...message} />
               </Stack>
-            );
+            )
           })}
         </Stack>
       </Box>
@@ -82,5 +89,5 @@ export default function MessagesPane() {
         }}
       />
     </Sheet>
-  );
+  )
 }

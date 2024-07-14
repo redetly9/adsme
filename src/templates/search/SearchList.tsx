@@ -1,4 +1,3 @@
-// import { getCurrentLocation } from '../../utils/geo';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { Box, Input, Sheet } from '@mui/joy'
 import * as React from 'react'
@@ -25,7 +24,6 @@ export default function SearchList() {
       getChats()
     }
   }, [])
-  console.log('chats', chats)
 
   const getPostsByTagApi = async () => {
     try {

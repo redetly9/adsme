@@ -1,26 +1,24 @@
 import { MessageRounded } from '@mui/icons-material'
+import ForumIcon from '@mui/icons-material/Forum'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import Person from '@mui/icons-material/Person'
-import Search from '@mui/icons-material/Search'
 import Box from '@mui/joy/Box'
 import ListItemDecorator from '@mui/joy/ListItemDecorator'
 import Tab, { tabClasses } from '@mui/joy/Tab'
 import TabList from '@mui/joy/TabList'
 import Tabs from '@mui/joy/Tabs'
-import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function NavBar() {
-  const [index, setIndex] = React.useState(0)
+  const [index, setIndex] = useState(0)
   const id = localStorage.user
   const colors = ['primary', 'primary', 'primary', 'primary'] as const
-  const [ready, setReady] = React.useState(false)
-  // const initialIndex = Number(localStorage.getItem('tabIndex') || 0);
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     const pathname = window.location.pathname
-    const tabs = ['/feed', '/messages', '/search', `/profile/${id}`]
+    const tabs = ['/feed', '/messages', '/group-messages', `/profile/${id}`]
     const tabIndex = tabs.findIndex(tab => pathname.startsWith(tab))
     if (tabIndex !== -1) {
       setIndex(tabIndex)
@@ -29,18 +27,15 @@ export default function NavBar() {
     localStorage.setItem('tabIndex', index.toString())
   }, [index, id])
 
-  if (!ready) {
-    return null
-  }
-
-  // При изменении вкладки обновите индекс и сохраните его
   const handleChange = (event, newValue) => {
     setIndex(newValue)
     localStorage.setItem('tabIndex', newValue.toString())
   }
+
   if (!ready) {
     return null
   }
+
   return (
     <Box>
       <Tabs
@@ -74,7 +69,6 @@ export default function NavBar() {
           disableUnderline
           sx={{ borderRadius: 'lg', p: 0 }}
         >
-
           <Link
             style={{ width: '25%', maxWidth: '25%' }}
             to='/feed'>
@@ -89,7 +83,6 @@ export default function NavBar() {
               Feed
             </Tab>
           </Link>
-
           <Link
             style={{ width: '25%', maxWidth: '25%' }}
             to='/messages'>
@@ -100,29 +93,25 @@ export default function NavBar() {
               {...(index === 1 && { color: colors[1] })}
             >
               <ListItemDecorator>
-
                 <MessageRounded />
-
               </ListItemDecorator>
               Messages
             </Tab>
           </Link>
-
           <Link
             style={{ width: '25%', maxWidth: '25%' }}
-            to='/search'>
+            to='/group-messages'>
             <Tab
               sx={{ width: '100%' }}
               disableIndicator
               orientation='vertical'
             >
               <ListItemDecorator>
-                <Search />
+                <ForumIcon />
               </ListItemDecorator>
-              Search
+              Chat
             </Tab>
           </Link>
-
           <Link
             style={{ width: '25%', maxWidth: '25%' }}
             to={`/profile/${id}`}>
@@ -137,7 +126,6 @@ export default function NavBar() {
               Profile
             </Tab>
           </Link>
-
         </TabList>
       </Tabs>
     </Box>
