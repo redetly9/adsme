@@ -1,7 +1,8 @@
 import { Box, Typography } from '@mui/joy'
 import Chip from '@mui/joy/Chip'
 
-import { tagsCollection } from '../consts'
+import { useAppSelector } from '../../../store'
+import { usePostsByLocation } from '../../../hooks'
 
 type TagsSliderProps = {
   title?: string,
@@ -11,6 +12,14 @@ type TagsSliderProps = {
 }
 
 export const TagsSlider = ({ title, pikedTags, onClick, isWrapped }: TagsSliderProps) => {
+  const { latitude, longitude } = useAppSelector(state => state.user.geo)
+  const { radius } = useAppSelector(state => state.user)
+  
+  const { data: posts } = usePostsByLocation(longitude, latitude, radius)
+  console.log('posts', posts?.data);
+  
+  const tagsCollection = posts?.data?.filter(p => p?.tags).map(p => p?.tags).flatMap(item => item.split(' ')) ?? []
+  
   return (
     <>
       {title

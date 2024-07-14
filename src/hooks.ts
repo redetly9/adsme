@@ -371,6 +371,42 @@ export async function getPostsByLocation(longitude, latitude, radius = 1000) {
   return { data: mapped }
 }
 
+export async function getPostsByLocation2({ queryKey }) {
+  const [_, { longitude, latitude, radius }] = queryKey;
+  const { data: posts, error } = await supabase
+    .rpc('get_posts_by_location2', { p_long: longitude, p_lat: latitude, p_rad: radius })
+
+  if (error) {
+    console.error('Ошибка при получении постов:', error.message)
+    return { error }
+  }
+
+  const mapped = posts?.map(p => ({
+    id: p.id,
+    title: p.title,
+    images: p.images,
+    tags: p.tags,
+    created_at: p.created_at,
+    lat: p.lat,
+    long: p.long,
+    dist_meters: p.dist_meters,
+    author: {
+      id: p.author_id,
+      name: p.author_name,
+      avatar: p.avatar,
+      surname: p.author_surname,
+      lastname: p.author_lastname
+    }
+  }))
+
+  return { data: mapped }
+}
+
+export const usePostsByLocation = (longitude, latitude, radius = 1000) => {
+  return useQuery(['postsByLocation', { longitude, latitude, radius }], getPostsByLocation2, {
+  });
+};
+
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByTag(tag) {
   const { data: posts, error } = await supabase
