@@ -248,13 +248,54 @@ export async function getChatMessages(chatId) {
   return { data: messages };
 }
 
+export async function getMessagesByLocation(longitude, latitude, radius = 1000) {
+  const { data: messages, error } = await supabase
+    .rpc('get_messages_by_location', { p_long: longitude, p_lat: latitude, p_rad: radius });
+
+  if (error) {
+    console.error('Ошибка при получении сообщений:', error.message);
+    return { error };
+  }
+
+  const mapped = messages?.map(m => ({
+    id: m.id,
+    chat_id: m.chat_id,
+    text: m.text,
+    created_at: m.created_at,
+    sender: {
+      id: m.sender_id,
+      name: m.sender_name,
+      avatar: m.sender_avatar,
+    },
+  }));
+
+  return { data: mapped };
+}
+
+
 // Функция для отправки сообщения в чат
-export async function sendMessage(chatId, senderId, text) {
+export async function sendMessage(chatId, senderId, text, longitude = null, latitude = null) {
+  if (!longitude && !latitude) {
+    let { data: message, error } = await supabase
+      .from('messages')
+      .insert([
+        { chat_id: chatId, sender_id: senderId, text }
+      ]);
+
+      if (error) {
+        console.error('Ошибка при отправке сообщения:', error.message);
+        return { error };
+      }
+    
+      return { data: message };
+  }
+
   let { data: message, error } = await supabase
-    .from('messages')
-    .insert([
-      { chat_id: chatId, sender_id: senderId, text }
-    ]);
+  .from('messages')
+  .insert([
+    { chat_id: chatId, sender_id: senderId, text, location: `POINT(${longitude} ${latitude})` }
+  ]);
+
 
   if (error) {
     console.error('Ошибка при отправке сообщения:', error.message);
