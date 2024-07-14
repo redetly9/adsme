@@ -243,29 +243,35 @@ export async function getChatMessages(chatId) {
   return { data: messages }
 }
 
-export async function getMessagesByLocation(longitude, latitude, radius = 1000) {
-  const { data: messages, error } = await supabase
-    .rpc('get_messages_by_location', { p_long: longitude, p_lat: latitude, p_rad: radius });
+const fetchMessagesByLocation = async ({ queryKey }) => {
+  const [_, { longitude, latitude, radius }] = queryKey;
+  
+  let { data: messages, error } = await supabase
+    .rpc('get_messages_by_location', { long: longitude, lat: latitude, rad: radius });
 
   if (error) {
-    console.error('Ошибка при получении сообщений:', error.message);
-    return { error };
+    throw new Error(error.message);
   }
 
-  const mapped = messages?.map(m => ({
+  return messages?.map(m => ({
     id: m.id,
     chat_id: m.chat_id,
     text: m.text,
     created_at: m.created_at,
+    sender_id: m.sender_id,
     sender: {
       id: m.sender_id,
       name: m.sender_name,
       avatar: m.sender_avatar,
     },
   }));
+};
 
-  return { data: mapped };
-}
+export const useMessagesByLocation = (longitude, latitude, radius = 1000) => {
+  return useQuery(['messagesByLocation', { longitude, latitude, radius }], fetchMessagesByLocation, {
+    refetchInterval: 5000,
+  });
+};
 
 
 // Функция для отправки сообщения в чат

@@ -8,24 +8,26 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { TagsSlider } from '../../components/tags-slider'
 import { getPostsByLocation, getUserChats } from '../../hooks'
-import { useAppSelector } from '../../store'
+import { useAppDispatch, useAppSelector } from '../../store'
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
 import { marks } from './const/marks.ts'
 import SwipeableEdgeDrawer from './Drawer'
 import Feed from './Feed'
 import { uniqueByLatestDate } from './lib/unique-by-latest-date.ts'
+import { changeRadius } from '../../slices/index.ts'
 
 export default function FeedList() {
   const [filterOpen, setFilterOpen] = useState(false)
   const [posts, setPosts] = useState<Array<any> | null>(null)
   const [tags, setTags] = useState<string[]>([])
-  const [radius, setRadius] = useState<string | null>(localStorage?.getItem('radius'))
   const [chats, setChats] = useState<Array<any> | null>(null)
   const [search, setSearch] = useState('')
 
   const typingTimeout = useRef<NodeJS.Timeout | null>(null)
 
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
+  const { radius } = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
 
   const getChats = async () => {
     const { data } = await getUserChats(+localStorage.user)
@@ -152,7 +154,7 @@ export default function FeedList() {
           valueLabelDisplay='auto'
           marks={marks}
           onChangeCommitted={(event, newValue) => {
-            setRadius(newValue)
+            dispatch(changeRadius(newValue))
             localStorage.setItem('radius', newValue.toString())
           }}
         />
