@@ -7,14 +7,16 @@ export interface UserState {
     latitude: number
     longitude: number
   }
+  radius: number
 }
 
 const initialState: UserState = {
   user: '',
   geo: {
     latitude: 0,
-    longitude: 0
-  }
+    longitude: 0,
+  },
+  radius: 1000
 }
 
 export const userSlice = createSlice({
@@ -31,9 +33,12 @@ export const userSlice = createSlice({
     addGeo: (state, action: PayloadAction<any>) => {
       state.geo = action.payload
     },
+    changeRadius: (state, action: PayloadAction<number>) => {
+      state.radius = action.payload
+    },
   },
 })
 
-export const { add, remove, addGeo } = userSlice.actions
+export const { add, remove, addGeo, changeRadius } = userSlice.actions
 
 export default userSlice.reducer

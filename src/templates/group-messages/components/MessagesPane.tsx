@@ -1,32 +1,22 @@
-import Box from '@mui/joy/Box'
-import Sheet from '@mui/joy/Sheet'
-import Stack from '@mui/joy/Stack'
-import { useEffect, useState } from 'react'
-
-import { getChatMessages, sendMessage } from '../../../hooks'
-import { useAppSelector } from '../../../store'
-import ChatBubble from '../../messages/components/ChatBubble'
-import MessageInput from '../../messages/components/MessageInput'
-import type { MessageProps } from '../../messages/types.tsx'
-import MessagesPaneHeader from './MessagesPaneHeader'
+import * as React from 'react';
+import Box from '@mui/joy/Box';
+import Sheet from '@mui/joy/Sheet';
+import Stack from '@mui/joy/Stack';
+import { useAppSelector } from '../../../store';
+import { sendMessage, useMessagesByLocation } from '../../../hooks';
+import MessagesPaneHeader from './MessagesPaneHeader';
+import MessageInput from '../../messages/components/MessageInput';
+import ChatBubble from '../../messages/components/ChatBubble';
 
 export default function MessagesPane() {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
+  const { latitude, longitude } = useAppSelector(state => state.user.geo)
+  const { radius } = useAppSelector(state => state.user)
+  const { data: chatMessages, refetch } = useMessagesByLocation(longitude, latitude, radius)
+
   const chatId = 58
-  const [chatMessages, setChatMessages] = useState(null)
-  const [textAreaValue, setTextAreaValue] = useState('')
+  const [textAreaValue, setTextAreaValue] = React.useState('');
 
-  const getChatsMessagesApi = async () => {
-
-    const { data } = await getChatMessages(chatId)
-    setChatMessages(data)
-  }
-
-  useEffect(() => {
-    if (chatId) {
-      getChatsMessagesApi()
-    }
-  }, [chatId])
 
   return (
     <Sheet
@@ -83,9 +73,11 @@ export default function MessagesPane() {
           await sendMessage(
             chatId,
             +userId,
-            value
+            value,
+            longitude,
+            latitude,
           )
-          getChatsMessagesApi()
+          refetch()
         }}
       />
     </Sheet>

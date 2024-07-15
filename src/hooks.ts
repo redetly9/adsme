@@ -243,22 +243,60 @@ export async function getChatMessages(chatId) {
   return { data: messages }
 }
 
-// Функция для отправки сообщения в чат
-export async function sendMessage(chatId, senderId, text) {
-  const { data: message, error } = await supabase
-    .from('messages')
-    .insert([
-      { chat_id: chatId, sender_id: senderId, text }
-    ])
+const fetchMessagesByLocation = async ({ queryKey }) => {
+  const [_, { longitude, latitude, radius }] = queryKey;
+  
+  let { data: messages, error } = await supabase
+    .rpc('get_messages_by_location', { long: longitude, lat: latitude, rad: radius });
 
   if (error) {
-    console.error('Ошибка при отправке сообщения:', error.message)
-    return { error }
+    throw new Error(error.message);
   }
 
-  return { data: message }
-}
+  return messages?.map(m => ({
+    id: m.id,
+    chat_id: m.chat_id,
+    text: m.text,
+    created_at: m.created_at,
+    sender_id: m.sender_id,
+    sender: {
+      id: m.sender_id,
+      name: m.sender_name,
+      avatar: m.sender_avatar,
+    },
+  }));
+};
 
+export const useMessagesByLocation = (longitude, latitude, radius = 1000) => {
+  return useQuery(['messagesByLocation', { longitude, latitude, radius }], fetchMessagesByLocation, {
+    refetchInterval: 5000,
+  });
+};
+
+
+// Функция для отправки сообщения в чат
+export async function sendMessage(chatId, senderId, text, longitude = null, latitude = null) {
+  if (!longitude && !latitude) {
+    let { data: message, error } = await supabase
+      .from('messages')
+      .insert([
+        { chat_id: chatId, sender_id: senderId, text }
+      ]);
+
+      if (error) {
+        console.error('Ошибка при отправке сообщения:', error.message);
+        return { error };
+      }
+    
+      return { data: message };
+  }
+
+  let { data: message, error } = await supabase
+  .from('messages')
+  .insert([
+    { chat_id: chatId, sender_id: senderId, text, location: `POINT(${longitude} ${latitude})` }
+  ]);
+}
 // users
 export async function getAllUsers() {
   const { data: users, error } = await supabase
@@ -332,6 +370,42 @@ export async function getPostsByLocation(longitude, latitude, radius = 1000) {
 
   return { data: mapped }
 }
+
+export async function getPostsByLocation2({ queryKey }) {
+  const [_, { longitude, latitude, radius }] = queryKey;
+  const { data: posts, error } = await supabase
+    .rpc('get_posts_by_location2', { p_long: longitude, p_lat: latitude, p_rad: radius })
+
+  if (error) {
+    console.error('Ошибка при получении постов:', error.message)
+    return { error }
+  }
+
+  const mapped = posts?.map(p => ({
+    id: p.id,
+    title: p.title,
+    images: p.images,
+    tags: p.tags,
+    created_at: p.created_at,
+    lat: p.lat,
+    long: p.long,
+    dist_meters: p.dist_meters,
+    author: {
+      id: p.author_id,
+      name: p.author_name,
+      avatar: p.avatar,
+      surname: p.author_surname,
+      lastname: p.author_lastname
+    }
+  }))
+
+  return { data: mapped }
+}
+
+export const usePostsByLocation = (longitude, latitude, radius = 1000) => {
+  return useQuery(['postsByLocation', { longitude, latitude, radius }], getPostsByLocation2, {
+  });
+};
 
 // Получение всех постов с фильтрацией по геолокации
 export async function getPostsByTag(tag) {
