@@ -1,30 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
-import AvatarWithStatus from './AvatarWithStatus';
-import ChatBubble from './ChatBubble';
-import MessageInput from './MessageInput';
-import MessagesPaneHeader from './MessagesPaneHeader';
-import { MessageProps } from '../types';
-import { api } from '../../../api';
-import { useAppSelector } from '../../../store';
-import { getChatMessages, getChatParticipants, getUserChats, sendMessage } from '../../../hooks';
+import Box from '@mui/joy/Box'
+import Sheet from '@mui/joy/Sheet'
+import Stack from '@mui/joy/Stack'
+import * as React from 'react'
+
+import { getChatMessages, getChatParticipants, sendMessage } from '../../../hooks'
+import { useAppSelector } from '../../../store'
+import type { MessageProps } from '../types'
+import ChatBubble from './ChatBubble'
+import MessageInput from './MessageInput'
+import MessagesPaneHeader from './MessagesPaneHeader'
 
 type MessagesPaneProps = {
-  chatId: string | undefined;
+  chatId: string | undefined
 };
 
 export default function MessagesPane(props: MessagesPaneProps) {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
-  const { chatId } = props;
-  const [chatMessages, setChatMessages] = React.useState(null);
-  const [chat, setChat] = React.useState(null);
-  const [textAreaValue, setTextAreaValue] = React.useState('');
+  const { chatId } = props
+  const [chatMessages, setChatMessages] = React.useState(null)
+  const [chat, setChat] = React.useState(null)
+  const [textAreaValue, setTextAreaValue] = React.useState('')
   const sender = chat?.find(c => c.user_profile_id !== +userId)?.user_profiles
 
-  console.log('chatMessages', chatMessages);
-  
+  console.log('chatMessages', chatMessages)
 
   const getChatsMessagesApi = async () => {
     const { data: chat } = await getChatParticipants(+chatId)
@@ -35,24 +33,24 @@ export default function MessagesPane(props: MessagesPaneProps) {
   }
 
   function filterOtherUserMessages(chatMessages, mySenderId) {
-    const otherUserMessages = chatMessages?.filter(message => message.sender_id !== mySenderId);
+    const otherUserMessages = chatMessages?.filter(message => message.sender_id !== mySenderId)
     const otherUsers = otherUserMessages?.map(message => ({
-        id: message.sender_id,
-        name: message.sender.name,
-        avatar: message.sender.avatar
-    }));
+      id: message.sender_id,
+      name: message.sender.name,
+      avatar: message.sender.avatar
+    }))
 
-    const uniqueUsers = Array.from(new Map(otherUsers?.map(user => [user.id, user]))?.values());
+    const uniqueUsers = Array.from(new Map(otherUsers?.map(user => [user.id, user]))?.values())
 
     return {
-        messages: otherUserMessages,
-        users: uniqueUsers
-    };
-    
-}
+      messages: otherUserMessages,
+      users: uniqueUsers
+    }
 
-const groupedData = filterOtherUserMessages(chatMessages, userId);
-const notMeData = groupedData.users?.filter((f) => f?.id != userId)
+  }
+
+  const groupedData = filterOtherUserMessages(chatMessages, userId)
+  const notMeData = groupedData.users?.filter((f) => f?.id != userId)
 
   React.useEffect(() => {
     if (chatId) {
@@ -67,9 +65,9 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '100vh',
-        backgroundColor: 'background.level1',
+        backgroundColor: 'background.level1'
         // overflowY: 'auto',
-        
+
       }}
     >
       <MessagesPaneHeader sender={sender} />
@@ -86,22 +84,27 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
           py: 3,
           pb: '200px',
           overflowY: 'auto',
-          flexDirection: 'column-reverse',
+          flexDirection: 'column-reverse'
         }}
       >
-        <Stack spacing={2} justifyContent="flex-end" sx={{ minHeight:'55vh'}}>
+        <Stack
+          spacing={2}
+          justifyContent='flex-end'
+          sx={{ minHeight: '55vh' }}>
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = Number(message.sender_id ) === Number(userId);
+            const isYou = Number(message.sender_id) === Number(userId)
             return (
               <Stack
                 key={index}
-                direction="row"
+                direction='row'
                 spacing={2}
                 flexDirection={isYou ? 'row-reverse' : 'row'}
               >
-                <ChatBubble variant={isYou ? 'sent' : 'received'} {...message} />
+                <ChatBubble
+                  variant={isYou ? 'sent' : 'received'}
+                  {...message} />
               </Stack>
-            );
+            )
           })}
         </Stack>
       </Box>
@@ -119,5 +122,5 @@ const notMeData = groupedData.users?.filter((f) => f?.id != userId)
         }}
       />
     </Sheet>
-  );
+  )
 }

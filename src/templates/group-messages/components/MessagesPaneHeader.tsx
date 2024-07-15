@@ -8,8 +8,9 @@ import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../../../store'
+
 import { useMessagesByLocation } from '../../../hooks'
+import { useAppSelector } from '../../../store'
 
 export default function MessagesPaneHeader() {
   const navigate = useNavigate()
@@ -20,17 +21,17 @@ export default function MessagesPaneHeader() {
   const count = countUniqueSenders(chatMessages)
 
   function countUniqueSenders(messages: any) {
-    const uniqueSenders = new Set();
-  
+    if (!messages) return
+
+    const uniqueSenders = new Set()
+
     messages.forEach((message: any) => {
-      uniqueSenders.add(message.sender_id);
-    });
-  
-    return uniqueSenders.size;
+      uniqueSenders.add(message.sender_id)
+    })
+
+    return uniqueSenders.size
   }
-  
-  
-  
+
   return (
     <Stack
       direction='row'
@@ -76,7 +77,9 @@ export default function MessagesPaneHeader() {
             General Chat
           </Typography>
           <Typography level='body-sm'>
-            { count ?? 0 } subscribers
+            {count ?? 0}
+            {' '}
+            subscribers
           </Typography>
         </div>
       </Stack>
