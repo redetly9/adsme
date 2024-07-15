@@ -8,13 +8,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { TagsSlider } from '../../components/tags-slider'
 import { getPostsByLocation, getUserChats } from '../../hooks'
+import { changeRadius } from '../../slices/index.ts'
 import { useAppDispatch, useAppSelector } from '../../store'
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
 import { marks } from './const/marks.ts'
 import SwipeableEdgeDrawer from './Drawer'
 import Feed from './Feed'
 import { uniqueByLatestDate } from './lib/unique-by-latest-date.ts'
-import { changeRadius } from '../../slices/index.ts'
 
 export default function FeedList() {
   const [filterOpen, setFilterOpen] = useState(false)
@@ -124,7 +124,7 @@ export default function FeedList() {
           <Button
             variant='outlined'
             color='neutral'
-            onClick={() => setFilterOpen(true)}
+            onClick={() => setFilterOpen(prev => !prev)}
             sx={{
               '&:hover': {
                 borderColor: '#c7dff7',
@@ -144,7 +144,10 @@ export default function FeedList() {
       </Box>
       <SwipeableEdgeDrawer
         open={filterOpen}
-        setOpen={setFilterOpen}>
+        setOpen={setFilterOpen}
+        hideBackdrop={true}
+        variant='soft'
+      >
         <Slider
           aria-label='Custom marks'
           defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
