@@ -16,10 +16,8 @@ export default function FeedInside() {
   const [posts, setPosts] = React.useState(null)
   const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
-  console.log('posts', posts)
 
   const { userId } = useParams()
-  console.log('userId', userId)
 
   const [chats, setChats] = React.useState(null)
   const getChats = async () => {
@@ -33,67 +31,11 @@ export default function FeedInside() {
     }
   }, [])
 
-  const marks = [
-    {
-      value: 0,
-      label: '0'
-    },
-    {
-      value: 100,
-      label: ''
-    },
-    {
-      value: 200,
-      label: ''
-    },
-    {
-      value: 300,
-      label: ''
-    },
-    {
-      value: 400,
-      label: ''
-    },
-    {
-      value: 500,
-      label: ''
-    },
-    {
-      value: 600,
-      label: ''
-    },
-    {
-      value: 700,
-      label: ''
-    },
-    {
-      value: 800,
-      label: ''
-    },
-    {
-      value: 900,
-      label: ''
-    },
-    {
-      value: 1000,
-      label: '1000'
-    }
-  ]
-
-  function valueText(value: number) {
-    return `${value}`
-  }
-
   const getPosts = async () => {
     const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000)
-    console.log('longitude', longitude)
-    console.log('latitude', latitude)
-
     const sortedPosts = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    console.log('sortedPosts', sortedPosts)
 
     setPosts(sortedPosts)
-    // setPosts(data.slice().reverse())
   }
 
   React.useEffect(() => {
@@ -103,7 +45,6 @@ export default function FeedInside() {
   }, [latitude, longitude, radius])
 
   const userPost = posts?.filter((v) => v.author.id === +userId)
-  console.log('userPost', userPost)
 
   return (
     <Sheet
@@ -118,38 +59,6 @@ export default function FeedInside() {
         overflow: 'auto'
       }}
     >
-
-      {/* <Dropdown >
-        <MenuButton sx={{ marginLeft: 'auto', display: 'block', marginTop: '20px',
-         marginRight: '20px',    '&:hover': {
-          borderColor: '#c7dff7',
-         ' &:focus': {
-            'outline': '0',
-        }
-        } }}>Filter</MenuButton>
-        <Menu sx={{
-          width: '100vw', border: 'none', boxShadow: 'none',
-          backgroundColor: 'var(--joy-palette-background-surface)'
-        }}>
-          <MenuItem>  <Box sx={{ margin: '0 auto', width: 300, paddingTop: '5px', }}>
-          <Slider
-  aria-label="Custom marks"
-  defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
-  getAriaValueText={valueText}
-  max={1000}
-  step={10}
-  valueLabelDisplay="auto"
-  marks={marks}
-  onChangeCommitted={(event, newValue) => {
-    setRadius(newValue);
-    localStorage.setItem('radius', newValue.toString());
-  }}
-/>
-          </Box></MenuItem>
-
-        </Menu>
-      </Dropdown> */}
-
       {posts === null
         ? (
           <Box>
@@ -207,7 +116,8 @@ export default function FeedInside() {
                     <Skeleton
                       animation='wave'
                       variant='text'
-                      sx={{ width: 35, borderRadius: '5px' }} />
+                      sx={{ width: 35, borderRadius: '5px' }}
+                    />
                   </Button>
                 </Box>
               </Box>
@@ -449,8 +359,6 @@ export default function FeedInside() {
               No posts found
             </div>
           )}
-
     </Sheet>
-
   )
 }

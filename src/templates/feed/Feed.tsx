@@ -1,3 +1,5 @@
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import Avatar from '@mui/joy/Avatar'
 import Box from '@mui/joy/Box'
@@ -8,9 +10,14 @@ import { Divider } from '@mui/material'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 
-import { createChat } from '../../hooks'
+import { createChat, followUser, unfollowUser, useUserFollowings } from '../../hooks'
+import { useAppSelector } from '../../store.ts'
 
 export default function Feed({ post, chats }) {
+  const navigate = useNavigate()
+  const userId = useAppSelector(state => state.user.user) || localStorage.user
+  const { data: followers, refetch } = useUserFollowings(userId)
+  const isFollowed = followers?.find(f => f.follow_user_id === post?.author?.id)
 
   const checkAndAddChat = async () => {
     const currentUserId = +localStorage.user
@@ -18,9 +25,6 @@ export default function Feed({ post, chats }) {
 
     try {
       const { data, error } = await createChat([currentUserId, otherUserId])
-      if (error) {
-        console.log('error', error)
-      }
       if (data) {
         navigate(`/message/${data?.id}`)
       }
@@ -29,7 +33,15 @@ export default function Feed({ post, chats }) {
     }
   }
 
-  const navigate = useNavigate()
+  const followHandler = async () => {
+    if (isFollowed) {
+      await unfollowUser(userId, post?.author?.id)
+    } else {
+      await followUser(userId, post?.author?.id)
+    }
+    refetch()
+  }
+
   return (
     <Sheet
       variant='outlined'
@@ -97,20 +109,36 @@ export default function Feed({ post, chats }) {
           >
             {moment(post.created_at).fromNow()}
           </Typography>
-          {
-            post?.author?.id != localStorage.user
-              ? (<Button
-                size='sm'
-                sx={{ p: 0 }}
-                variant='plain'
-                color='neutral'
-                startDecorator={<ReplyRoundedIcon />}
-                onClick={checkAndAddChat}
-              >
-                Reply
-              </Button>)
-              : ('')
-          }
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1.5 }}
+          >
+            {
+              post?.author?.id != localStorage.user
+                ? (<>
+                  <Button
+                    size='sm'
+                    sx={{ p: 0 }}
+                    variant='plain'
+                    color='neutral'
+                    startDecorator={<ReplyRoundedIcon />}
+                    onClick={checkAndAddChat}
+                  >
+                    Reply
+                  </Button>
+                  {
+                    isFollowed
+                      ? (
+                        <FavoriteIcon onClick={followHandler} />
+                      )
+                      : (
+                        <FavoriteBorderIcon onClick={followHandler} />
+                      )
+                  }
+                </>
+                )
+                : null
+            }
+          </Box>
         </Box>
       </Box>
       <Divider sx={{ mt: 2 }} />
