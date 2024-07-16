@@ -15,7 +15,7 @@ import { EditProfile } from '../../../components/edit-profile'
 import { updateUser, useUserFollowings } from '../../../hooks.ts'
 import { uploadImage } from '../../../lib/upload-image/'
 import { useAppSelector } from '../../../store.ts'
-import SwipeableEdgeDrawer from '../../feed/Drawer.tsx'
+import { DrawerBasic } from '../../feed/Drawer.tsx'
 
 export default function OwnProfile(props) {
   const {
@@ -237,7 +237,7 @@ export default function OwnProfile(props) {
           </FormControl>
         </Stack>
       </Stack>
-      <SwipeableEdgeDrawer
+      <DrawerBasic
         open={isEditProfile}
         setOpen={setIsEditProfile}
       >
@@ -249,7 +249,7 @@ export default function OwnProfile(props) {
           lastname={lastnameInput}
           phone={formattedPhoneNumber}
         />
-      </SwipeableEdgeDrawer>
+      </DrawerBasic>
     </Box>
   )
 }

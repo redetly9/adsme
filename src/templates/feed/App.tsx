@@ -12,7 +12,7 @@ import { changeRadius } from '../../slices/index.ts'
 import { useAppDispatch, useAppSelector } from '../../store'
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
 import { marks } from './const/marks.ts'
-import SwipeableEdgeDrawer from './Drawer'
+import { DrawerBasic } from './Drawer'
 import Feed from './Feed'
 import { uniqueByLatestDate } from './lib/unique-by-latest-date.ts'
 
@@ -142,7 +142,7 @@ export default function FeedList() {
           onClick={onAddTags}
         />
       </Box>
-      <SwipeableEdgeDrawer
+      <DrawerBasic
         open={filterOpen}
         setOpen={setFilterOpen}
         hideBackdrop={true}
@@ -161,7 +161,7 @@ export default function FeedList() {
             localStorage.setItem('radius', newValue.toString())
           }}
         />
-      </SwipeableEdgeDrawer>
+      </DrawerBasic>
       <Box>
         {posts === null
           ? (

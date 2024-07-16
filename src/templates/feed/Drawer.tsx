@@ -16,10 +16,9 @@ type DrawerBasicProps = {
   sx?: SxProps
 } & PropsWithChildren
 
-export default function DrawerBasic({ open, setOpen, children, hideBackdrop, variant, sx }: DrawerBasicProps) {
+export const DrawerBasic = ({ open, setOpen, children, hideBackdrop, variant, sx }: DrawerBasicProps) => {
 
   const onCloseHandler = (e: any) => {
-    console.log('CLOSE')
     e.stopPropagation()
     setOpen(false)
   }
