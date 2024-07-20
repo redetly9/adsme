@@ -274,7 +274,7 @@ export const useMessagesByLocation = (longitude, latitude, radius = 1000) => {
 }
 
 // Функция для отправки сообщения в чат
-export async function sendMessage(chatId, senderId, text, longitude = null, latitude = null) {
+export async function sendMessage(chatId, senderId, text, longitude: number | null = null, latitude: number | null = null) {
   if (!longitude && !latitude) {
     const { data: message, error } = await supabase
       .from('messages')

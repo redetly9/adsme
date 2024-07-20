@@ -1,7 +1,7 @@
 import Box from '@mui/joy/Box'
 import Sheet from '@mui/joy/Sheet'
 import Stack from '@mui/joy/Stack'
-import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { getChatMessages, getChatParticipants, sendMessage } from '../../../hooks'
 import { useAppSelector } from '../../../store'
@@ -17,82 +17,61 @@ type MessagesPaneProps = {
 export default function MessagesPane(props: MessagesPaneProps) {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const { chatId } = props
-  const [chatMessages, setChatMessages] = React.useState(null)
-  const [chat, setChat] = React.useState(null)
-  const [textAreaValue, setTextAreaValue] = React.useState('')
+  const [chatMessages, setChatMessages] = useState<any[] | null>(null)
+  const [chat, setChat] = useState<any[] | null>(null)
+  const [textAreaValue, setTextAreaValue] = useState('')
   const sender = chat?.find(c => c.user_profile_id !== +userId)?.user_profiles
 
-  console.log('chatMessages', chatMessages)
+  const getChatsMessagesApi = useCallback(async () => {
+    if (chatId) {
+      const { data: chat } = await getChatParticipants(+chatId)
+      setChat(chat)
 
-  const getChatsMessagesApi = async () => {
-    const { data: chat } = await getChatParticipants(+chatId)
-    setChat(chat)
-
-    const { data } = await getChatMessages(chatId)
-    setChatMessages(data)
-  }
-
-  function filterOtherUserMessages(chatMessages, mySenderId) {
-    const otherUserMessages = chatMessages?.filter(message => message.sender_id !== mySenderId)
-    const otherUsers = otherUserMessages?.map(message => ({
-      id: message.sender_id,
-      name: message.sender.name,
-      avatar: message.sender.avatar
-    }))
-
-    const uniqueUsers = Array.from(new Map(otherUsers?.map(user => [user.id, user]))?.values())
-
-    return {
-      messages: otherUserMessages,
-      users: uniqueUsers
+      const { data } = await getChatMessages(chatId)
+      setChatMessages(data || null)
     }
+  }, [chatId])
 
-  }
-
-  const groupedData = filterOtherUserMessages(chatMessages, userId)
-  const notMeData = groupedData.users?.filter((f) => f?.id != userId)
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (chatId) {
       getChatsMessagesApi()
     }
-  }, [chatId])
+  }, [chatId, getChatsMessagesApi])
 
   return (
     <Sheet
       sx={{
-        height: { xs: 'calc(100dvh - var(--Header-height))', lg: '100dvh' },
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '100vh',
         backgroundColor: 'background.level1'
-        // overflowY: 'auto',
-
       }}
     >
       <MessagesPaneHeader sender={sender} />
       <Box
         sx={{
           display: 'flex',
-          flex: 1,
-          minWidth: '100dvw',
-          maxHeight: 'calc(100vh - 68px - 82px)',
-          // minHeight: 'calc(100vh - 68px - 82px)',
-          // minHeight: '100vh',
-          marginTop: '80px',
+          flexDirection: 'column-reverse',
+          minWidth: '100vw',
+          maxHeight: 'calc(100vh - 68px - 81px)',
+          height: '100%',
+          marginTop: '81px', // потому что header - absolute
           px: 2,
-          py: 3,
-          pb: '200px',
-          overflowY: 'auto',
-          flexDirection: 'column-reverse'
+          py: 2,
+          overflowY: 'auto'
         }}
       >
         <Stack
           spacing={2}
           justifyContent='flex-end'
-          sx={{ minHeight: '55vh' }}>
+          sx={{
+            height: '100%',
+            minHeight: '80vh'
+          }}
+        >
           {chatMessages?.map((message: MessageProps, index: number) => {
-            const isYou = Number(message.sender_id) === Number(userId)
+            const isYou = Number((message as any).sender_id) === Number(userId)
             return (
               <Stack
                 key={index}

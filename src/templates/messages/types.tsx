@@ -16,7 +16,8 @@ export type MessageProps = {
       fileName: string,
       type: string,
       size: string
-    }
+    },
+    sender_id?: string
   };
 
 export type ChatProps = {

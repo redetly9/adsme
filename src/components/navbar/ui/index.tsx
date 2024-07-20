@@ -26,7 +26,7 @@ export const Navbar = () => {
     setTabIndex(+value)
   }
 
-  // Костыльное решение, потом поменяем архитектуру
+  // FIXME Костыльное решение, потом поменяем архитектуру
   useEffect(() => {
     if (location.pathname === '/') {
       navigate(tabs[1].path)
