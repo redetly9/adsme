@@ -22,7 +22,7 @@ export default function MessagesPane() {
   return (
     <Sheet
       sx={{
-        height: '100vh',
+        height: 'calc(100dvh - 82px)',
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '100vh',
@@ -36,7 +36,6 @@ export default function MessagesPane() {
           flexDirection: 'column-reverse',
           minWidth: '100vw',
           maxHeight: 'calc(100vh - 68px - 81px)',
-          height: '100%',
           marginTop: '81px', // потому что header - absolute
           px: 2,
           py: 2,
@@ -48,7 +47,7 @@ export default function MessagesPane() {
           justifyContent='flex-end'
           sx={{
             height: '100%',
-            minHeight: '80vh'
+            minHeight: 'calc(80vh - 81.6px)'
           }}
         >
           {chatMessages?.map((message: MessageProps, index: number) => {
