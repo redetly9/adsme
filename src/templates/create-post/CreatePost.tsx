@@ -12,7 +12,6 @@ import { TextInputMultipleSelect } from '../../components/text-input-multiple-se
 import { createPost } from '../../hooks'
 import { useAppSelector } from '../../store'
 import MapComponent from './Map'
-import MapSuggestion from './MapSuggestion'
 
 export default function CreatePost() {
   const [value, setValue] = useState('')
@@ -20,7 +19,6 @@ export default function CreatePost() {
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [showMap, setShowMap] = useState(false)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
 
@@ -165,23 +163,30 @@ export default function CreatePost() {
           setTags={setTags}
         />
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <MapSuggestion
-          value={value}
-          setValue={setValue}
-          onSelectAddress={onLocationSelected}
-        />
-        <button onClick={() => setShowMap(true)}>
-          <span
-            role='img'
-            aria-label='map icon'>
-            На карте
-          </span>
-        </button>
-      </div>
-      {showMap
-        ? <MapComponent onLocationSelected={onLocationSelected} />
-        : null}
+      <Divider sx={{ mt: 2, mb: 2 }} />
+      <Typography
+        sx={{ mb: 0.5 }}
+      >
+        Выберете место на карте
+      </Typography>
+      {/* TODO убрать и удалить компонент если текущий вариант понравится */}
+      {/*<MapSuggestion*/}
+      {/*  value={value}*/}
+      {/*  setValue={setValue}*/}
+      {/*  onSelectAddress={onLocationSelected}*/}
+      {/*/>*/}
+      {
+        value
+          ? (
+            <Box sx={{ width: '100%', padding: '8px', boxSizing: 'border-box', border: '2px solid #ccc' }}>
+              <Typography fontSize={12}>
+                {value}
+              </Typography>
+            </Box>
+          )
+          : null
+      }
+      <MapComponent onLocationSelected={onLocationSelected} />
       <Button
         onClick={UploadPosts}
         sx={{ marginTop: '30px' }}>

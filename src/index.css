@@ -74,8 +74,10 @@ button {
 
 /* MapComponent.css */
 .map-container {
+  margin-top: 16px;
   position: relative;
   width: 100%;
+  height: 400px;
 }
 
 .center-button {

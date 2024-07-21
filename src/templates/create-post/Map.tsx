@@ -1,5 +1,6 @@
 import MyLocationIcon from '@mui/icons-material/MyLocation'
-import { GoogleMap, LoadScript, Marker, useJsApiLoader } from '@react-google-maps/api'
+import { GoogleMap, MarkerF, useJsApiLoader } from '@react-google-maps/api'
+import { ControlPosition } from '@vis.gl/react-google-maps'
 import { useCallback, useEffect, useState } from 'react'
 
 import { API_KEY } from './consts'
@@ -10,13 +11,13 @@ type MapComponentProps = {
 
 const containerStyle = {
   width: '100%',
-  height: '100vh'
+  height: '100%'
 }
 
 function MapComponent({ onLocationSelected }: MapComponentProps) {
   const [center, setCenter] = useState({ lat: 51.505, lng: -0.09 })
   const [marker, setMarker] = useState<{ lat: number, lng: number } | null>(null)
-  const [address, setAddress] = useState<string>('')
+  const [zoom, setZoom] = useState(17)
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -37,6 +38,7 @@ function MapComponent({ onLocationSelected }: MapComponentProps) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords
         setCenter({ lat: latitude, lng: longitude })
+        setZoom(17)
       })
     }
   }
@@ -60,7 +62,6 @@ function MapComponent({ onLocationSelected }: MapComponentProps) {
       if (status === 'OK' && results && results[0]) {
         if (results[0]) {
           const formattedAddress = results[0].formatted_address
-          setAddress(formattedAddress)
           onLocationSelected({ lat, lng, address: formattedAddress })
         } else {
           console.log('No results found')
@@ -73,33 +74,31 @@ function MapComponent({ onLocationSelected }: MapComponentProps) {
 
   return isLoaded
     ? (
-      <LoadScript googleMapsApiKey={API_KEY}>
-        <div className='map-container'>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-            onLoad={onLoad}
-            onClick={onClick}
-            options={{
-              gestureHandling: 'greedy',
-              disableDefaultUI: true
-            }}
-          >
-            {marker ? <Marker position={marker} /> : null}
-          </GoogleMap>
-          <MyLocationIcon
-            className='center-button'
-            color='primary'
-            aria-label='center map'
-            onClick={handleCenterClick}
-          />
-          <p>
-            Address:
-            {address}
-          </p>
-        </div>
-      </LoadScript>
+      <div className='map-container'>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          onLoad={onLoad}
+          onClick={onClick}
+          options={{
+            zoomControl: true,
+            zoomControlOptions: {
+              position: ControlPosition.TOP_LEFT
+            },
+            zoom: zoom,
+            gestureHandling: 'greedy',
+            disableDefaultUI: true
+          }}
+        >
+          {marker ? <MarkerF position={marker} /> : null}
+        </GoogleMap>
+        <MyLocationIcon
+          className='center-button'
+          color='primary'
+          aria-label='center map'
+          onClick={handleCenterClick}
+        />
+      </div>
     )
     : <></>
 }
