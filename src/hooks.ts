@@ -340,7 +340,7 @@ export async function updateUser(userId, updateData) {
 }
 
 // Получение всех постов с фильтрацией по геолокации
-export async function getPostsByLocation(longitude, latitude, radius = 1000) {
+export async function getPostsByLocation(longitude, latitude, radius: number = 1000) {
   const { data: posts, error } = await supabase
     .rpc('get_posts_by_location2', { p_long: longitude, p_lat: latitude, p_rad: radius })
 

@@ -24,7 +24,7 @@ export default function CreatePost() {
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
 
-  const handleImageChange = async (e) => {
+  const handleImageChange = async (e: any) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setLoading(true)
@@ -53,7 +53,7 @@ export default function CreatePost() {
   }
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
 
-  const handleDescriptionChange = (e) => {
+  const handleDescriptionChange = (e: any) => {
     setDescription(e.target.value)
   }
 
@@ -75,7 +75,7 @@ export default function CreatePost() {
     }
   }
 
-  const onLocationSelected = ({ address, lat, lng }) => {
+  const onLocationSelected = ({ address, lat, lng }: any) => {
     setLat(lat)
     setLon(lng)
     setValue(address)
@@ -169,7 +169,8 @@ export default function CreatePost() {
         <MapSuggestion
           value={value}
           setValue={setValue}
-          onSelectAddress={onLocationSelected} />
+          onSelectAddress={onLocationSelected}
+        />
         <button onClick={() => setShowMap(true)}>
           <span
             role='img'
@@ -179,10 +180,7 @@ export default function CreatePost() {
         </button>
       </div>
       {showMap
-        ? <MapComponent
-          onLocationSelected={onLocationSelected}
-          center={location}
-          setValue={setValue} />
+        ? <MapComponent onLocationSelected={onLocationSelected} />
         : null}
       <Button
         onClick={UploadPosts}

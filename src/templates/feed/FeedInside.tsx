@@ -4,7 +4,8 @@ import Box from '@mui/joy/Box'
 import Button from '@mui/joy/Button'
 import Divider from '@mui/joy/Divider'
 import Typography from '@mui/joy/Typography'
-import * as React from 'react'
+import moment from 'moment'
+import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { getPostsByLocation, getUserChats } from '../../hooks'
@@ -13,36 +14,48 @@ import FeedInsideChild from './FeedInsideChild'
 
 export default function FeedInside() {
 
-  const [posts, setPosts] = React.useState(null)
-  const [radius, setRadius] = React.useState(localStorage?.getItem('radius'))
+  const [posts, setPosts] = useState(null)
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
+
+  const radius = localStorage.getItem('radius')
 
   const { userId } = useParams()
 
-  const [chats, setChats] = React.useState(null)
+  const [chats, setChats] = useState(null)
+
   const getChats = async () => {
     const { data } = await getUserChats(+localStorage.user)
     setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
   }
-  React.useEffect(() => {
-    if (localStorage.user) {
 
-      getChats()
+  const getPosts = useCallback(async () => {
+    try {
+      const { data } = await getPostsByLocation(longitude.toString(), latitude.toString(), Number(radius) || 1000)
+
+      if (data) {
+        const sortedPosts = data.sort((a: any, b: any) => moment(b.created_at).diff(moment(a.created_at)))
+        console.log('sortedPosts', sortedPosts)
+        setPosts(sortedPosts)
+      } else {
+        setPosts(null)
+      }
+    } catch (error) {
+      console.error('Failed to fetch posts:', error)
+      setPosts(null)
     }
-  }, [])
+  }, [latitude, longitude, radius])
 
-  const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000)
-    const sortedPosts = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
-    setPosts(sortedPosts)
-  }
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (latitude && longitude) {
       getPosts()
     }
-  }, [latitude, longitude, radius])
+  }, [getPosts, latitude, longitude, radius])
+
+  useEffect(() => {
+    if (localStorage.user) {
+      getChats()
+    }
+  }, [])
 
   const userPost = posts?.filter((v) => v.author.id === +userId)
 

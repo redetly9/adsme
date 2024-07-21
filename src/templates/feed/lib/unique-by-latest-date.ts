@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export const uniqueByLatestDate = (arr: any[]) => {
+export const uniqueByLatestDate = (arr: any[] | null) => {
   if (!arr) return []
 
   const result = arr.reduce((acc, current) => {
