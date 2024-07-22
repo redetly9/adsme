@@ -1,4 +1,5 @@
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
+import CropOriginalIcon from '@mui/icons-material/CropOriginal'
 import { CircularProgress } from '@mui/joy'
 import Button from '@mui/joy/Button'
 import FormControl from '@mui/joy/FormControl'
@@ -89,6 +90,10 @@ export default function OwnProfile(props) {
         setIsLoadingImg(false)
       }
     }
+  }
+
+  const navigateOwnFeed = () => {
+    navigate(`/feed/${profileData.id}`)
   }
 
   return (
@@ -231,7 +236,18 @@ export default function OwnProfile(props) {
                     </Box>)
                   : ('')}
                 <Divider />
-                <Box />
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', gap: '10px', my: '6px' }}
+                  onClick={navigateOwnFeed}
+                >
+                  <CropOriginalIcon
+                    sx={{ width: 26, height: 26, mx: '2px', color: '#212121' }}
+                    viewBox='0 0 24 24'
+                  />
+                  <Typography>
+                    Мои посты
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </FormControl>
