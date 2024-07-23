@@ -407,7 +407,6 @@ export const usePostsByLocation = (longitude, latitude, radius = 1000) => {
   });
 };
 
-// Получение всех постов с фильтрацией по геолокации
 export async function getPostsByTag(tag) {
   const { data: posts, error } = await supabase
     .from('posts')
@@ -416,6 +415,23 @@ export async function getPostsByTag(tag) {
       author: user_profiles (*)
     `)
     .ilike('tags', `%${tag}%`)
+
+  if (error) {
+    console.error('Ошибка при получении постов по тегу:', error.message)
+    return { error }
+  }
+
+  return { data: posts }
+}
+
+export async function getPostsByUserId(userId) {
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select(`
+      *,
+      author: user_profiles (*)
+    `)
+    .eq('author', userId)
 
   if (error) {
     console.error('Ошибка при получении постов по тегу:', error.message)
