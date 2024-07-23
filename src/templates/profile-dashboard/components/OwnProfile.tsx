@@ -235,7 +235,7 @@ export default function OwnProfile(props) {
                       </Box>
                     </Box>)
                   : ('')}
-                <Divider />
+                <Divider sx={{ my: 1.5 }} />
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', gap: '10px', my: '6px' }}
                   onClick={navigateOwnFeed}

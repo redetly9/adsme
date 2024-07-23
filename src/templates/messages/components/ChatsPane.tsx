@@ -4,7 +4,7 @@ import List from '@mui/joy/List'
 import Sheet from '@mui/joy/Sheet'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 import LoadingOverlay from '../../profile-dashboard/components/LoadingOverlay'
 import type { ChatProps } from '../types'
@@ -19,8 +19,9 @@ type ChatsPaneProps = {
 
 export default function ChatsPane(props: ChatsPaneProps) {
   const { chats, setSelectedChat, selectedChatId } = props
-  const [isLoading, setIsLoading] = React.useState(false)
-  React.useEffect(() => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
 
     if (!chats) {
       setIsLoading(true)

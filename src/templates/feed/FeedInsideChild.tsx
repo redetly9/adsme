@@ -1,6 +1,8 @@
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
+import { Modal, ModalClose, ModalDialog } from '@mui/joy'
 import Avatar from '@mui/joy/Avatar'
 import Box from '@mui/joy/Box'
 import Button from '@mui/joy/Button'
@@ -10,13 +12,15 @@ import Divider from '@mui/joy/Divider'
 import Sheet from '@mui/joy/Sheet'
 import Typography from '@mui/joy/Typography'
 import moment from 'moment'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { createChat, followUser, unfollowUser, useUserFollowings } from '../../hooks'
+import { createChat, deletePost, followUser, unfollowUser, useUserFollowings } from '../../hooks'
 import { useAppSelector } from '../../store.ts'
 
-export default function FeedInsideChild({ post, chats }) {
+export default function FeedInsideChild({ post, chats, getPosts }) {
   const navigate = useNavigate()
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const userId = useAppSelector(state => state.user.user) || localStorage.user
   const { data: followers, refetch } = useUserFollowings(userId)
   const isFollowed = followers?.find(f => f.follow_user_id === post?.author?.id)
@@ -42,6 +46,18 @@ export default function FeedInsideChild({ post, chats }) {
       await followUser(userId, post?.author?.id)
     }
     refetch()
+  }
+
+  const deletePostHandler = async () => {
+    setIsOpenModal(false)
+
+    try {
+      await deletePost(post?.id)
+      getPosts()
+    } catch (err) {
+      console.error('Ошибка при удалении поста:', err)
+    }
+
   }
 
   return (
@@ -121,7 +137,15 @@ export default function FeedInsideChild({ post, chats }) {
                   }
                 </>
               )
-              : null
+              : <Button
+                size='sm'
+                variant='plain'
+                color='neutral'
+                startDecorator={<DeleteForeverIcon />}
+                onClick={setIsOpenModal.bind(null, true)}
+              >
+                Delete
+              </Button>
           }
         </Box>
       </Box>
@@ -170,7 +194,39 @@ export default function FeedInsideChild({ post, chats }) {
         }
 
       </Box>
-
+      <Modal
+        open={isOpenModal}
+        onClose={setIsOpenModal.bind(null, false)}
+      >
+        <ModalDialog
+          layout='center'
+          size='sm'
+        >
+          <ModalClose />
+          <Typography
+            sx={{ mb: 1 }}
+            fontSize={18}
+          >
+            Вы уверены, что хотите удалить пост?
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <Button
+              variant='outlined'
+              sx={{ width: '100%' }}
+              onClick={setIsOpenModal.bind(null, false)}
+            >
+              Нет
+            </Button>
+            <Button
+              variant='solid'
+              sx={{ width: '100%' }}
+              onClick={deletePostHandler}
+            >
+              Да
+            </Button>
+          </Box>
+        </ModalDialog>
+      </Modal>
     </Sheet>
   )
 }

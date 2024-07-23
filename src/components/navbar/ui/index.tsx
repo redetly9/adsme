@@ -21,11 +21,6 @@ export const Navbar = () => {
   const id = localStorage.user
   const tabs = useMemo(() => createNavbarTabs(id), [id])
 
-  const handleChange = (_: React.SyntheticEvent | null, value: number | string | null) => {
-    if (value === null) return
-    setTabIndex(+value)
-  }
-
   // FIXME Костыльное решение, потом поменяем архитектуру
   useEffect(() => {
     if (location.pathname === '/') {
@@ -34,10 +29,8 @@ export const Navbar = () => {
   }, [location, navigate, tabs])
 
   useEffect(() => {
-    const activeTab = tabs.findIndex(tab => tab.path === location.pathname)
-    if (activeTab !== -1) {
-      setTabIndex(activeTab)
-    }
+    const activeTab = tabs.findIndex(tab => location.pathname.includes(tab.path))
+    setTabIndex(activeTab)
   }, [location, id, tabs])
 
   return (
@@ -46,7 +39,6 @@ export const Navbar = () => {
         size='lg'
         aria-label='Bottom Navigation'
         value={tabIndex}
-        onChange={handleChange}
         sx={(theme) => ({
           p: 1,
           borderRadius: 16,
@@ -74,24 +66,26 @@ export const Navbar = () => {
           sx={{ borderRadius: 'lg', p: 0 }}
         >
           {
-            tabs.map(({ icon, label, path }) => (
+            tabs.map(({ icon, label, path }, index) => (
               <NavLink
                 key={path + '_link'}
                 to={path}
                 style={{ width: '25%', maxWidth: '25%' }}
               >
-                {({ isActive }) => (
-                  <Tab
-                    key={path + '_tab'}
-                    disableIndicator
-                    orientation='vertical'
-                    sx={{ width: '100%' }}
-                    color={isActive ? 'primary' : undefined}
-                  >
-                    {icon}
-                    {label}
-                  </Tab>
-                )}
+                {({ isActive }) => {
+                  return (
+                    <Tab
+                      key={path + '_tab'}
+                      disableIndicator
+                      orientation='vertical'
+                      sx={{ width: '100%' }}
+                      color={isActive ? 'primary' : undefined}
+                    >
+                      {icon}
+                      {label}
+                    </Tab>
+                  )
+                }}
               </NavLink>
             ))
           }

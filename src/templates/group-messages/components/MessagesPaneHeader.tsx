@@ -1,4 +1,3 @@
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded'
 import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded'
 import Avatar from '@mui/joy/Avatar'
@@ -6,14 +5,11 @@ import Button from '@mui/joy/Button'
 import IconButton from '@mui/joy/IconButton'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
-import * as React from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import { useMessagesByLocation } from '../../../hooks'
 import { useAppSelector } from '../../../store'
 
 export default function MessagesPaneHeader() {
-  const navigate = useNavigate()
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
   const { radius } = useAppSelector(state => state.user)
   const { data: chatMessages } = useMessagesByLocation(longitude, latitude, radius)
@@ -53,20 +49,11 @@ export default function MessagesPaneHeader() {
         direction='row'
         spacing={{ xs: 1, md: 2 }}
         alignItems='center' >
-        <IconButton
-          variant='plain'
-          color='neutral'
-          size='sm'
-          sx={{
-            display: { xs: 'inline-flex', sm: 'none' }
-          }}
-          onClick={() => navigate('/messages')}
-        >
-          <ArrowBackIosNewRoundedIcon />
-        </IconButton>
         <Avatar
           size='lg'
-          src='' />
+          src=''
+          style={{ marginLeft: '12px' }}
+        />
         <div>
           <Typography
             fontWeight='lg'
