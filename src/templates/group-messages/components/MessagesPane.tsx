@@ -1,12 +1,14 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
-import { useAppSelector } from '../../../store';
-import { sendMessage, useMessagesByLocation } from '../../../hooks';
-import MessagesPaneHeader from './MessagesPaneHeader';
-import MessageInput from '../../messages/components/MessageInput';
-import ChatBubble from '../../messages/components/ChatBubble';
+import Box from '@mui/joy/Box'
+import Sheet from '@mui/joy/Sheet'
+import Stack from '@mui/joy/Stack'
+import * as React from 'react'
+
+import { sendMessage, useMessagesByLocation } from '../../../hooks'
+import { useAppSelector } from '../../../store'
+import ChatBubble from '../../messages/components/ChatBubble'
+import MessageInput from '../../messages/components/MessageInput'
+import type { MessageProps } from '../../messages/types.tsx'
+import MessagesPaneHeader from './MessagesPaneHeader'
 
 export default function MessagesPane() {
   const userId = useAppSelector(state => state.user.user) || localStorage.user
@@ -15,13 +17,12 @@ export default function MessagesPane() {
   const { data: chatMessages, refetch } = useMessagesByLocation(longitude, latitude, radius)
 
   const chatId = 58
-  const [textAreaValue, setTextAreaValue] = React.useState('');
-
+  const [textAreaValue, setTextAreaValue] = React.useState('')
 
   return (
     <Sheet
       sx={{
-        height: '100vh',
+        height: 'calc(100dvh - 82px)',
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '100vh',
@@ -32,21 +33,23 @@ export default function MessagesPane() {
       <Box
         sx={{
           display: 'flex',
-          flex: 1,
-          minWidth: '100dvw',
-          maxHeight: 'calc(100vh - 68px - 82px)',
-          marginTop: '80px',
+          flexDirection: 'column-reverse',
+          minWidth: '100vw',
+          maxHeight: 'calc(100vh - 68px - 81px)',
+          marginTop: '81px', // потому что header - absolute
           px: 2,
-          py: 3,
-          pb: '200px',
-          overflowY: 'auto',
-          flexDirection: 'column-reverse'
+          py: 2,
+          overflowY: 'auto'
         }}
       >
         <Stack
           spacing={2}
           justifyContent='flex-end'
-          sx={{ minHeight: '55vh' }}>
+          sx={{
+            height: '100%',
+            minHeight: 'calc(80vh - 81.6px)'
+          }}
+        >
           {chatMessages?.map((message: MessageProps, index: number) => {
             const isYou = Number(message.sender_id) === Number(userId)
 
@@ -75,7 +78,7 @@ export default function MessagesPane() {
             +userId,
             value,
             longitude,
-            latitude,
+            latitude
           )
           refetch()
         }}

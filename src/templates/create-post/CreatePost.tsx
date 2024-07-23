@@ -8,11 +8,10 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TagsSlider } from '../../components/tags-slider'
+import { TextInputMultipleSelect } from '../../components/text-input-multiple-select'
 import { createPost } from '../../hooks'
 import { useAppSelector } from '../../store'
 import MapComponent from './Map'
-import MapSuggestion from './MapSuggestion'
 
 export default function CreatePost() {
   const [value, setValue] = useState('')
@@ -20,11 +19,10 @@ export default function CreatePost() {
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [showMap, setShowMap] = useState(false)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
 
-  const handleImageChange = async (e) => {
+  const handleImageChange = async (e: any) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setLoading(true)
@@ -33,7 +31,7 @@ export default function CreatePost() {
     }
   }
 
-  const uploadImage = async (file) => {
+  const uploadImage = async (file: any) => {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('upload_preset', 'ml_default')
@@ -53,14 +51,21 @@ export default function CreatePost() {
   }
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
 
-  const handleDescriptionChange = (e) => {
+  const handleDescriptionChange = (e: any) => {
     setDescription(e.target.value)
   }
 
   const navigate = useNavigate()
 
   const UploadPosts = async () => {
-    const { data } = await createPost({ title: description, images: imageUrl, tags: tags.join(' '), longitude: lon || longitude, latitude: lat || latitude, author: localStorage.user })
+    const { data } = await createPost({
+      title: description,
+      images: imageUrl,
+      tags: tags.join(' '),
+      longitude: lon || longitude,
+      latitude: lat || latitude,
+      author: localStorage.user
+    })
 
     if (data) {
       navigate('/feed')
@@ -68,16 +73,7 @@ export default function CreatePost() {
     }
   }
 
-  const onAddTags = (tag: string) => {
-    setTags(prevTags => {
-      if (prevTags.some(t => t === tag)) {
-        return prevTags.filter(t => t !== tag)
-      }
-      return [...prevTags, tag]
-    })
-  }
-
-  const onLocationSelected = ({ address, lat, lng }) => {
+  const onLocationSelected = ({ address, lat, lng }: any) => {
     setLat(lat)
     setLon(lng)
     setValue(address)
@@ -156,33 +152,41 @@ export default function CreatePost() {
         sx={{ mt: 2 }}
       />
       <Divider sx={{ mt: 2, mb: 2 }} />
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '5px', mb: 2 }}>
-        <TagsSlider
-          title='Выберете теги'
-          pikedTags={tags}
-          onClick={onAddTags}
-          isWrapped
+      <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: '5px', mb: 2 }}>
+        <Typography
+          sx={{ mb: 0.5 }}
+        >
+          Добавьте теги
+        </Typography>
+        <TextInputMultipleSelect
+          tags={tags}
+          setTags={setTags}
         />
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <MapSuggestion
-          value={value}
-          setValue={setValue}
-          onSelectAddress={onLocationSelected} />
-        <button onClick={() => setShowMap(true)}>
-          <span
-            role='img'
-            aria-label='map icon'>
-            На карте
-          </span>
-        </button>
-      </div>
-      {showMap
-        ? <MapComponent
-          onLocationSelected={onLocationSelected}
-          center={location}
-          setValue={setValue} />
-        : null}
+      <Divider sx={{ mt: 2, mb: 2 }} />
+      <Typography
+        sx={{ mb: 0.5 }}
+      >
+        Выберете место на карте
+      </Typography>
+      {/* TODO убрать и удалить компонент если текущий вариант понравится */}
+      {/*<MapSuggestion*/}
+      {/*  value={value}*/}
+      {/*  setValue={setValue}*/}
+      {/*  onSelectAddress={onLocationSelected}*/}
+      {/*/>*/}
+      {
+        value
+          ? (
+            <Box sx={{ width: '100%', padding: '8px', boxSizing: 'border-box', border: '2px solid #ccc' }}>
+              <Typography fontSize={12}>
+                {value}
+              </Typography>
+            </Box>
+          )
+          : null
+      }
+      <MapComponent onLocationSelected={onLocationSelected} />
       <Button
         onClick={UploadPosts}
         sx={{ marginTop: '30px' }}>

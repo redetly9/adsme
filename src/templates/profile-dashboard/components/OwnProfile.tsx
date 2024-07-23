@@ -1,4 +1,5 @@
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
+import CropOriginalIcon from '@mui/icons-material/CropOriginal'
 import { CircularProgress } from '@mui/joy'
 import Button from '@mui/joy/Button'
 import FormControl from '@mui/joy/FormControl'
@@ -15,7 +16,7 @@ import { EditProfile } from '../../../components/edit-profile'
 import { updateUser, useUserFollowings } from '../../../hooks.ts'
 import { uploadImage } from '../../../lib/upload-image/'
 import { useAppSelector } from '../../../store.ts'
-import SwipeableEdgeDrawer from '../../feed/Drawer.tsx'
+import { DrawerBasic } from '../../feed/Drawer.tsx'
 
 export default function OwnProfile(props) {
   const {
@@ -89,6 +90,10 @@ export default function OwnProfile(props) {
         setIsLoadingImg(false)
       }
     }
+  }
+
+  const navigateOwnFeed = () => {
+    navigate(`/feed/${profileData.id}`)
   }
 
   return (
@@ -231,13 +236,24 @@ export default function OwnProfile(props) {
                     </Box>)
                   : ('')}
                 <Divider />
-                <Box />
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', gap: '10px', my: '6px' }}
+                  onClick={navigateOwnFeed}
+                >
+                  <CropOriginalIcon
+                    sx={{ width: 26, height: 26, mx: '2px', color: '#212121' }}
+                    viewBox='0 0 24 24'
+                  />
+                  <Typography>
+                    Мои посты
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </FormControl>
         </Stack>
       </Stack>
-      <SwipeableEdgeDrawer
+      <DrawerBasic
         open={isEditProfile}
         setOpen={setIsEditProfile}
       >
@@ -249,7 +265,7 @@ export default function OwnProfile(props) {
           lastname={lastnameInput}
           phone={formattedPhoneNumber}
         />
-      </SwipeableEdgeDrawer>
+      </DrawerBasic>
     </Box>
   )
 }

@@ -1,90 +1,106 @@
-// MapComponent.js
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import IconButton from '@mui/material/IconButton';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
+import MyLocationIcon from '@mui/icons-material/MyLocation'
+import { GoogleMap, MarkerF, useJsApiLoader } from '@react-google-maps/api'
+import { ControlPosition } from '@vis.gl/react-google-maps'
+import { useCallback, useEffect, useState } from 'react'
 
-const defaultIcon = L.icon({
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41]
-});
+import { API_KEY } from './consts'
 
-function LocationMarker({ onLocationSelected }) {
-  const [position, setPosition] = useState(null);
+type MapComponentProps = {
+  onLocationSelected: (obj: { lat: number, lng: number, address: string }) => void
+};
 
-  useMapEvents({
-    click: async (event) => {
-      const { lat, lng } = event.latlng;
-      setPosition({ lat, lng });
-      // Обратное геокодирование для получения адреса
-      try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-        const data = await response.json();
-        const address = data.display_name;
-        onLocationSelected({ lat, lng, address });
-      } catch (error) {
-        console.error('Error fetching address:', error);
-        onLocationSelected({ lat, lng, address: 'Не удалось получить адрес' });
-      }
-    }
-  });
-  
-
-  return position === null ? null : (
-    <Marker position={position} icon={defaultIcon} />
-  );
+const containerStyle = {
+  width: '100%',
+  height: '100%'
 }
 
-function SetViewOnClick({ coords }) {
-  const map = useMap();
-  useEffect(() => {
-    map.setView(coords, map.getZoom());
-  }, [coords, map]);
-  return null;
-}
+function MapComponent({ onLocationSelected }: MapComponentProps) {
+  const [center, setCenter] = useState({ lat: 51.505, lng: -0.09 })
+  const [marker, setMarker] = useState<{ lat: number, lng: number } | null>(null)
+  const [zoom, setZoom] = useState(17)
 
-function MapComponent({ onLocationSelected }) {
-  const [center, setCenter] = useState([51.505, -0.09]); // Default center
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: API_KEY
+  })
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setCenter([latitude, longitude]);
-      });
+        const { latitude, longitude } = position.coords
+        setCenter({ lat: latitude, lng: longitude })
+      })
     }
-  }, []);
+  }, [])
 
   const handleCenterClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setCenter([latitude, longitude]);
-      });
+        const { latitude, longitude } = position.coords
+        setCenter({ lat: latitude, lng: longitude })
+        setZoom(17)
+      })
     }
-  };
+  }
 
-  return (
-    <div className="map-container">
-      <MapContainer center={center} zoom={20} style={{ height: '400px', width: '100%' }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  const onLoad = useCallback((map: google.maps.Map) => {
+    setCenter({ lat: map.getCenter()?.lat() || 51.505, lng: map.getCenter()?.lng() || -0.09 })
+  }, [])
+
+  const onClick = (event: google.maps.MapMouseEvent) => {
+    if (event.latLng) {
+      const lat = event.latLng.lat()
+      const lng = event.latLng.lng()
+      setMarker({ lat, lng })
+      fetchAddress(lat, lng)
+    }
+  }
+
+  const fetchAddress = (lat: number, lng: number) => {
+    const geocoder = new google.maps.Geocoder()
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+      if (status === 'OK' && results && results[0]) {
+        if (results[0]) {
+          const formattedAddress = results[0].formatted_address
+          onLocationSelected({ lat, lng, address: formattedAddress })
+        } else {
+          console.log('No results found')
+        }
+      } else {
+        console.log('Geocoder failed due to: ' + status)
+      }
+    })
+  }
+
+  return isLoaded
+    ? (
+      <div className='map-container'>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          onLoad={onLoad}
+          onClick={onClick}
+          options={{
+            zoomControl: true,
+            zoomControlOptions: {
+              position: ControlPosition.TOP_LEFT
+            },
+            zoom: zoom,
+            gestureHandling: 'greedy',
+            disableDefaultUI: true
+          }}
+        >
+          {marker ? <MarkerF position={marker} /> : null}
+        </GoogleMap>
+        <MyLocationIcon
+          className='center-button'
+          color='primary'
+          aria-label='center map'
+          onClick={handleCenterClick}
         />
-        <SetViewOnClick coords={center} />
-        <LocationMarker onLocationSelected={onLocationSelected} />
-      </MapContainer>
-
-      <MyLocationIcon className="center-button"
-        color="primary"
-        aria-label="center map"
-        onClick={handleCenterClick} />
-
-    </div>
-  );
+      </div>
+    )
+    : <></>
 }
 
-export default MapComponent;
+export default MapComponent

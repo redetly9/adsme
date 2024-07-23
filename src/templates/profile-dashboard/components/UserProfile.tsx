@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
 
+import { ShareButton } from '../../../components/share-button'
 import { followUser, unfollowUser, useUserFollowings } from '../../../hooks'
 import { useAppSelector } from '../../../store'
 import CountrySelector from './CountrySelector'
@@ -179,7 +180,7 @@ export default function UserProfile({ profileData, isChatLoading, isLoading, for
             justifyContent: 'center',
             alignItems: 'center',
             minWidth: '70px',
-            maxWidth: 'calc(25% - 10px)',
+            maxWidth: 'content-fill',
             flexBasis: 'calc(25% - 10px)'
           }}
           onClick={async () => {
@@ -190,7 +191,6 @@ export default function UserProfile({ profileData, isChatLoading, isLoading, for
               await followUser(userId, profileData?.id)
               refetch()
             }
-
           }}
         >
           {isFollowed ? 'Отписаться' : 'Подписаться'}
@@ -218,36 +218,44 @@ export default function UserProfile({ profileData, isChatLoading, isLoading, for
         >
           Написать
         </Box>
-        <Box sx={{
-          flex: '1 1 0',
-          backgroundColor: '#f1eded',
-          borderRadius: '6px',
-          color: '#0796e1',
-          padding: '15px 5px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: '70px',
-          maxWidth: 'calc(25% - 10px)',
-          flexBasis: 'calc(25% - 10px)'
-        }}>
-          Покупки
+        <Box
+          sx={{
+            flex: '1 1 0',
+            backgroundColor: '#f1eded',
+            borderRadius: '6px',
+            color: '#0796e1',
+            padding: '15px 5px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minWidth: '70px',
+            maxWidth: 'calc(25% - 10px)',
+            flexBasis: 'calc(25% - 10px)'
+          }}
+          onClick={() => {
+            if (profileData) {
+              navigate(`/feed/${profileData.id}`)
+            }
+          }}
+        >
+          Feeds
         </Box>
-        <Box sx={{
-          flex: '1 1 0',
-          backgroundColor: '#f1eded',
-          borderRadius: '6px',
-          color: '#0796e1',
-          padding: '15px 5px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: '70px',
-          maxWidth: 'calc(25% - 10px)',
-          flexBasis: 'calc(25% - 10px)'
-        }}>
-          Поделиться
-        </Box>
+        <ShareButton
+          shareUrl={window.location.href}
+          sx={{
+            flex: '1 1 0',
+            backgroundColor: '#f1eded',
+            borderRadius: '6px',
+            color: '#0796e1',
+            padding: '15px 5px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minWidth: '70px',
+            maxWidth: 'calc(25% - 10px)',
+            flexBasis: 'calc(25% - 10px)'
+          }}
+        />
       </Box>
     </Box>
   )

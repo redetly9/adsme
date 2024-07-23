@@ -3,40 +3,47 @@ import TuneIcon from '@mui/icons-material/TuneRounded'
 import { Box, Input, Sheet } from '@mui/joy'
 import Button from '@mui/joy/Button'
 import Slider from '@mui/joy/Slider'
-import * as React from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { TagsSlider } from '../../components/tags-slider'
 import { getPostsByLocation, getUserChats } from '../../hooks'
+import { changeRadius } from '../../slices'
 import { useAppDispatch, useAppSelector } from '../../store'
 import LoadingOverlay from '../profile-dashboard/components/LoadingOverlay'
 import { marks } from './const/marks.ts'
-import SwipeableEdgeDrawer from './Drawer'
+import { DrawerBasic } from './Drawer'
 import Feed from './Feed'
 import { uniqueByLatestDate } from './lib/unique-by-latest-date.ts'
-import { changeRadius } from '../../slices/index.ts'
 
 export default function FeedList() {
+  /**
+   * States
+   * */
   const [filterOpen, setFilterOpen] = useState(false)
   const [posts, setPosts] = useState<Array<any> | null>(null)
   const [tags, setTags] = useState<string[]>([])
   const [chats, setChats] = useState<Array<any> | null>(null)
   const [search, setSearch] = useState('')
-
+  /**
+  * Refs
+  * */
   const typingTimeout = useRef<NodeJS.Timeout | null>(null)
-
+  /**
+   * Redux
+   * */
   const { latitude, longitude } = useAppSelector(state => state.user.geo)
   const { radius } = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
 
   const getChats = async () => {
     const { data } = await getUserChats(+localStorage.user)
+    if (!data) return
 
-    setChats(data?.slice().reverse().map(c => ({ ...c, ...({ sender: c.participants?.find(p => p._id !== localStorage.user) }) })))
+    setChats([...data].reverse().map(c => ({ ...c, ...({ sender: c.participants?.find((p: any) => p._id !== localStorage.user) }) })))
   }
-  React.useEffect(() => {
-    if (localStorage.user) {
 
+  useEffect(() => {
+    if (localStorage.user) {
       getChats()
     }
   }, [])
@@ -50,13 +57,11 @@ export default function FeedList() {
     })
   }
 
-  const getPosts = async () => {
-    const { data } = await getPostsByLocation(`${longitude}`, `${latitude}`, radius || 1000)
+  const getPosts = useCallback(async () => {
+    const { data } = await getPostsByLocation(longitude.toString(), latitude.toString(), radius || 1000)
 
-    const uniquePosts = uniqueByLatestDate(data)
-
-    setPosts(uniquePosts)
-  }
+    setPosts(data)
+  }, [latitude, longitude, radius])
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim().toLowerCase()
@@ -74,11 +79,13 @@ export default function FeedList() {
     if (latitude && longitude) {
       getPosts()
     }
-  }, [latitude, longitude, radius])
+  }, [getPosts, latitude, longitude, radius])
 
   const filteredPosts = useMemo(() => {
+    let result = posts
+
     if (posts && (search.length > 0 || tags.length > 0)) {
-      return posts.filter(post => {
+      result = posts.filter(post => {
         const findSearch = post.title.toLowerCase().includes(search.toLowerCase())
         const postTags = post.tags.split(' ')
         const findTags = tags.some(t => postTags.includes(t))
@@ -95,7 +102,7 @@ export default function FeedList() {
       })
     }
 
-    return posts
+    return uniqueByLatestDate(result)
   }, [posts, search, tags])
 
   return (
@@ -124,7 +131,7 @@ export default function FeedList() {
           <Button
             variant='outlined'
             color='neutral'
-            onClick={() => setFilterOpen(true)}
+            onClick={() => setFilterOpen(prev => !prev)}
             sx={{
               '&:hover': {
                 borderColor: '#c7dff7',
@@ -142,9 +149,12 @@ export default function FeedList() {
           onClick={onAddTags}
         />
       </Box>
-      <SwipeableEdgeDrawer
+      <DrawerBasic
         open={filterOpen}
-        setOpen={setFilterOpen}>
+        setOpen={setFilterOpen}
+        hideBackdrop={true}
+        variant='soft'
+      >
         <Slider
           aria-label='Custom marks'
           defaultValue={radius || Number(localStorage.getItem('radius')) || 1000}
@@ -153,12 +163,12 @@ export default function FeedList() {
           step={10}
           valueLabelDisplay='auto'
           marks={marks}
-          onChangeCommitted={(event, newValue) => {
+          onChangeCommitted={(_, newValue) => {
             dispatch(changeRadius(newValue))
             localStorage.setItem('radius', newValue.toString())
           }}
         />
-      </SwipeableEdgeDrawer>
+      </DrawerBasic>
       <Box>
         {posts === null
           ? (

@@ -49,6 +49,9 @@ function App() {
                     path='/'
                     element={<FeedList />} />
                   <Route
+                    path='/group-messages'
+                    element={<GroupChat />} />
+                  <Route
                     path='/messages'
                     element={<MessagesList />} />
                   <Route
@@ -71,10 +74,6 @@ function App() {
                   <Route
                     path='/message/:id'
                     element={<JoyMessagesTemplate />}
-                  />
-                  <Route
-                    path='/group-messages'
-                    element={<GroupChat />}
                   />
                   <Route
                     path='/subscribes-page'
