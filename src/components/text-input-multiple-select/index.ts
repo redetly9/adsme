@@ -1,1 +1,0 @@
-export { TextInputMultipleSelect } from './ui'

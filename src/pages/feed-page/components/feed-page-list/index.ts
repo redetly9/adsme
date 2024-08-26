@@ -1,0 +1,1 @@
+export { FeedPageList } from './ui'

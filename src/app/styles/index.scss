@@ -1,0 +1,12 @@
+// css reset
+@import "./reset/reset";
+
+// variables
+@import "./variables/global";
+
+// Other project syules
+@import "./default-styes/default-styles";
+
+button {
+  text-transform: none !important;
+}

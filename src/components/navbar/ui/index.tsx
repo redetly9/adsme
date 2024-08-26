@@ -1,96 +1,48 @@
-import Box from '@mui/joy/Box'
-import Tab, { tabClasses } from '@mui/joy/Tab'
-import TabList from '@mui/joy/TabList'
-import Tabs from '@mui/joy/Tabs'
-import * as React from 'react'
-import { useEffect, useMemo, useState } from 'react'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import './index.scss'
 
-import { createNavbarTabs } from '../consts'
+import { Tab, Tabs } from '@mui/material'
+import type { SyntheticEvent } from 'react'
+import { memo, useLayoutEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-export const Navbar = () => {
-  /**
-   * State
-   * */
-  const [tabIndex, setTabIndex] = useState(0)
-  const location = useLocation()
+import { navbarTabs } from '~components/navbar/const/navbar-tabs.tsx'
+import { RoutesPath } from '~shared/configs/app-router-config'
+
+export const Navbar = memo(() => {
   const navigate = useNavigate()
-  /**
-   * Constants
-   * */
-  const id = localStorage.user
-  const tabs = useMemo(() => createNavbarTabs(id), [id])
+  const { pathname } = useLocation()
+  const [tabValue, setTabValue] = useState(0)
 
-  // FIXME Костыльное решение, потом поменяем архитектуру
-  useEffect(() => {
-    if (location.pathname === '/') {
-      navigate(tabs[1].path)
+  const handleChange = (_: SyntheticEvent, tabIndex: number) => {
+    setTabValue(tabIndex)
+  }
+
+  useLayoutEffect(() => {
+    if (pathname === RoutesPath.main) return
+
+    const tabObjectIndex = navbarTabs.findIndex(t => t.path === pathname)
+    if (tabObjectIndex !== tabValue) {
+      setTabValue(tabObjectIndex)
     }
-  }, [location, navigate, tabs])
-
-  useEffect(() => {
-    const activeTab = tabs.findIndex(tab => location.pathname.includes(tab.path))
-    setTabIndex(activeTab)
-  }, [location, id, tabs])
+  }, [pathname, tabValue, setTabValue])
 
   return (
-    <Box>
-      <Tabs
-        size='lg'
-        aria-label='Bottom Navigation'
-        value={tabIndex}
-        sx={(theme) => ({
-          p: 1,
-          borderRadius: 16,
-          maxWidth: '100vw',
-          overflow: 'hidden',
-          mx: 'auto',
-          boxShadow: theme.shadow.sm,
-          '--joy-shadowChannel': theme.vars.palette.primary.darkChannel,
-          [`& .${tabClasses.root}`]: {
-            py: 1,
-            flex: 1,
-            transition: '0.3s',
-            fontWeight: 'md',
-            fontSize: 'md',
-            [`&:not(.${tabClasses.selected}):not(:hover)`]: {
-              opacity: 0.7
-            }
-          }
-        })}
-      >
-        <TabList
-          variant='plain'
-          size='sm'
-          disableUnderline
-          sx={{ borderRadius: 'lg', p: 0 }}
-        >
-          {
-            tabs.map(({ icon, label, path }, index) => (
-              <NavLink
-                key={path + '_link'}
-                to={path}
-                style={{ width: '25%', maxWidth: '25%' }}
-              >
-                {({ isActive }) => {
-                  return (
-                    <Tab
-                      key={path + '_tab'}
-                      disableIndicator
-                      orientation='vertical'
-                      sx={{ width: '100%' }}
-                      color={isActive ? 'primary' : undefined}
-                    >
-                      {icon}
-                      {label}
-                    </Tab>
-                  )
-                }}
-              </NavLink>
-            ))
-          }
-        </TabList>
-      </Tabs>
-    </Box>
+    <Tabs
+      className='Navbar'
+      value={tabValue}
+      onChange={handleChange}
+      variant='fullWidth'
+    >
+      {
+        navbarTabs.map(({ label, path, icon }, index) => (
+          <Tab
+            key={label + index}
+            label={label}
+            icon={icon}
+            onClick={() => navigate(path)}
+          />
+        ))
+      }
+    </Tabs>
   )
-}
+})

@@ -1,1 +1,0 @@
-export { SubscribesPageList } from './ui'

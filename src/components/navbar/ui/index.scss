@@ -1,0 +1,24 @@
+.Navbar {
+  width: 100%;
+  padding: 0.5rem;
+  max-height: var(--navbar-height);
+
+  .MuiTabs-flexContainer {
+    height: 100%;
+
+    .MuiButtonBase-root {
+      border: 1px solid #FFFFFF;
+      border-radius: 16px;
+    }
+
+    .Mui-selected {
+      border-color: #646cff;
+      border-radius: 16px;
+      background-color: #C7DFF7FF;
+    }
+  }
+
+  .MuiTabs-indicator {
+    display: none;
+  }
+}

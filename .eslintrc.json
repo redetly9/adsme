@@ -3,17 +3,14 @@
     "react",
     "react-hooks",
     "@typescript-eslint",
-    "prettier",
     "simple-import-sort"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "prettier/prettier": "off",
     //сортировка импортов
     "simple-import-sort/imports": "error",
     // Табуляция 2 пробела,
@@ -143,6 +140,12 @@
       "warn",
       "always-multiline"
     ],
+    "react/jsx-wrap-multilines": [
+      "warn",
+      {
+        "return": "parens-new-line"
+      }
+    ],
     "linebreak-style": [
       "warn",
       "unix"
@@ -173,7 +176,6 @@
     "react/jsx-one-expression-per-line": "warn",
     "react/jsx-pascal-case": "warn",
     "react/jsx-tag-spacing": "warn",
-    "react/jsx-wrap-multilines": "warn",
     "func-style": [
       "warn",
       "expression",
@@ -181,7 +183,8 @@
         "allowArrowFunctions": true
       }
     ],
-    "import-newlines/enforce": "off", // включить после переписывани на fsd ["warn",{"items": 1,"max-len": 100,"semi": false}]
+    "import-newlines/enforce": "off",
+    // включить после переписывани на fsd ["warn",{"items": 1,"max-len": 100,"semi": false}]
     "react/no-children-prop": "error",
     "react/jsx-curly-brace-presence": "warn",
     "react/jsx-curly-spacing": [
@@ -204,7 +207,10 @@
     ],
     "react/jsx-key": "warn",
     "react/jsx-fragments": "warn",
-    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-closing-bracket-location": [
+      "warn",
+      "tag-aligned"
+    ],
     "react/jsx-max-props-per-line": [
       "warn",
       {
@@ -222,7 +228,8 @@
         "html": true
       }
     ],
-    "@typescript-eslint/no-duplicate-imports": "off", // "warn" включить после переписывания на fsd
+    "@typescript-eslint/no-duplicate-imports": "off",
+    // "warn" включить после переписывания на fsd
     "@typescript-eslint/no-shadow": "warn",
     "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/comma-dangle": "warn",
