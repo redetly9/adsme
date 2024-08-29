@@ -75,7 +75,7 @@ export const getPostsByTag = async (tag: string) => {
   return { data: posts }
 }
 
-export const getPostsByUserId = async (userId: string) => {
+export const getPostsByUserId = async (userId: string): Promise<{ data: PostType[] } | { error: any }> => {
   const { data: posts, error } = await supabase
     .from('posts')
     .select(`

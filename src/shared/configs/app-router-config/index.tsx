@@ -62,6 +62,10 @@ export const AppRouterConfig: RouteObject[] = [
       {
         path: RoutesPath[AppRoutes.MY_PROFILE],
         element: <ProfilePage />
+      },
+      {
+        path: RoutesPath[AppRoutes.USER_FEED],
+        element: <UserFeedPage />
       }
     ]
   },
@@ -80,9 +84,5 @@ export const AppRouterConfig: RouteObject[] = [
   {
     path: RoutesPath[AppRoutes.USER_PROFILE],
     element: <UserProfilePage />
-  },
-  {
-    path: RoutesPath[AppRoutes.USER_FEED],
-    element: <UserFeedPage />
   }
 ]

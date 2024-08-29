@@ -36,7 +36,7 @@ export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
     (async () => {
       if (user) {
         const { data: sender } = await getChatParticipants(chat.id.toString())
-        const senderApiData = sender?.find((s) => (s?.user_profile_id === user?.id))
+        const senderApiData = sender?.find((s) => (s?.user_profile_id !== user?.id))
         setSenderData(senderApiData || null)
       }
     })()

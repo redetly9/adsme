@@ -1,0 +1,1 @@
+export { UserFeedPageSkeleton } from './ui'

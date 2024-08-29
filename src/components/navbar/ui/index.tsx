@@ -20,7 +20,13 @@ export const Navbar = memo(() => {
   useLayoutEffect(() => {
     if (pathname === RoutesPath.main) return
 
-    const tabObjectIndex = navbarTabs.findIndex(t => t.path === pathname)
+    let tabObjectIndex = navbarTabs.findIndex(t => t.path === pathname)
+
+    // если просмотр фидов, ставим таб на таб фидов
+    if (pathname.includes(RoutesPath.user_feed.replace(':id', ''))) {
+      tabObjectIndex = navbarTabs.findIndex(t => t.path === '/feed')
+    }
+
     if (tabObjectIndex !== tabValue) {
       setTabValue(tabObjectIndex)
     }

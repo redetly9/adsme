@@ -1,5 +1,6 @@
 import type { ChatParticipantsType, ChatType } from '~shared/types/chats'
 import type { RequestErrorType } from '~shared/types/errors'
+import type { ChatMessageType } from '~shared/types/messages'
 
 import { supabase } from '../supabase'
 
@@ -170,7 +171,7 @@ export const getChatParticipants = async (chatId: string): Promise<{ data: ChatP
 }
 
 // Функция для получения сообщений чата
-export const getChatMessages = async (chatId: string) => {
+export const getChatMessages = async (chatId: string): Promise<{ data: ChatMessageType[] } | { error: any }> => {
   const { data: messages, error } = await supabase
     .from('messages')
     .select(`

@@ -1,0 +1,1 @@
+export { UserChatPageMessages } from './ui'

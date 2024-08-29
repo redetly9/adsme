@@ -1,0 +1,32 @@
+.ChatMessage {
+  max-width: 60%;
+
+  &-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.25em;
+  }
+
+  &-name,
+  &-time {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--text-color-2);
+  }
+
+  &-time {
+    margin-left: 16px !important;
+  }
+
+  &-message {
+    padding: 10px;
+    border-radius: 12px;
+    word-break: break-all;
+
+    &-text {
+      font-size: 14px !important;
+      font-weight: 400 !important;
+    }
+  }
+}

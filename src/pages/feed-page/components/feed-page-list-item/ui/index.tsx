@@ -27,7 +27,8 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
   /** constants */
   const isFollowed = followers?.find(f => f.follow_user_id === post?.author?.id)
 
-  const checkAndAddChat = async () => {
+  const checkAndAddChat = async (event: React.MouseEvent) => {
+    event.stopPropagation()
     const otherUserId = post?.author?.id
 
     if (!user || !otherUserId) return
@@ -72,7 +73,10 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
             sx={{ ml: 2 }}
             onClick={(e) => navigateToById(e, RoutesPath.user_feed)}
           >
-            <Typography variant='subtitle1'>
+            <Typography
+              variant='subtitle1'
+              className='FeedPageListItem-left-info-name'
+            >
               {post?.author?.surname}
               {' '}
               {post?.author?.name}
@@ -83,7 +87,10 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
                 !post?.author?.surname && !post?.author?.name && !post?.author?.lastname && 'User'
               }
             </Typography>
-            <Typography variant='subtitle2'>
+            <Typography
+              variant='subtitle2'
+              className='FeedPageListItem-left-info-title'
+            >
               {post?.title}
             </Typography>
           </Box>
@@ -92,7 +99,10 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
           className='FeedPageListItem-right'
           onClick={(e) => navigateToById(e, RoutesPath.user_feed)}
         >
-          <Typography variant='subtitle2'>
+          <Typography
+            className='FeedPageListItem-right-time'
+            variant='subtitle2'
+          >
             {moment(post.created_at).fromNow()}
           </Typography>
           <Box className='FeedPageListItem-right-action'>
@@ -108,10 +118,12 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
                   </Button>
                   {
                     isFollowed
-                      ? <FavoriteIcon
-                        color='error'
-                        onClick={followHandler}
-                      />
+                      ? (
+                        <FavoriteIcon
+                          color='error'
+                          onClick={followHandler}
+                        />
+                      )
                       : <FavoriteBorderIcon onClick={followHandler} />
                   }
                 </>

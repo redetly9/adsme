@@ -34,7 +34,7 @@ export const MessagesPageList = () => {
   }, [user])
 
   if (isLoading) return (
-    <LoadingOverlay noFull={90} />
+    <LoadingOverlay noFull={80} />
   )
 
   return (
