@@ -2,7 +2,7 @@ import './index.scss'
 
 import { Box, Typography } from '@mui/material'
 import moment from 'moment'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -20,6 +20,8 @@ export const UserFeedPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [posts, setPosts] = useState<PostType[] | null>(null)
+
+  const parentRef = useRef(null)
 
   const getPosts = useCallback(async () => {
     try {
@@ -78,13 +80,17 @@ export const UserFeedPage = () => {
   }
 
   return (
-    <Box className='UserFeedPage'>
+    <Box
+      ref={parentRef}
+      className='UserFeedPage'
+    >
       <Box className='UserFeedPage-list'>
         {isLoading
-          ? Array.from({ length: 4 }).map((_, index) => <UserFeedPageSkeleton key={index} />)
+          ? Array.from({ length: 4 }).map((_, i) => <UserFeedPageSkeleton key={i} />)
           : filteredPosts?.map((post) => (
             <UserFeedPageFeed
               key={post.id}
+              parentRef={parentRef}
               post={post}
               getPosts={getPosts}
             />

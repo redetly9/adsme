@@ -13,7 +13,9 @@ import CardMedia from '@mui/material/CardMedia'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import moment from 'moment'
-import { memo, useCallback, useMemo, useState } from 'react'
+import type { MutableRefObject } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -24,16 +26,34 @@ import type { PostType } from '~shared/types/posts'
 
 type UserFeedPageFeedProps = {
   post: PostType,
-  getPosts: () => void
+  getPosts: () => void,
+  parentRef: MutableRefObject<null>
 }
 
-export const UserFeedPageFeed = memo(({ post, getPosts }: UserFeedPageFeedProps) => {
+export const UserFeedPageFeed = memo(({
+  post,
+  getPosts,
+  parentRef
+}: UserFeedPageFeedProps) => {
   const user = useUserStore(state => state.user)
   const navigate = useNavigate()
   const [isOpenModal, setIsOpenModal] = useState(false)
 
   const { data: followers, refetch } = useUserFollowings(user?.id.toString())
   const isFollowed = useMemo(() => followers?.find(f => f.follow_user_id === post?.author?.id), [followers, post?.author?.id])
+
+  /** Ослеживание просмотра поста ЦЕЛИКОМ */
+  const { ref, inView } = useInView({
+    threshold: 1, // 100% видимость
+    root: parentRef.current,
+    rootMargin: '0px'
+  })
+
+  useEffect(() => {
+    if (inView) { //TODO сделать проверку, что такой просмотр на посте не висит
+      console.log(`Пост с айди ${post.id}, был просмотрен пользователем с айди ${user?.id}`)
+    }
+  }, [inView, post.id, user?.id])
 
   const checkAndAddChat = async () => {
     if (!user || !post.author) return
@@ -70,7 +90,10 @@ export const UserFeedPageFeed = memo(({ post, getPosts }: UserFeedPageFeedProps)
   }, [getPosts, post?.id])
 
   return (
-    <Card className='UserFeedPageFeed'>
+    <Card
+      ref={ref}
+      className='UserFeedPageFeed'
+    >
       <CardHeader
         avatar={
           <Avatar
@@ -116,6 +139,7 @@ export const UserFeedPageFeed = memo(({ post, getPosts }: UserFeedPageFeedProps)
         subheader={moment(post.created_at).fromNow()}
       />
       <CardMedia
+        className='UserFeedPageFeed-img'
         component='img'
         height='194'
         image={post.images}
