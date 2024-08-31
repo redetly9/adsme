@@ -1,0 +1,1 @@
+export { SettingsMainTab } from './ui'

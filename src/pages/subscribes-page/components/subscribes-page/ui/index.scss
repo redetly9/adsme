@@ -1,0 +1,24 @@
+.SubscribesPage {
+  height: 100%;
+
+  &-list {
+    height: calc(100% - var(--page-header-height));
+
+    padding: 1em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    &-empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+
+      font-size: 18px;
+      color: var(--text-color-2);
+      font-weight: 500;
+    }
+  }
+}

@@ -9,8 +9,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
-import { createChat, followUser, unfollowUser, useUserFollowings } from '~shared/api'
+import { followUser, unfollowUser, useUserFollowings } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import type { PostType } from '~shared/types/posts'
 
 type FeedPageListItemProps = {
@@ -27,20 +28,10 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
   /** constants */
   const isFollowed = followers?.find(f => f.follow_user_id === post?.author?.id)
 
-  const checkAndAddChat = async (event: React.MouseEvent) => {
+  const checkAndAddChatHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
-    const otherUserId = post?.author?.id
 
-    if (!user || !otherUserId) return
-
-    try {
-      const response = await createChat([user.id.toString(), otherUserId?.toString()])
-      if (response && 'data' in response) {
-        navigate(RoutesPath.user_chat.replace(':id', response.data.id.toString()))
-      }
-    } catch (error) {
-      console.error('Ошибка при создании чата:', error)
-    }
+    checkAndAddChat({ userId: user?.id, otherUserId: post?.author?.id, navigate })
   }
 
   const followHandler = async () => {
@@ -112,7 +103,7 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
                   <Button
                     sx={{ p: 0 }}
                     startIcon={<ReplyRoundedIcon />}
-                    onClick={checkAndAddChat}
+                    onClick={checkAndAddChatHandler}
                   >
                     Reply
                   </Button>

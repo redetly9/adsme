@@ -8,6 +8,7 @@ export type UserStore = {
   userGeo: GetUserLocation | null,
   userRadius: number,
   setUserInfo: (data: VerifyUserType['data']) => void,
+  updateUserInfo: (data: UserType) => void,
   removeUserInfo: () => void,
   setUserGeo: (data: GetUserLocation) => void,
   setUserRadius: (data: number) => void

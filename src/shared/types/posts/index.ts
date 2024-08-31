@@ -21,7 +21,7 @@ export type PostTypeAuthor = {
 export type CreatePostType = {
   title: string,
   images: string,
-  tags: string[],
+  tags: string,
   longitude: number,
   latitude: number,
   author: string

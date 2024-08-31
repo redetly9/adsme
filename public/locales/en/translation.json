@@ -1,12 +1,19 @@
 {
-  "Язык": "English",
-  "Короткий язык": "En",
-  "Главная": "Main",
-  "О нас": "About us",
-  "Главная страница": "Main page",
-  "Страница о нас": "About us page",
-  "Страница не найдена": "Page not found",
+  "Перезагрузить": "Reboot",
   "В приложении произошла ошибка": "An error occurred in the application",
-  "Перезагрузить страницу": "Reload the page",
-  "Войти": "Login"
+  "Язык": "Language",
+  "Русский": "English",
+  "Выход из аккаунта": "Log out",
+  "Выйти": "Logout",
+  "Удаление аккаунта": "Deleting an account",
+  "Удалить аккаунт": "Delete an account",
+  "Вы уверены, что хотите выйти?": "Are you sure you want to log out?",
+  "Вы уверены, что хотите удалить аккаунт?": "Are you sure you want to delete an account?",
+  "Настройки": "Settings",
+  "Главная": "Main",
+  "Пользователь": "User",
+  "Имя": "Name",
+  "Фамилия": "Surname",
+  "Отчество": "Lastname",
+  "Сохранить": "Save"
 }

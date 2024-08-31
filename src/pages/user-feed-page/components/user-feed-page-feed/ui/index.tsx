@@ -14,14 +14,15 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import moment from 'moment'
 import type { MutableRefObject } from 'react'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
 
+import { ConfirmModal } from '~components/confirm-modal'
 import { useUserStore } from '~model/user-model'
-import { DeletePostModal } from '~pages/user-feed-page/components/delete-post-modal'
-import { createChat, deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
+import { deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import type { PostType } from '~shared/types/posts'
 
 type UserFeedPageFeedProps = {
@@ -55,17 +56,10 @@ export const UserFeedPageFeed = memo(({
     }
   }, [inView, post.id, user?.id])
 
-  const checkAndAddChat = async () => {
-    if (!user || !post.author) return
+  const checkAndAddChatHandler = async (event: React.MouseEvent) => {
+    event.stopPropagation()
 
-    try {
-      const response = await createChat([user.id.toString(), post.author.id.toString()])
-      if (response && 'data' in response) {
-        navigate(RoutesPath.user_chat.replace(':id', response.data.id.toString()))
-      }
-    } catch (error) {
-      console.error('Ошибка при создании чата:', error)
-    }
+    checkAndAddChat({ userId: user?.id, otherUserId: post?.author?.id, navigate })
   }
 
   const followHandler = async () => {
@@ -89,6 +83,12 @@ export const UserFeedPageFeed = memo(({
     }
   }, [getPosts, post?.id])
 
+  const navigateToProfile = () => {
+    if (post?.author?.id) {
+      navigate(RoutesPath.user_profile.replace(':id', post?.author?.id.toString()))
+    }
+  }
+
   return (
     <Card
       ref={ref}
@@ -98,6 +98,7 @@ export const UserFeedPageFeed = memo(({
         avatar={
           <Avatar
             src={post?.author?.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JYrktZNYfJ7k1QFk-hL3v6J9fiTAvsZeWRTybV0hSv_-wwPli_IJBB16Y8Tepi5U0Qg&usqp=CAU'}
+            onClick={navigateToProfile}
           />
         }
         action={
@@ -109,7 +110,7 @@ export const UserFeedPageFeed = memo(({
                     <Button
                       sx={{ p: 0 }}
                       startIcon={<ReplyRoundedIcon />}
-                      onClick={checkAndAddChat}
+                      onClick={checkAndAddChatHandler}
                     >
                       Reply
                     </Button>
@@ -166,10 +167,11 @@ export const UserFeedPageFeed = memo(({
           }
         </Box>
       </CardContent>
-      <DeletePostModal
+      <ConfirmModal
+        title='Вы уверены, что хотите удалить пост?'
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
-        deletePostHandler={deletePostHandler}
+        confirmHandler={deletePostHandler}
       />
     </Card>
   )

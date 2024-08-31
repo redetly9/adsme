@@ -1,0 +1,1 @@
+export { ErrorBoundaryError } from './ui'

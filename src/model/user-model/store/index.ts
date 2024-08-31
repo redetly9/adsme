@@ -26,21 +26,28 @@ export const useUserStore = create<UserStore>()(immer((set) => ({
     localStorage.setItem(USER_TOKEN_LOCALE_STORAGE_KEY, data.token)
     localStorage.setItem(USER_PHONE_LOCALE_STORAGE_KEY, data.user.phone)
   },
+  updateUserInfo: (user) => {
+    set(({ user }))
+    localStorage.setItem(USER_LOCALE_STORAGE_KEY, JSON.stringify(user))
+  },
   removeUserInfo: () => {
     set({
       user: null,
       userToken: null,
-      userPhone: null
+      userPhone: null,
+      userGeo: null,
+      userRadius: 1000
     })
     localStorage.removeItem(USER_LOCALE_STORAGE_KEY)
     localStorage.removeItem(USER_TOKEN_LOCALE_STORAGE_KEY)
     localStorage.removeItem(USER_PHONE_LOCALE_STORAGE_KEY)
+    localStorage.removeItem(USER_RADIUS_LOCALE_STORAGE_KEY)
   },
   setUserGeo: (userGeo) => {
     set({ userGeo })
   },
   setUserRadius: (radius) => {
-    localStorage.setItem(USER_RADIUS_LOCALE_STORAGE_KEY, radius.toString())
     set({ userRadius: radius })
+    localStorage.setItem(USER_RADIUS_LOCALE_STORAGE_KEY, radius.toString())
   }
 })))

@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'adsme_v2',
+  appId: 'app.adsme.apps',
+  appName: 'Adsme',
   webDir: 'dist'
 }
 

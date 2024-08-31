@@ -1,0 +1,44 @@
+@mixin DefaultFlex() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.SubscribeListItem {
+  padding: 1em;
+  @include DefaultFlex;
+
+  border-radius: 0.5em;
+  background-color: var(--background-color-2);
+
+  &-left {
+    @include DefaultFlex;
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3em;
+    }
+  }
+
+  &-right {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    button {
+      color: #32383e;
+    }
+  }
+
+
+  &-title {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--text-color-2);
+  }
+}

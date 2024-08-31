@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query'
 
+import type { FollowerType } from '~shared/types/followers'
+
 import { supabase } from '../supabase'
 
 export const useUserFollowings = (userId: string | undefined) => {
@@ -17,7 +19,7 @@ export const useUserFollowings = (userId: string | undefined) => {
         throw new Error(error.message)
       }
 
-      return data
+      return data as FollowerType[]
     },
     {
       enabled: !!userId

@@ -83,7 +83,7 @@ export const getAllUsers = async () => {
   return { data: users }
 }
 
-export const getUserById = async (userId: string) => {
+export const getUserById = async (userId: string): Promise<{ data: UserType } | { error: any }> => {
   const { data: user, error } = await supabase
     .from('user_profiles')
     .select('*')

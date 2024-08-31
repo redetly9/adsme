@@ -30,9 +30,12 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const chatId = useMemo(() => isGroupChat ? '58' : paramsChatId, [paramsChatId, isGroupChat])
   const sender = chat?.find(c => c.user_profile_id !== user?.id)?.user_profiles
 
-  const getChatMessagesApi = useCallback(async () => {
+  const getChatMessagesApi = useCallback(async (withLoading = true) => {
     if (!user || !chatId) return
-    setIsLoading(true)
+
+    if (withLoading) {
+      setIsLoading(true)
+    }
     try {
       const responseChat = await getChatParticipants(chatId)
       setChat(responseChat.data)
@@ -44,7 +47,9 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
     } catch (err) {
       console.error(err)
     } finally {
-      setIsLoading(false)
+      if (withLoading) {
+        setIsLoading(false)
+      }
     }
   }, [chatId, user])
 
@@ -56,7 +61,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
       user.id.toString(),
       textAreaValue
     )
-    getChatMessagesApi()
+    getChatMessagesApi(false)
     setTextAreaValue('')
   }
 
