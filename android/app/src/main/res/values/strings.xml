@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Adsme</string>
-    <string name="title_activity_main">Adsme</string>
-    <string name="package_name">app.adsme.apps</string>
-    <string name="custom_url_scheme">app.adsme.apps</string>
-</resources>
