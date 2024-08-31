@@ -1,3 +1,11 @@
+@mixin DefaultFlex() {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .UserChatPage {
   height: 100%;
 
@@ -20,12 +28,12 @@
     }
 
     &-loading {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include DefaultFlex;
       background-color: var(--background-color-2);
+    }
+
+    &-empty {
+      @include DefaultFlex;
     }
   }
 }

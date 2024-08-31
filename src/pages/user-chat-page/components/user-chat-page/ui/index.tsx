@@ -84,19 +84,23 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
             ? <Box className='UserChatPage-content-loading'>
               <CircularProgress />
             </Box>
-            : <>
-              <UserChatPageMessages chatMessages={chatMessages} />
-              <Box className='UserChatPage-content-footer'>
-                <CustomInput
-                  className='UserChatPage-content-footer-input'
-                  placeholder='Сообщение'
-                  value={textAreaValue}
-                  onChange={(event) => setTextAreaValue(event.target.value)}
-                  iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
-                  onRightIconClick={onSendMessage}
-                />
+            : chatMessages && chatMessages.length > 0
+              ? <>
+                <UserChatPageMessages chatMessages={chatMessages} />
+                <Box className='UserChatPage-content-footer'>
+                  <CustomInput
+                    className='UserChatPage-content-footer-input'
+                    placeholder='Сообщение'
+                    value={textAreaValue}
+                    onChange={(event) => setTextAreaValue(event.target.value)}
+                    iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
+                    onRightIconClick={onSendMessage}
+                  />
+                </Box>
+              </>
+              : <Box className='UserChatPage-content-empty'>
+                Чатов нет
               </Box>
-            </>
         }
       </Box>
     </Box>
