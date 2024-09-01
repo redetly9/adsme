@@ -6,9 +6,25 @@ import { useEffect } from 'react'
 
 import { AppRouter } from '~app/app-router'
 import { useUserStore } from '~model/user-model'
+import { supabase } from '~shared/api/supabase'
+import { addPostView, deleteUser, getTotalPostViews, getUniquePostViews } from '~shared/api/user-api'
 
 export const App = () => {
   const setUserGeo = useUserStore(state => state.setUserGeo)
+  const user = useUserStore(state => state.user)
+
+  useEffect(() => {
+    if (user?.id) {
+      const channel = supabase
+        .channel(`new_message_${user?.id}`)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+          const message = payload.new;
+          console.log('Новое сообщение:', message);
+        })
+        .subscribe();
+    }
+  }, [user])
+  
 
   useEffect(() => {
     /** Функция для работы в мобильных */
