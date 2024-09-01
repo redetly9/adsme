@@ -6,12 +6,12 @@ import { memo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { CodeInput } from '~components/code-input'
-import { PhoneInput } from '~components/phone-input'
 import { useUserStore } from '~model/user-model'
 import { initialValuesSignInPage, SignInStages } from '~pages/sign-in-page/const'
 import type { InitialValuesSignInPageType } from '~pages/sign-in-page/type'
 import { registerUser, verifyUser } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { PhoneInput } from '~shared/ui/phone-input'
 
 export const SignInPage = memo(() => {
   const setUserInfo = useUserStore(state => state.setUserInfo)

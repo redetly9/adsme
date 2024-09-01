@@ -5,10 +5,10 @@ import { useFormik } from 'formik'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { PhoneInput } from '~components/phone-input'
 import { useUserStore } from '~model/user-model'
 import { getUserById, updateUser } from '~shared/api'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
+import { PhoneInput } from '~shared/ui/phone-input'
 
 export const SettingsUserTab = () => {
   const { t } = useTranslation()

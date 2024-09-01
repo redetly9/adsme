@@ -1,9 +1,6 @@
-export type GetUserLocation = {
-  latitude: number,
-  longitude: number
-}
+import type { UserGeoType } from '~model/user-model/types'
 
-export const getUserLocation = (): Promise<GetUserLocation> => {
+export const getUserLocation = (): Promise<UserGeoType> => {
   return new Promise((resolve, reject) => {
     // Проверяем, доступна ли геолокация в браузере пользователя
     if (!navigator.geolocation) {
