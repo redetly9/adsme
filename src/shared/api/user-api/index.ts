@@ -179,3 +179,35 @@ export const getTotalPostViews = async (postId: number) => {
   return users?.length
 }
 
+
+export const getUniqueUserViews = async (userId: number) => {
+  const { data, error } = await supabase
+    .from('post_views')
+    .select('post_id')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message)
+    return { error }
+  }
+
+  const uniquePosts = [...new Set(data.map((view) => view.post_id))]
+  
+  return { data: uniquePosts?.length }
+}
+
+export const getTotalUserViews = async (userId: number) => {
+  const { data, error } = await supabase
+    .from('post_views')
+    .select('post_id')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Ошибка при получении общего количества просмотров поста:', error.message)
+    return { error }
+  }
+
+  const posts = data?.map(d => d.post_id)
+
+  return posts?.length
+}
