@@ -13,6 +13,7 @@ export const MainPage = () => {
 
   const withoutPadding = useMemo(() => {
     return pathname === RoutesPath.group_chat
+      || pathname === RoutesPath.my_profile
       || pathname.includes(RoutesPath.user_feed.replace(':id', ''))
   }, [pathname])
 
