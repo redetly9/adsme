@@ -131,70 +131,66 @@ export const deleteUser = async (userId: number) => {
 
 export const getUniqueUserPostsViews = async (
   userId: number,
-  startDate: string,  // в формате YYYY-MM-DD
-  endDate: string     // в формате YYYY-MM-DD
+  startDate: string, // в формате YYYY-MM-DD
+  endDate: string // в формате YYYY-MM-DD
 ): Promise<{ data: number } | { error: any }> => {
   // Добавляем время к дате, чтобы использовать формат ISO 8601
-  const startIsoDate = `${startDate}T00:00:00Z`;
-  const endIsoDate = `${endDate}T23:59:59Z`;
+  const startIsoDate = `${startDate}T00:00:00Z`
+  const endIsoDate = `${endDate}T23:59:59Z`
 
   const { data: myPosts } = await supabase
     .from('posts')
     .select('id')
-    .eq('author', userId);
+    .eq('author', userId)
 
-  const myPostsIds = myPosts?.map((mp) => mp.id);
+  const myPostsIds = myPosts?.map((mp) => mp.id)
 
   const { data, error } = await supabase
     .from('post_views')
     .select('user_id')
     .in('post_id', myPostsIds ?? [])
     .gte('created_at', startIsoDate) // Фильтр по дате начала с временем
-    .lte('created_at', endIsoDate);  // Фильтр по дате конца с временем
+    .lte('created_at', endIsoDate) // Фильтр по дате конца с временем
 
   if (error) {
-    console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message);
-    return { error };
+    console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message)
+    return { error }
   }
 
-  const uniquePosts = [...new Set(data.map((view) => view.user_id))];
+  const uniquePosts = [...new Set(data.map((view) => view.user_id))]
 
-  return { data: uniquePosts?.length || 0 };
-};
-
+  return { data: uniquePosts?.length || 0 }
+}
 
 export const getTotalUserPostsViews = async (
   userId: number,
-  startDate: string,  // в формате YYYY-MM-DD
-  endDate: string     // в формате YYYY-MM-DD
+  startDate: string, // в формате YYYY-MM-DD
+  endDate: string // в формате YYYY-MM-DD
 ): Promise<{ data: number } | { error: any }> => {
   // Добавляем время к дате, чтобы использовать формат ISO 8601
-  const startIsoDate = `${startDate}T00:00:00Z`;
-  const endIsoDate = `${endDate}T23:59:59Z`;
+  const startIsoDate = `${startDate}T00:00:00Z`
+  const endIsoDate = `${endDate}T23:59:59Z`
 
   const { data: myPosts } = await supabase
     .from('posts')
     .select('id')
-    .eq('author', userId);
+    .eq('author', userId)
 
-  const myPostsIds = myPosts?.map((mp) => mp.id);
+  const myPostsIds = myPosts?.map((mp) => mp.id)
 
   const { data, error } = await supabase
     .from('post_views')
     .select('user_id')
     .in('post_id', myPostsIds ?? [])
     .gte('created_at', startIsoDate) // Фильтр по дате начала с временем
-    .lte('created_at', endIsoDate);  // Фильтр по дате конца с временем
+    .lte('created_at', endIsoDate) // Фильтр по дате конца с временем
 
   if (error) {
-    console.error('Ошибка при получении общего количества просмотров поста:', error.message);
-    return { error };
+    console.error('Ошибка при получении общего количества просмотров поста:', error.message)
+    return { error }
   }
 
-  const users = data?.map((d) => d.user_id);
+  const users = data?.map((d) => d.user_id)
 
-  return { data: users?.length || 0 };
-};
-
-
-
+  return { data: users?.length || 0 }
+}
