@@ -1,6 +1,7 @@
+import { BarChart, TrendingUp } from '@mui/icons-material'
 import './index.scss'
 
-import { Box, CircularProgress, Typography } from '@mui/material'
+import { Avatar, Box, CircularProgress, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -45,16 +46,40 @@ export const ProfilePageStatistic = () => {
 
   return (
     <Box className='ProfilePageStatistic'>
-      <Typography>
-        {t('Всего просмотров постов')}
-        {': '}
-        {allViews}
-      </Typography>
-      <Typography>
-        {t('Уникальных просмотров постов')}
-        {': '}
-        {uniqueViews}
-      </Typography>
+      <List>
+        <ListItem
+          secondaryAction={
+            <Typography>{allViews}</Typography>
+          }
+        >
+          <ListItemAvatar>
+            <Avatar>
+              <BarChart />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={<Typography>
+              {t('Всего просмотров постов')}
+            </Typography>}
+          />
+        </ListItem>
+        <ListItem
+          secondaryAction={
+            <Typography>{uniqueViews}</Typography>
+          }
+        >
+          <ListItemAvatar>
+            <Avatar>
+              <TrendingUp />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={<Typography>
+              {t('Всего Уникальных просмотров постов')}
+            </Typography>}
+          />
+        </ListItem>
+      </List>
     </Box>
   )
 }
