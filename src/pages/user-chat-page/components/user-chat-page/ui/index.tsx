@@ -3,6 +3,7 @@ import './index.scss'
 import SendIcon from '@mui/icons-material/Send'
 import { Box, CircularProgress } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -20,6 +21,8 @@ type UserChatPageProps = {
 
 export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const { id: paramsChatId } = useParams()
+  const { t } = useTranslation()
+
   const user = useUserStore(state => state.user)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -72,7 +75,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   return (
     <Box className='UserChatPage'>
       <PageHeader
-        title={isGroupChat ? 'General Chat' : sender?.name || 'User'}
+        title={isGroupChat ? t('Главный чат') : sender?.name || 'User'}
         withNavigateBack={!isGroupChat}
         avatar={sender?.avatar || ''}
         pathNavigateAvatar={RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)}
@@ -84,13 +87,13 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
             ? <Box className='UserChatPage-content-loading'>
               <CircularProgress />
             </Box>
-            : chatMessages && chatMessages.length > 0
+            : chatMessages
               ? <>
                 <UserChatPageMessages chatMessages={chatMessages} />
                 <Box className='UserChatPage-content-footer'>
                   <CustomInput
                     className='UserChatPage-content-footer-input'
-                    placeholder='Сообщение'
+                    placeholder={t('Сообщение')}
                     value={textAreaValue}
                     onChange={(event) => setTextAreaValue(event.target.value)}
                     iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
@@ -99,7 +102,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
                 </Box>
               </>
               : <Box className='UserChatPage-content-empty'>
-                Чатов нет
+                {t('Чатов нет')}
               </Box>
         }
       </Box>

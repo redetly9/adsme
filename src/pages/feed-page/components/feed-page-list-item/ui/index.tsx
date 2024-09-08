@@ -6,12 +6,14 @@ import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import { Avatar, Box, Button, Typography } from '@mui/material'
 import moment from 'moment'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
 import { followUser, unfollowUser, useUserFollowings } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
+import { getUserName } from '~shared/lib/get-user-name'
 import type { PostType } from '~shared/types/posts'
 
 type FeedPageListItemProps = {
@@ -20,6 +22,7 @@ type FeedPageListItemProps = {
 
 export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   /** formik */
   const user = useUserStore(state => state.user)
 
@@ -68,15 +71,7 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
               variant='subtitle1'
               className='FeedPageListItem-left-info-name'
             >
-              {post?.author?.surname}
-              {' '}
-              {post?.author?.name}
-              {' '}
-              {post?.author?.lastname}
-
-              {
-                !post?.author?.surname && !post?.author?.name && !post?.author?.lastname && 'User'
-              }
+              {getUserName(post.author)}
             </Typography>
             <Typography
               variant='subtitle2'
@@ -105,7 +100,7 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
                     startIcon={<ReplyRoundedIcon />}
                     onClick={checkAndAddChatHandler}
                   >
-                    Reply
+                    {t('Написать')}
                   </Button>
                   {
                     isFollowed

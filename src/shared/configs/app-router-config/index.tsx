@@ -8,6 +8,7 @@ import { PageNotFound } from '~pages/page-not-found'
 import { ProfilePage } from '~pages/profile-page'
 import { SettingsPage } from '~pages/settings-page'
 import { SignInPage } from '~pages/sign-in-page'
+import { SubscribePlansPage } from '~pages/subscribe-plans-page'
 import { SubscribesPage } from '~pages/subscribes-page'
 import { UserChatPage } from '~pages/user-chat-page'
 import { UserFeedPage } from '~pages/user-feed-page'
@@ -25,9 +26,11 @@ export enum AppRoutes {
   USER_PROFILE = 'user_profile',
   USER_CHAT = 'user_chat',
   USER_FEED = 'user_feed',
+
   SUBSCRIBERS = 'subscribes',
   CREATE_POST = 'create_post',
   SETTINGS = 'settings',
+  SUBSCRIBE_PLANS = 'subscribe_plans',
 
   NOT_FOUND = 'not_found'
 }
@@ -44,9 +47,11 @@ export const RoutesPath: Record<AppRoutes, string> = {
   [AppRoutes.USER_PROFILE]: '/profile/:id',
   [AppRoutes.USER_CHAT]: '/chat/:id',
   [AppRoutes.USER_FEED]: '/feed/:id',
+
   [AppRoutes.SUBSCRIBERS]: '/subscribes-page',
   [AppRoutes.CREATE_POST]: '/create-post',
   [AppRoutes.SETTINGS]: '/settings',
+  [AppRoutes.SUBSCRIBE_PLANS]: '/subscribe_plans',
 
   [AppRoutes.NOT_FOUND]: '*'
 }
@@ -105,5 +110,9 @@ export const AppRouterConfig: RouteObject[] = [
   {
     path: RoutesPath[AppRoutes.CREATE_POST],
     element: <CreatePostPage />
+  },
+  {
+    path: RoutesPath[AppRoutes.SUBSCRIBE_PLANS],
+    element: <SubscribePlansPage />
   }
 ]

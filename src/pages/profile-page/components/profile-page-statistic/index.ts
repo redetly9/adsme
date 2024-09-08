@@ -1,0 +1,1 @@
+export { ProfilePageStatistic } from './ui'

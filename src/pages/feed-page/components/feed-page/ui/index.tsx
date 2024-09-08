@@ -28,6 +28,7 @@ export const FeedPage = () => {
   const [tags, setTags] = useState<string[]>([])
   const [search, setSearch] = useState('')
   const [posts, setPosts] = useState<PostType[] | null>(null)
+  const [isLoadingPosts, setIsLoadingPosts] = useState(false)
   const [sliderValue, setSliderValue] = useState(userRadius)
   /**
    * Refs
@@ -62,12 +63,20 @@ export const FeedPage = () => {
   useEffect(() => {
     if (userGeo) {
       (async () => {
-        const response = await getPostsByLocation(userGeo.longitude, userGeo.latitude, userRadius || 1000)
-        if ('data' in response) {
-          setPosts(response.data)
-        } else {
-          console.error(response.error)
+        try {
+          setIsLoadingPosts(true)
+          const response = await getPostsByLocation(userGeo.longitude, userGeo.latitude, userRadius || 1000)
+          if ('data' in response) {
+            setPosts(response.data)
+          } else {
+            console.error(response.error)
+          }
+        } catch (e) {
+          console.error(e)
+        } finally {
+          setIsLoadingPosts(false)
         }
+
       })()
     }
   }, [userGeo, userRadius])
@@ -110,7 +119,7 @@ export const FeedPage = () => {
           />
         </Box>
         <FeedPageList
-          posts={posts}
+          isLoading={isLoadingPosts}
           filteredPosts={filteredPosts}
         />
       </Box>

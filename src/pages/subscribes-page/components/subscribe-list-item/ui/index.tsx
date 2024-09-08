@@ -3,34 +3,27 @@ import './index.scss'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
+import { getUserName } from '~shared/lib/get-user-name'
+import type { UserType } from '~shared/types/user'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
 
-type SubscribeListItemProps = {
-  id: number,
-  name: string | null,
-  phone: string,
-  avatar: string | null,
-  surname: string | null,
-  lastname: string | null,
-  birth_date: string | null
-}
+export const SubscribeListItem = (props: UserType) => {
+  const {
+    birth_date,
+    avatar,
+    phone,
+    id
+  } = props
 
-export const SubscribeListItem = ({
-  birth_date,
-  avatar,
-  name,
-  phone,
-  surname,
-  lastname,
-  id
-}: SubscribeListItemProps) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
   const [isChatLoading, setIsChatLoading] = useState(false)
@@ -60,7 +53,7 @@ export const SubscribeListItem = ({
           onClick={navigateToProfile}
         >
           <Typography className='SubscribeListItem-title'>
-            {[surname, name, lastname].join(' ') || 'User'}
+            {getUserName(props)}
           </Typography>
           <Typography className='SubscribeListItem-title'>
             {formatPhoneNumber(phone)}
@@ -69,14 +62,14 @@ export const SubscribeListItem = ({
       </Box>
       <Box className='SubscribeListItem-right'>
         <Typography className='SubscribeListItem-title'>
-          {birth_date ? birth_date : 'ДР не указан'}
+          {birth_date ? birth_date : t('ДР не указан')}
         </Typography>
         <Button
           sx={{ p: 0 }}
           startIcon={<ReplyRoundedIcon />}
           onClick={checkAndAddChatHandler}
         >
-          Reply
+          {t('Написать')}
         </Button>
       </Box>
     </Box>

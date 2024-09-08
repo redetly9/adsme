@@ -27,7 +27,7 @@ export const ChatMessage = (props: ChatMessageType) => {
             className='ChatMessage-name'
             variant='subtitle2'
           >
-            {sender?.name || ''}
+            {sender?.name || 'User'}
           </Typography>
           <Typography
             className='ChatMessage-time'

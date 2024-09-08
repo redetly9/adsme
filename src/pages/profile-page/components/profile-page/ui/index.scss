@@ -6,6 +6,12 @@
     height: calc(100% - var(--page-header-height));
   }
 
+  &-title {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: var(--text-color-2) !important;
+  }
+
   &-settings-button {
     display: flex;
     align-items: center;
@@ -39,33 +45,10 @@
     }
   }
 
-  &-secondary-info {
-    margin-top: 16px;
-
-    &-create-post {
-      width: 100%;
-      margin: 1em 0 !important;
-    }
-  }
-
   &-actions {
-    margin-bottom: 1em;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-
-    &-btn {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      background-color: #f1eded !important;
-      border-radius: 6px !important;
-      color: #0796e1 !important;
-      padding: 15px 5px !important;
-    }
   }
 }

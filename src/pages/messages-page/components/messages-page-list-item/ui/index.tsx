@@ -3,6 +3,7 @@ import './index.scss'
 import { Box, Divider, Typography } from '@mui/material'
 import moment from 'moment/moment'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -17,6 +18,8 @@ type MessagesPageListItemProps = {
 
 export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
   const user = useUserStore(state => state.user)
   const [senderData, setSenderData] = useState<ChatParticipantsType | null>(null)
   const lastMessage = chat.messages?.at(-1)
@@ -60,7 +63,7 @@ export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
                 {senderData?.user_profiles?.name ?? 'User'}
               </Typography>
               <Typography variant='subtitle2'>
-                {lastMessage?.text ? lastMessage?.text : 'Последнее сообщение'}
+                {lastMessage?.text ? lastMessage.text : t('Последнее сообщение')}
               </Typography>
             </Box>
           </Box>

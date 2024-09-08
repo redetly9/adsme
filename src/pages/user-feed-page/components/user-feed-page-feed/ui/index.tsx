@@ -14,15 +14,18 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import moment from 'moment'
 import type { MutableRefObject } from 'react'
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
 
 import { ConfirmModal } from '~components/confirm-modal'
 import { useUserStore } from '~model/user-model'
 import { deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
+import { addPostView } from '~shared/api/post-api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
+import { getUserName } from '~shared/lib/get-user-name'
 import type { PostType } from '~shared/types/posts'
 
 type UserFeedPageFeedProps = {
@@ -36,25 +39,28 @@ export const UserFeedPageFeed = memo(({
   getPosts,
   parentRef
 }: UserFeedPageFeedProps) => {
-  const user = useUserStore(state => state.user)
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const user = useUserStore(state => state.user)
   const [isOpenModal, setIsOpenModal] = useState(false)
 
   const { data: followers, refetch } = useUserFollowings(user?.id.toString())
   const isFollowed = useMemo(() => followers?.find(f => f.follow_user_id === post?.author?.id), [followers, post?.author?.id])
 
-  /** Ослеживание просмотра поста ЦЕЛИКОМ */
-  const { ref, inView } = useInView({
+  /** Отслеживание просмотра поста ЦЕЛИКОМ */
+  const { ref } = useInView({
     threshold: 1, // 100% видимость
     root: parentRef.current,
-    rootMargin: '0px'
-  })
-
-  useEffect(() => {
-    if (inView) { //TODO сделать проверку, что такой просмотр на посте не висит
-      console.log(`Пост с айди ${post.id}, был просмотрен пользователем с айди ${user?.id}`)
+    rootMargin: '0px',
+    triggerOnce: true,
+    onChange: (inView) => {
+      if (inView && user) {
+        addPostView(post.id, user.id)
+        console.log(`Пост с айди ${post.id}, был просмотрен пользователем с айди ${user?.id}`)
+      }
     }
-  }, [inView, post.id, user?.id])
+  })
 
   const checkAndAddChatHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -112,7 +118,7 @@ export const UserFeedPageFeed = memo(({
                       startIcon={<ReplyRoundedIcon />}
                       onClick={checkAndAddChatHandler}
                     >
-                      Reply
+                      {t('Написать')}
                     </Button>
                     <IconButton onClick={followHandler}>
                       {isFollowed ? <FavoriteIcon /> : <FavoriteBorderIcon />}
@@ -125,18 +131,13 @@ export const UserFeedPageFeed = memo(({
                     startIcon={<DeleteForeverIcon />}
                     onClick={setIsOpenModal.bind(null, true)}
                   >
-                    Delete
+                    {t('Удалить')}
                   </Button>
                 )
             }
           </Box>
         }
-        title={
-          // если нет ни какой инфы о пользователе, пишем User
-          !post?.author?.surname && !post?.author?.name && !post?.author?.lastname
-            ? 'User'
-            : `${post.author?.surname} ${post.author?.name} ${post.author?.lastname}`
-        }
+        title={getUserName(post?.author)}
         subheader={moment(post.created_at).fromNow()}
       />
       <CardMedia
@@ -168,7 +169,7 @@ export const UserFeedPageFeed = memo(({
         </Box>
       </CardContent>
       <ConfirmModal
-        title='Вы уверены, что хотите удалить пост?'
+        title={t('Вы уверены, что хотите удалить пост?')}
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
         confirmHandler={deletePostHandler}

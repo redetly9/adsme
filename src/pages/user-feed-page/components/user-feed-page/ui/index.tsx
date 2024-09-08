@@ -3,6 +3,7 @@ import './index.scss'
 import { Box, Typography } from '@mui/material'
 import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -13,6 +14,7 @@ import type { PostType } from '~shared/types/posts'
 
 export const UserFeedPage = () => {
   const { id: userFeedsId } = useParams()
+  const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
   const userGeo = useUserStore(state => state.userGeo)
@@ -72,7 +74,7 @@ export const UserFeedPage = () => {
       <Box className='UserFeedPage'>
         <Box className='UserFeedPage-empty'>
           <Typography>
-            Постов нет
+            {t('Постов нет')}
           </Typography>
         </Box>
       </Box>

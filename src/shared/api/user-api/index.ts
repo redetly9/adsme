@@ -115,9 +115,7 @@ export const updateUser = async (
   return { data: updatedUser }
 }
 
-export const deleteUser = async (
-  userId: number,
-) => {
+export const deleteUser = async (userId: number) => {
   const { error } = await supabase
     .from('user_profiles')
     .delete()
@@ -131,56 +129,7 @@ export const deleteUser = async (
   return { data: 'ok' }
 }
 
-export const addPostView = async (
-  postId: number,
-  userId: number
-) => {
-  const { error } = await supabase
-    .from('post_views')
-    .insert([{ post_id: postId, user_id: userId }])
-
-  if (error) {
-    console.error('Ошибка при добавлении просмотра поста:', error.message)
-    return { error }
-  }
-
-  return { data: 'ok' }
-}
-
-export const getUniquePostViews = async (postId: number) => {
-  const { data, error } = await supabase
-    .from('post_views')
-    .select('user_id')
-    .eq('post_id', postId)
-
-  if (error) {
-    console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message)
-    return { error }
-  }
-
-  const uniqueUsers = [...new Set(data.map((view) => view.user_id))]
-  
-  return { data: uniqueUsers?.length }
-}
-
-export const getTotalPostViews = async (postId: number) => {
-  const { data, error } = await supabase
-    .from('post_views')
-    .select('user_id')
-    .eq('post_id', postId)
-
-  if (error) {
-    console.error('Ошибка при получении общего количества просмотров поста:', error.message)
-    return { error }
-  }
-
-  const users = data?.map(d => d.user_id)
-
-  return users?.length
-}
-
-
-export const getUniqueUserViews = async (userId: number) => {
+export const getUniqueUserPostsViews = async (userId: number): Promise<{data: number} | {error: any}> => {
   const { data, error } = await supabase
     .from('post_views')
     .select('post_id')
@@ -192,11 +141,11 @@ export const getUniqueUserViews = async (userId: number) => {
   }
 
   const uniquePosts = [...new Set(data.map((view) => view.post_id))]
-  
-  return { data: uniquePosts?.length }
+
+  return { data: uniquePosts?.length || 0 }
 }
 
-export const getTotalUserViews = async (userId: number) => {
+export const getTotalUserPostsViews = async (userId: number): Promise<{data: number} | {error: any}> => {
   const { data, error } = await supabase
     .from('post_views')
     .select('post_id')
@@ -209,5 +158,5 @@ export const getTotalUserViews = async (userId: number) => {
 
   const posts = data?.map(d => d.post_id)
 
-  return posts?.length
+  return { data: posts?.length || 0 }
 }

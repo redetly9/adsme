@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { useUserStore } from '~model/user-model'
 import { getUserChats } from '~shared/api'
+import { sortChatsByLastMessage } from '~shared/lib/sort-chat-by-last-message'
 import type { ChatType } from '~shared/types/chats'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
 
@@ -27,7 +28,9 @@ export const MessagesPageList = () => {
             .filter(c => c.messages.length > 0) // просто созданные чаты нет смысла сохранять
             .reverse()
 
-          setChats(formatedChatsData || null)
+          const sortedChats = sortChatsByLastMessage(formatedChatsData)
+
+          setChats(sortedChats)
         }
       })()
     }

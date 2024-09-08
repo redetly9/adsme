@@ -3,19 +3,22 @@ import './index.scss'
 import { Box, Button, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { memo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { CodeInput } from '~components/code-input'
 import { useUserStore } from '~model/user-model'
 import { initialValuesSignInPage, SignInStages } from '~pages/sign-in-page/const'
 import type { InitialValuesSignInPageType } from '~pages/sign-in-page/type'
 import { registerUser, verifyUser } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { CodeInput } from '~shared/ui/code-input'
 import { PhoneInput } from '~shared/ui/phone-input'
 
 export const SignInPage = memo(() => {
-  const setUserInfo = useUserStore(state => state.setUserInfo)
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const setUserInfo = useUserStore(state => state.setUserInfo)
   const [stage, setStage] = useState<SignInStages>(SignInStages.SUBMIT_PHONE)
 
   const { values, handleSubmit, handleChange } = useFormik<InitialValuesSignInPageType>({
@@ -45,7 +48,7 @@ export const SignInPage = memo(() => {
         variant='h5'
         fontWeight='bolder'
       >
-        Sign In
+        {t('Вход')}
       </Typography>
       {
         stage === SignInStages.SUBMIT_PHONE
@@ -67,7 +70,7 @@ export const SignInPage = memo(() => {
         variant='contained'
         onClick={() => handleSubmit()}
       >
-        {stage === SignInStages.SUBMIT_PHONE ? 'Sign In' : 'Verify'}
+        {stage === SignInStages.SUBMIT_PHONE ? t('Вход') : t('Подтвердить')}
       </Button>
       <Typography
         variant='caption'

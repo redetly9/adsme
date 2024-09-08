@@ -3,6 +3,7 @@ import { Box, Button, Chip, Input } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type TextInputMultipleSelectProps = {
   tags: string[],
@@ -10,6 +11,7 @@ type TextInputMultipleSelectProps = {
 }
 
 export const TextInputMultipleSelect = ({ tags, setTags }: TextInputMultipleSelectProps) => {
+  const { t } = useTranslation()
   const [tagInputValue, setTagInputValue] = useState('')
   const [tagInputError, setTagInputError] = useState(false)
 
@@ -50,7 +52,7 @@ export const TextInputMultipleSelect = ({ tags, setTags }: TextInputMultipleSele
           value={tagInputValue}
           onChange={tagsInputHandle}
           onKeyDown={onKeyDown}
-          placeholder='# Добавить тег'
+          placeholder={t('# Добавить тег')}
           error={tagInputError}
         />
         <Button

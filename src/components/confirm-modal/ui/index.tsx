@@ -3,6 +3,7 @@ import './index.scss'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import type { Dispatch, SetStateAction } from 'react'
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type DeletePostModalProps = {
   title: string,
@@ -12,6 +13,8 @@ type DeletePostModalProps = {
 }
 
 export const ConfirmModal = memo(({ title, isOpenModal, setIsOpenModal, confirmHandler }: DeletePostModalProps) => {
+  const { t } = useTranslation()
+
   return (
     <Modal
       open={isOpenModal}
@@ -28,14 +31,14 @@ export const ConfirmModal = memo(({ title, isOpenModal, setIsOpenModal, confirmH
             sx={{ width: '100%' }}
             onClick={setIsOpenModal.bind(null, false)}
           >
-            Нет
+            {t('Нет')}
           </Button>
           <Button
             variant='contained'
             sx={{ width: '100%' }}
             onClick={confirmHandler}
           >
-            Да
+            {t('Да')}
           </Button>
         </Box>
       </Box>

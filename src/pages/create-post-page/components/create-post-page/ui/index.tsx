@@ -2,6 +2,7 @@ import './index.scss'
 
 import { Box, Button, CircularProgress, Divider, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { MapComponent } from '~components/map'
@@ -13,7 +14,9 @@ import { TextInputMultipleSelect } from '~shared/ui/text-input-multiple-select'
 
 export const CreatePostPage = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
+  const user = useUserStore(state => state.user)
   const userGeo = useUserStore(state => state.userGeo)
 
   const [value, setValue] = useState('')
@@ -39,7 +42,7 @@ export const CreatePostPage = () => {
   }
 
   const UploadPosts = async () => {
-    if (!lon && !lat && userGeo === null) return
+    if (!lon && !lat && userGeo === null || !user) return
 
     const { data } = await createPost({
       title: description,
@@ -47,7 +50,7 @@ export const CreatePostPage = () => {
       tags: tags.join(' '),
       longitude: lon || userGeo!.longitude,
       latitude: lat || userGeo!.latitude,
-      author: localStorage.user
+      author: user.id.toString()
     })
 
     if (data) {
@@ -64,7 +67,7 @@ export const CreatePostPage = () => {
   return (
     <Box className='CreatePostPage'>
       <PageHeader
-        title='Создание поста'
+        title={t('Создание поста')}
         withRightSideAction={false}
       />
       <Box className='CreatePostPage-content'>
@@ -94,7 +97,7 @@ export const CreatePostPage = () => {
         </Box>
         <TextField
           fullWidth
-          label='Введите описание...'
+          label={t('Введите описание...')}
           value={description}
           onChange={handleDescriptionChange}
           sx={{ mt: 2 }}
@@ -104,7 +107,7 @@ export const CreatePostPage = () => {
           <Typography
             sx={{ mb: 0.5 }}
           >
-            Добавьте теги
+            {t('Добавьте теги')}
           </Typography>
           <TextInputMultipleSelect
             tags={tags}
@@ -115,7 +118,7 @@ export const CreatePostPage = () => {
         <Typography
           sx={{ mb: 0.5 }}
         >
-          Выберете место на карте
+          {t('Выберете место на карте')}
         </Typography>
         {
           value
@@ -135,7 +138,7 @@ export const CreatePostPage = () => {
           variant='contained'
           sx={{ marginTop: '30px' }}
         >
-          Создать пост
+          {t('Создать пост')}
         </Button>
       </Box>
     </Box>

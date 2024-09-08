@@ -1,6 +1,7 @@
 import './index.scss'
 
 import { Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import { useUserStore } from '~model/user-model'
 import { SubscribeListItem } from '~pages/subscribes-page/components/subscribe-list-item'
@@ -9,6 +10,7 @@ import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
 
 export const SubscribesPage = () => {
+  const { t } = useTranslation()
   const user = useUserStore(state => state.user)
 
   const { data: followers, isLoading } = useUserFollowings(user?.id.toString())
@@ -20,7 +22,7 @@ export const SubscribesPage = () => {
   return (
     <Box className='SubscribesPage'>
       <PageHeader
-        title='Подписчики'
+        title={t('Подписчики')}
         withRightSideAction={false}
       />
       <Box className='SubscribesPage-list'>
@@ -34,7 +36,7 @@ export const SubscribesPage = () => {
             ))
             : (
               <Box className='SubscribesPage-list-empty'>
-                Подписчиков нет
+                {t('Подписчиков нет')}
               </Box>
             )
         }

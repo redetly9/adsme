@@ -1,19 +1,23 @@
 import './index.scss'
 
 import SettingsIcon from '@mui/icons-material/Settings'
-import { Avatar, Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Avatar, Box, Button, CircularProgress, Divider, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
+import { ProfilePageStatistic } from '~pages/profile-page/components/profile-page-statistic'
 import { getUserById, updateUser, useUserFollowings } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
+import { getUserName } from '~shared/lib/get-user-name'
 import { uploadImage } from '~shared/lib/upload-image'
 import { PageHeader } from '~shared/ui/page-header'
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
   const updateUserInfo = useUserStore(state => state.updateUserInfo)
@@ -59,7 +63,7 @@ export const ProfilePage = () => {
             variant='outlined'
             onClick={() => navigate(RoutesPath.settings)}
           >
-            Настройки
+            {t('Настройки')}
             <SettingsIcon />
           </Button>
         }
@@ -83,47 +87,53 @@ export const ProfilePage = () => {
                 )
             }
           </Box>
-          <Typography
-            fontSize={16}
-            fontWeight={400}
-            color='var(--text-color-2)'
-          >
-            {[user?.name, user?.surname, user?.lastname].join(' ')}
+          <Typography className='ProfilePage-title'>
+            {getUserName(user)}
           </Typography>
         </Box>
         <Button
-          className='ProfilePage-secondary-info-create-post'
+          fullWidth
+          sx={{ my: '10px' }}
           variant='contained'
           onClick={() => navigate(RoutesPath.create_post)}
         >
-          Создать пост
+          {t('Создать пост')}
         </Button>
         <Box className='ProfilePage-actions'>
           <Button
-            className='ProfilePage-actions-btn'
+            fullWidth
             onClick={() => navigate(RoutesPath.subscribes)}
+            variant='outlined'
           >
-            {`Подписчики: ${followers?.length || 0}`}
+            {`${t('Подписчики')}: ${followers?.length || 0}`}
           </Button>
           <Button
-            className='ProfilePage-actions-btn'
+            fullWidth
             onClick={navigateOwnFeed}
+            variant='outlined'
           >
-            Мои посты
+            {t('Мои посты')}
           </Button>
         </Box>
-        <Box className='ProfilePage-secondary-info'>
-          <Typography
-            fontSize={16}
-            fontWeight={400}
-            color='var(--text-color-2)'
-          >
-            Номер телефона
-          </Typography>
-          <Typography mt='6px'>
-            {user?.phone ? formatPhoneNumber(user.phone) : 'Телефон не указан'}
-          </Typography>
-        </Box>
+        <Divider sx={{ my: 2 }} />
+        <Typography
+          className='ProfilePage-title'
+          mb={1}
+        >
+          {t('Номер телефона')}
+        </Typography>
+        <Typography>
+          {user?.phone ? formatPhoneNumber(user.phone) : 'Телефон не указан'}
+        </Typography>
+        <Divider sx={{ my: 2 }} />
+        <Typography
+          className='ProfilePage-title'
+          mb={1}
+        >
+          {t('Статистика')}
+        </Typography>
+        <ProfilePageStatistic />
+        <Divider sx={{ my: 2 }} />
       </Box>
     </Box>
   )

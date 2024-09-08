@@ -1,22 +1,26 @@
 import './index.scss'
 
-import { Box } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import { FeedPageListItem } from '~pages/feed-page/components/feed-page-list-item'
 import type { PostType } from '~shared/types/posts'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 
 type FeedPageListProps = {
-  posts: PostType[] | null,
+  isLoading: boolean,
   filteredPosts: PostType[] | null
 }
 
-export const FeedPageList = ({ posts, filteredPosts }: FeedPageListProps) => {
-  if (posts === null) {
+export const FeedPageList = ({ isLoading, filteredPosts }: FeedPageListProps) => {
+  const { t } = useTranslation()
+
+  if (isLoading) {
     return (
-      <LoadingOverlay
-        noFull={80}
-      />
+      <Box className='FeedPageList'>
+        <Box className='FeedPageList-block'>
+          <CircularProgress />
+        </Box>
+      </Box>
     )
   }
 
@@ -33,13 +37,9 @@ export const FeedPageList = ({ posts, filteredPosts }: FeedPageListProps) => {
             ))
           )
           : (
-            <div style={{
-              marginLeft: '145px',
-              marginTop: '120px'
-            }}
-            >
-              No posts found
-            </div>
+            <Box className='FeedPageList-block'>
+              {t('Посты не найдены')}
+            </Box>
           )
       }
     </Box>

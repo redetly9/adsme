@@ -2,6 +2,7 @@ import './index.scss'
 
 import { Box, Stack } from '@mui/material'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { ChatMessage } from '~pages/user-chat-page/components/chat-message'
 import type { ChatMessageType } from '~shared/types/messages'
@@ -11,6 +12,7 @@ type UserChatPageMessagesProps = {
 }
 
 export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps) => {
+  const { t } = useTranslation()
   const scrollableDivRef = useRef<HTMLDivElement | null>(null)
 
   // Функция для прокрутки вниз
@@ -47,7 +49,7 @@ export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps
           )
           : (
             <Box className='UserChatPageMessages-no-messages'>
-              Сообщений нет
+              {t('Сообщений нет')}
             </Box>
           )
       }

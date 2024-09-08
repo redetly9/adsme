@@ -146,10 +146,7 @@
         "return": "parens-new-line"
       }
     ],
-    "linebreak-style": [
-      "warn",
-      "unix"
-    ],
+    "linebreak-style": "off", // todo если проект продолжится, пока что похуй
     "no-whitespace-before-property": "warn",
     "nonblock-statement-body-position": "warn",
     "object-curly-newline": "warn",

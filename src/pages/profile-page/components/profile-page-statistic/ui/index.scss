@@ -1,0 +1,12 @@
+.ProfilePageStatistic {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5em;
+
+  input {
+    width: 100%;
+  }
+}

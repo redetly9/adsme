@@ -2,6 +2,7 @@ import type { SxProps } from '@mui/material'
 import { Box, Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { DrawerBasic } from '~shared/ui/drawer-basic'
 
@@ -14,6 +15,7 @@ type ShareButtonProps = {
 }
 
 export const ShareButton = ({ shareUrl, sx, className }: ShareButtonProps) => {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   const handleCopy = () => {
@@ -31,7 +33,7 @@ export const ShareButton = ({ shareUrl, sx, className }: ShareButtonProps) => {
       className={className}
     >
       <span>
-        Поделиться
+        {t('Поделиться')}
       </span>
       <DrawerBasic
         open={isOpen}
@@ -62,7 +64,7 @@ export const ShareButton = ({ shareUrl, sx, className }: ShareButtonProps) => {
             {shareUrl}
           </Typography>
           <Button variant='outlined'>
-            Copy
+            {t('Копировать')}
           </Button>
         </Box>
       </DrawerBasic>

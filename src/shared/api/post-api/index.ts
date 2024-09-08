@@ -136,3 +136,53 @@ export const deletePost = async (postId: string) => {
 
   return { data: deletedPost }
 }
+
+export const addPostView = async (
+  postId: number,
+  userId: number
+) => {
+  const { error } = await supabase
+    .from('post_views')
+    .insert([{ post_id: postId, user_id: userId }])
+
+  if (error) {
+    console.error('Ошибка при добавлении просмотра поста:', error.message)
+    return { error }
+  }
+
+  return { data: 'ok' }
+}
+
+export const getUniquePostViews = async (postId: number): Promise<{data: number} | {error: any}> => {
+  const { data, error } = await supabase
+    .from('post_views')
+    .select('user_id')
+    .eq('post_id', postId)
+
+  if (error) {
+    console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message)
+    return { error }
+  }
+
+  const uniqueUsersSet = new Set(data.map((view) => view.user_id))
+  const uniqueUsersArray = Array.from(uniqueUsersSet)
+
+  return { data: uniqueUsersArray?.length || 0 }
+}
+
+export const getTotalPostViews = async (postId: number): Promise<{data: number} | {error: any}> => {
+  const { data, error } = await supabase
+    .from('post_views')
+    .select('user_id')
+    .eq('post_id', postId)
+
+  if (error) {
+    console.error('Ошибка при получении общего количества просмотров поста:', error.message)
+    return { error }
+  }
+
+  console.log('data', data)
+  const users = data?.map(d => d.user_id)
+
+  return { data: users?.length || 0 }
+}

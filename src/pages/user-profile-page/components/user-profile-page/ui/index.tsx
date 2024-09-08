@@ -2,6 +2,7 @@ import './index.scss'
 
 import { Avatar, Box, Button, CircularProgress, Typography } from '@mui/material'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
@@ -9,6 +10,7 @@ import { followUser, getUserById, unfollowUser, useUserFollowings } from '~share
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
+import { getUserName } from '~shared/lib/get-user-name'
 import type { UserType } from '~shared/types/user'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
@@ -17,12 +19,14 @@ import { ShareButton } from '~shared/ui/share-button'
 export const UserProfilePage = () => {
   const { id: paramsUserId } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
   const [userProfileData, setUserProfileData] = useState<UserType | null>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState(false)
   const [isFollowLoading, setIsFollowLoading] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(false)
+
   const { data: followers, refetch } = useUserFollowings(user?.id.toString())
   const isFollowed = followers?.find(f => f.follow_user_id.toString() === paramsUserId)
 
@@ -102,14 +106,14 @@ export const UserProfilePage = () => {
             fontWeight={400}
             color='var(--text-color-2)'
           >
-            {[userProfileData?.name, userProfileData?.surname, userProfileData?.lastname].join(' ')}
+            {getUserName(userProfileData)}
           </Typography>
           <Button
             variant='contained'
             onClick={onFollowHandler}
             disabled={isChatLoading || isFollowLoading}
           >
-            {isFollowed ? 'Отписаться' : 'Подписаться'}
+            {isFollowed ? t('Отписаться') : t('Подписаться')}
           </Button>
         </Box>
         <Box className='UserProfilePage-secondary-info'>
@@ -121,7 +125,7 @@ export const UserProfilePage = () => {
             Номер телефона
           </Typography>
           <Typography mt='6px'>
-            {userProfileData?.phone ? formatPhoneNumber(userProfileData?.phone) : 'Телефон не указан'}
+            {userProfileData?.phone ? formatPhoneNumber(userProfileData?.phone) : t('Телефон не указан')}
           </Typography>
         </Box>
         <Box className='UserProfilePage-actions'>
@@ -130,14 +134,14 @@ export const UserProfilePage = () => {
             onClick={checkAndAddChatHandler}
             disabled={isChatLoading}
           >
-            {isChatLoading ? <CircularProgress size={24.5} /> : 'Написать'}
+            {isChatLoading ? <CircularProgress size={24.5} /> : t('Написать')}
           </Button>
           <Button
             className='UserProfilePage-actions-btn'
             onClick={navigateToFeed}
             disabled={isChatLoading}
           >
-            Feeds
+            {t('Посты')}
           </Button>
           <ShareButton
             className='UserProfilePage-actions-btn'
