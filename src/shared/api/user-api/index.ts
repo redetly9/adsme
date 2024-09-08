@@ -130,33 +130,48 @@ export const deleteUser = async (userId: number) => {
 }
 
 export const getUniqueUserPostsViews = async (userId: number): Promise<{data: number} | {error: any}> => {
-  const { data, error } = await supabase
-    .from('post_views')
-    .select('post_id')
-    .eq('user_id', userId)
+  const { data: myPosts } = await supabase
+    .from('posts')
+    .select('id')
+    .eq('author', userId)
+
+    const myPostsIds = myPosts?.map(mp => mp.id)
+
+    const { data, error } = await supabase
+      .from('post_views')
+      .select('user_id')
+      .in('post_id', myPostsIds ?? [])
 
   if (error) {
     console.error('Ошибка при получении уникальных пользователей, просмотревших пост:', error.message)
     return { error }
   }
 
-  const uniquePosts = [...new Set(data.map((view) => view.post_id))]
+  const uniquePosts = [...new Set(data.map((view) => view.user_id))]
 
   return { data: uniquePosts?.length || 0 }
 }
 
 export const getTotalUserPostsViews = async (userId: number): Promise<{data: number} | {error: any}> => {
+  const { data: myPosts } = await supabase
+  .from('posts')
+  .select('id')
+  .eq('author', userId)
+
+  const myPostsIds = myPosts?.map(mp => mp.id)
+
   const { data, error } = await supabase
     .from('post_views')
-    .select('post_id')
-    .eq('user_id', userId)
+    .select('user_id')
+    .in('post_id', myPostsIds ?? [])
+
 
   if (error) {
     console.error('Ошибка при получении общего количества просмотров поста:', error.message)
     return { error }
   }
 
-  const posts = data?.map(d => d.post_id)
+  const users = data?.map(d => d.user_id)
 
-  return { data: posts?.length || 0 }
+  return { data: users?.length || 0 }
 }
