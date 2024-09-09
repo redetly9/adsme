@@ -21,8 +21,8 @@ export const ConfirmModal = memo(({ title, isOpenModal, setIsOpenModal, confirmH
       className='DeletePostModal'
       onClose={setIsOpenModal.bind(null, false)}
     >
-      <Box className='DeletePostModal-content'>
-        <Typography className='DeletePostModal-content-title'>
+      <Box className='modal-box'>
+        <Typography className='DeletePostModal-title'>
           {title}
         </Typography>
         <Box sx={{ display: 'flex', gap: 3 }}>

@@ -40,7 +40,6 @@
   "Чатов нет": "No chats",
   "Сообщений нет": "No messages",
   "Постов нет": "No posts",
-  "Удалить": "Delete",
   "Вы уверены, что хотите удалить пост?": "Are you sure you want to delete the post?",
   "Отписаться": "Unfollow",
   "Подписаться": "Follow",
@@ -53,5 +52,7 @@
   "Начало": "Start",
   "Конец": "End",
   "План подписок": "Subscription plan",
-  "Всего уникальных просмотров постов": "Total unique post views"
+  "Всего уникальных просмотров постов": "Total unique post views",
+  "Выбрать время": "Select time",
+  "Сбросить": "Reset"
 }

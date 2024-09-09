@@ -4,7 +4,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
-import { Box, Button, Chip } from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import { Box, Button, Chip, CircularProgress } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -14,7 +15,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import moment from 'moment'
 import type { MutableRefObject } from 'react'
-import React, { memo, useCallback, useMemo, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +23,7 @@ import { useNavigate } from 'react-router-dom'
 import { ConfirmModal } from '~components/confirm-modal'
 import { useUserStore } from '~model/user-model'
 import { deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
-import { addPostView } from '~shared/api/post-api'
+import { addPostView, getTotalPostViews } from '~shared/api/post-api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { getUserName } from '~shared/lib/get-user-name'
@@ -44,6 +45,8 @@ export const UserFeedPageFeed = memo(({
 
   const user = useUserStore(state => state.user)
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [views, setViews] = useState(0)
+  const [isLoadingPostViews, setIsLoadingPostViews] = useState(false)
 
   const { data: followers, refetch } = useUserFollowings(user?.id.toString())
   const isFollowed = useMemo(() => followers?.find(f => f.follow_user_id === post?.author?.id), [followers, post?.author?.id])
@@ -55,7 +58,7 @@ export const UserFeedPageFeed = memo(({
     rootMargin: '0px',
     triggerOnce: true,
     onChange: (inView) => {
-      if (inView && user) {
+      if (inView && user && post.author?.id !== user.id) {
         addPostView(post.id, user.id)
         console.log(`Пост с айди ${post.id}, был просмотрен пользователем с айди ${user?.id}`)
       }
@@ -79,6 +82,22 @@ export const UserFeedPageFeed = memo(({
     refetch()
   }
 
+  const getPostView = useCallback(async () => {
+    try {
+      setIsLoadingPostViews(true)
+      const response = await getTotalPostViews(post.id)
+      if (response && 'data' in response) {
+        setViews(response.data)
+      } else {
+        console.error(response.error)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoadingPostViews(false)
+    }
+  }, [post.id])
+
   const deletePostHandler = useCallback(async () => {
     setIsOpenModal(false)
     try {
@@ -94,6 +113,10 @@ export const UserFeedPageFeed = memo(({
       navigate(RoutesPath.user_profile.replace(':id', post?.author?.id.toString()))
     }
   }
+
+  useEffect(() => {
+    getPostView()
+  }, [getPostView])
 
   return (
     <Card
@@ -126,13 +149,12 @@ export const UserFeedPageFeed = memo(({
                   </>
                 )
                 : (
-                  <Button
-                    sx={{ p: 0 }}
-                    startIcon={<DeleteForeverIcon />}
+                  <IconButton
+                    size='small'
                     onClick={setIsOpenModal.bind(null, true)}
                   >
-                    {t('Удалить')}
-                  </Button>
+                    <DeleteForeverIcon fontSize='small' />
+                  </IconButton>
                 )
             }
           </Box>
@@ -165,6 +187,24 @@ export const UserFeedPageFeed = memo(({
               />
             ))
             : ''
+          }
+        </Box>
+        <Box className='UserFeedPageFeed-views'>
+          {
+            isLoadingPostViews
+              ? <CircularProgress size={18} />
+              : (
+                <>
+                  <VisibilityIcon fontSize='small' />
+                  <Typography
+                    variant='body2'
+                    sx={{ color: 'text.secondary' }}
+                    ml={0.5}
+                  >
+                    {views}
+                  </Typography>
+                </>
+              )
           }
         </Box>
       </CardContent>

@@ -126,12 +126,6 @@ export const ProfilePage = () => {
           {user?.phone ? formatPhoneNumber(user.phone) : 'Телефон не указан'}
         </Typography>
         <Divider sx={{ my: 2 }} />
-        <Typography
-          className='ProfilePage-title'
-          mb={1}
-        >
-          {t('Статистика')}
-        </Typography>
         <ProfilePageStatistic />
         <Divider sx={{ my: 2 }} />
       </Box>

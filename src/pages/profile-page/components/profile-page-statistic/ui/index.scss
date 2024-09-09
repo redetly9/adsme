@@ -6,6 +6,14 @@
   align-items: flex-start;
   gap: 0.6em;
 
+  &-header {
+    margin-bottom: 1em;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &-row {
     width: 100%;
     display: flex;
