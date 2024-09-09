@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'app.adsme.apps',
-  appName: 'Adsme',
+  appId: 'app.adsme',
+  appName: 'Adsme_new',
   webDir: 'dist',
   plugins: {
     Geolocation: {
