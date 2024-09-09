@@ -31,7 +31,7 @@ export const UserFeedPage = () => {
 
       let postsData
 
-      if (userFeedsId !== user?.id && userGeo) {
+      if (userFeedsId !== user?.id.toString() && userGeo) {
         const response = await getPostsByLocation(userGeo.longitude, userGeo.latitude, userRadius)
         if ('data' in response) {
           postsData = response.data
