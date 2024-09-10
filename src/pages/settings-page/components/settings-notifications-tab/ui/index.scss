@@ -1,0 +1,15 @@
+@mixin DefaultFlex() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.SettingsNotificationsTab {
+  @include DefaultFlex;
+
+  &-block {
+    @include DefaultFlex;
+    gap: 0.5em;
+  }
+}

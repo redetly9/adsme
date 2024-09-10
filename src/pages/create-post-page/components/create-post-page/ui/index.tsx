@@ -102,7 +102,7 @@ export const CreatePostPage = () => {
           onChange={handleDescriptionChange}
           sx={{ mt: 2 }}
         />
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Divider sx={{ my: 2 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: '5px', mb: 2 }}>
           <Typography
             sx={{ mb: 0.5 }}
@@ -114,7 +114,7 @@ export const CreatePostPage = () => {
             setTags={setTags}
           />
         </Box>
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Divider sx={{ my: 2 }} />
         <Typography
           sx={{ mb: 0.5 }}
         >

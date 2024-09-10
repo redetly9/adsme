@@ -5,13 +5,15 @@ import type { SyntheticEvent } from 'react'
 import { memo, useLayoutEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { navbarTabs } from '~components/navbar/const/navbar-tabs.tsx'
+import { useCreateNavbarTabs } from '~components/navbar/lib'
 import { RoutesPath } from '~shared/configs/app-router-config'
 
 export const Navbar = memo(() => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [tabValue, setTabValue] = useState(0)
+
+  const { tabs } = useCreateNavbarTabs()
 
   const handleChange = (_: SyntheticEvent, tabIndex: number) => {
     setTabValue(tabIndex)
@@ -20,17 +22,17 @@ export const Navbar = memo(() => {
   useLayoutEffect(() => {
     if (pathname === RoutesPath.main) return
 
-    let tabObjectIndex = navbarTabs.findIndex(t => t.path === pathname)
+    let tabObjectIndex = tabs.findIndex(t => t.path === pathname)
 
     // если просмотр фидов, ставим таб на таб фидов
     if (pathname.includes(RoutesPath.user_feed.replace(':id', ''))) {
-      tabObjectIndex = navbarTabs.findIndex(t => t.path === '/feed')
+      tabObjectIndex = tabs.findIndex(t => t.path === RoutesPath.feed)
     }
 
     if (tabObjectIndex !== tabValue) {
       setTabValue(tabObjectIndex)
     }
-  }, [pathname, tabValue, setTabValue])
+  }, [tabs, pathname, tabValue, setTabValue])
 
   return (
     <Tabs
@@ -40,7 +42,7 @@ export const Navbar = memo(() => {
       variant='fullWidth'
     >
       {
-        navbarTabs.map(({ label, path, icon }, index) => (
+        tabs.map(({ label, path, icon }, index) => (
           <Tab
             key={label + index}
             label={label}

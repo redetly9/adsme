@@ -11,3 +11,9 @@
 button {
   text-transform: none !important;
 }
+
+.MuiDrawer-root {
+  .MuiPaper-root {
+    margin-bottom: env(safe-area-inset-top, 0);
+  }
+}

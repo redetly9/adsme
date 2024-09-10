@@ -31,6 +31,10 @@ export const SettingsPage = () => {
           label={t('Пользователь')}
           value={SettingsTabNames.user}
         />
+        <Tab
+          label={t('Уведомления')}
+          value={SettingsTabNames.notifications}
+        />
       </Tabs>
       <Box className='SettingsPage-content'>
         {SettingsTabs[tabsValue]}

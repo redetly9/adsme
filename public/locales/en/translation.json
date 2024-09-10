@@ -54,5 +54,9 @@
   "План подписок": "Subscription plan",
   "Всего уникальных просмотров постов": "Total unique post views",
   "Выбрать время": "Select time",
-  "Сбросить": "Reset"
+  "Сбросить": "Reset",
+  "Уведомления": "Notifications",
+  "Пуш уведомления": "Push notifications",
+  "Новые сообщения от пользователей": "New messages from users",
+  "Новые посты избранных пользователей": "New posts from featured users"
 }

@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { Box, Divider, Typography } from '@mui/material'
+import { Badge, Box, Divider, Typography } from '@mui/material'
 import moment from 'moment/moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -53,11 +53,16 @@ export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
       >
         <Box className='MessagesPageListItem-left'>
           <Box className='MessagesPageListItem-left-info'>
-            <AvatarWithStatus
-              online={false}
-              src={senderData?.user_profiles?.avatar ?? undefined}
-              onClick={e => navigateToProfile(e, senderData?.user_profile_id.toString())}
-            />
+            <Badge
+              badgeContent={0} // TODO: непрочитанные сообщения
+              color='primary'
+            >
+              <AvatarWithStatus
+                online={false}
+                src={senderData?.user_profiles?.avatar ?? undefined}
+                onClick={e => navigateToProfile(e, senderData?.user_profile_id.toString())}
+              />
+            </Badge>
             <Box sx={{ ml: 2 }}>
               <Typography variant='subtitle1'>
                 {senderData?.user_profiles?.name ?? 'User'}
