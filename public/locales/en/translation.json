@@ -58,5 +58,26 @@
   "Уведомления": "Notifications",
   "Пуш уведомления": "Push notifications",
   "Новые сообщения от пользователей": "New messages from users",
-  "Новые посты избранных пользователей": "New posts from featured users"
+  "Новые посты избранных пользователей": "New posts from featured users",
+  "Подписка": "Subscription",
+  "Нет подписки": "No subscription",
+  "Доступ к вашей ленте для других пользователей": "Access to your feed for other users",
+  "Статистика просмотров ваших постов": "View statistics of your posts",
+  "Участие в общем чате": "Participation in the general chat",
+  "Подписка на 1 месяц": "1-month subscription",
+  "Подписка на 3 месяца": "3-month subscription",
+  "Подписка на 6 месяцев месяцев": "6-month subscription",
+  "Подписка на 12 месяцев": "12-month subscription",
+  "Выберите подписку, которая подходит вам": "Choose the subscription that suits you",
+  "Что дает подписка и почему она вам нужна": "What the subscription gives you and why you need it",
+  "Вы сможете видеть, сколько людей просматривают ваши публикации, что поможет вам лучше понимать вашу аудиторию и повышать популярность своих постов": {
+    "": "You will be able to see how many people view your posts, which will help you better understand your audience and increase the popularity of your posts."
+  },
+  "Присоединяйтесь к живым обсуждениям с другими пользователями, делитесь впечатлениями, новостями и узнавайте первыми о том, что происходит вокруг": {
+    "": "Join live discussions with other users, share impressions, news, and be the first to know what's happening around you."
+  },
+  "Ваши посты становятся видимы другим, что позволяет расширить круг общения и делиться моментами с более широкой аудиторией": {
+    "": "Your posts become visible to others, allowing you to expand your social circle and share moments with a wider audience."
+  },
+  "Купить по": "Buy for"
 }

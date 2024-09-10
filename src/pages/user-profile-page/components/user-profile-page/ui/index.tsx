@@ -130,24 +130,26 @@ export const UserProfilePage = () => {
         </Box>
         <Box className='UserProfilePage-actions'>
           <Button
-            className='UserProfilePage-actions-btn'
+            fullWidth
+            variant='outlined'
             onClick={checkAndAddChatHandler}
             disabled={isChatLoading}
           >
             {isChatLoading ? <CircularProgress size={24.5} /> : t('Написать')}
           </Button>
           <Button
-            className='UserProfilePage-actions-btn'
+            fullWidth
+            variant='outlined'
             onClick={navigateToFeed}
             disabled={isChatLoading}
           >
             {t('Посты')}
           </Button>
-          <ShareButton
-            className='UserProfilePage-actions-btn'
-            shareUrl={window.location.href}
-          />
         </Box>
+        <ShareButton
+          className='UserProfilePage-actions-btn'
+          shareUrl={window.location.href}
+        />
       </Box>
     </Box>
   )

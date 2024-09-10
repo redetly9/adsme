@@ -54,9 +54,14 @@ export const ProfilePage = () => {
     }
   }
 
+  const navigateToSubscription = () => {
+    navigate(RoutesPath.subscribe_plans)
+  }
+
   return (
     <Box className='ProfilePage'>
       <PageHeader
+        withNavigateBack={false}
         rightSideButton={
           <Button
             className='ProfilePage-settings-button'
@@ -127,6 +132,22 @@ export const ProfilePage = () => {
         </Typography>
         <Divider sx={{ my: 2 }} />
         <ProfilePageStatistic />
+        <Divider sx={{ my: 2 }} />
+        <Typography
+          className='ProfilePage-title'
+          mb={1}
+        >
+          {t('Подписка')}
+        </Typography>
+        <Button
+          fullWidth
+          color='warning' //TODO: заменить на success, если у пользователя есть подписка
+          variant='contained'
+          onClick={navigateToSubscription}
+        >
+          {/* TODO: Писать пользователю о времени подписки */}
+          {t('Нет подписки')}
+        </Button>
         <Divider sx={{ my: 2 }} />
       </Box>
     </Box>

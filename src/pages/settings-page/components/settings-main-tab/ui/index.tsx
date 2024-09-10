@@ -69,6 +69,9 @@ export const SettingsMainTab = () => {
           {t('Удалить аккаунт')}
         </Button>
       </SettingsElement>
+      {/**
+       * Modals section
+       */}
       <ConfirmModal
         title={t('Вы уверены, что хотите выйти?')}
         isOpenModal={isOpenExitModal}

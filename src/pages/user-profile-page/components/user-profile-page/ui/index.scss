@@ -26,15 +26,17 @@
     gap: 10px;
 
     &-btn {
+      margin-top: 1em;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
 
-      background-color: #f1eded !important;
-      border-radius: 6px !important;
-      color: #0796e1 !important;
-      padding: 15px 5px !important;
+      border: 1px solid var(--text-color-4);
+
+      border-radius: 6px;
+      color: var(--text-color-4);
+      padding: 15px 5px;
     }
   }
 }

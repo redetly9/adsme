@@ -1,18 +1,20 @@
 import './index.scss'
 
 import TuneIcon from '@mui/icons-material/TuneRounded'
-import { Box, Button, Input } from '@mui/material'
+import { Box, Button, Input, Typography } from '@mui/material'
 import React, { memo } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { useUserStore } from '~model/user-model'
 
 type FeedPageHeaderProps = {
   onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onButtonClick: () => void
 }
 
-export const FeedPageHeader = memo((props: FeedPageHeaderProps) => {
-  const { onChangeInput, onButtonClick } = props
+export const FeedPageHeader = memo(({ onChangeInput, onButtonClick }: FeedPageHeaderProps) => {
   const { t } = useTranslation()
+  const user = useUserStore(state => state.userRadius)
 
   return (
     <Box className='FeedPageHeader'>
@@ -29,6 +31,12 @@ export const FeedPageHeader = memo((props: FeedPageHeaderProps) => {
         onClick={onButtonClick}
       >
         <TuneIcon />
+        <Typography
+          variant='body2'
+          sx={{ color: 'text.secondary' }}
+        >
+          {user.valueOf()}
+        </Typography>
       </Button>
     </Box>
   )

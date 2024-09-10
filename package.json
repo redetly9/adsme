@@ -17,7 +17,7 @@
     "@capacitor/core": "^6.1.1",
     "@capacitor/geolocation": "^6.0.1",
     "@capacitor/ios": "^6.1.1",
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
@@ -45,6 +45,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.12.0",
     "@eslint/js": "^9.9.0",
     "@types/node": "^22.3.0",
     "@types/react": "^18.3.3",
