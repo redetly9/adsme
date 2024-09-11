@@ -61,7 +61,7 @@ export const ProfilePageStatistic = () => {
     <>
       <Box className='ProfilePageStatistic-header'>
         <Typography
-          variant='body2'
+          variant='body1'
           sx={{ color: 'text.secondary' }}
         >
           {t('Статистика')}

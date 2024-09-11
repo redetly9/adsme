@@ -7,12 +7,6 @@
     height: calc(100% - var(--page-header-height));
   }
 
-  &-title {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-    color: var(--text-color-2) !important;
-  }
-
   &-settings-button {
     display: flex;
     align-items: center;

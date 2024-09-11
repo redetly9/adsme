@@ -122,7 +122,8 @@ export const ProfilePage = () => {
         </Box>
         <Divider sx={{ my: 2 }} />
         <Typography
-          className='ProfilePage-title'
+          variant='body1'
+          sx={{ color: 'text.secondary' }}
           mb={1}
         >
           {t('Номер телефона')}
@@ -134,8 +135,9 @@ export const ProfilePage = () => {
         <ProfilePageStatistic />
         <Divider sx={{ my: 2 }} />
         <Typography
-          className='ProfilePage-title'
-          mb={1}
+          variant='body1'
+          sx={{ color: 'text.secondary' }}
+          mb={1.1}
         >
           {t('Подписка')}
         </Typography>
