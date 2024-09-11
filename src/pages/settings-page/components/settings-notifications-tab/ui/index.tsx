@@ -1,37 +1,60 @@
 import './index.scss'
 
-import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Box, Button, Checkbox, CircularProgress, Divider, FormControlLabel, FormGroup, Typography } from '@mui/material'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useUserStore } from '~model/user-model'
-import { getNotificationSettings } from '~shared/api'
+import { getNotificationSettings, updateNotificationSettings } from '~shared/api'
+import type { NotificationSettingsType } from '~shared/types/settings'
 
 export const SettingsNotificationsTab = () => {
   const { t } = useTranslation()
   const user = useUserStore(state => state.user)
   /** States */
-  const [isNewMessages, setIsNewMessages] = useState(false)
-  const [isNewPosts, setIsNewPosts] = useState(false)
+  const [newMessages, setNewMessages] = useState(false)
+  const [newPosts, setNewPosts] = useState(false)
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettingsType | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    if (!user?.id) return
 
+    await updateNotificationSettings({
+      userId: user.id.toString(),
+      newUserMessages: newMessages,
+      favoriteUserPosts: newPosts
+    })
+    searchHandler()
   }
+
+  const searchHandler = useCallback(async () => {
+    if (!user?.id) return
+
+    try {
+      setIsLoading(true)
+      const response = await getNotificationSettings(user.id.toString())
+      if (response && 'data' in response) {
+        setNotificationSettings(response.data)
+        setNewPosts(response.data.favorite_user_posts)
+        setNewMessages(response.data.new_user_messages)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [user?.id])
 
   useEffect(() => {
     (async () => {
-      if (user?.id) {
-        try {
-          const response = await getNotificationSettings(user.id.toString())
-          console.log('response', response)
-        } catch (err) {
-          console.error(err)
-        }
-      }
+      searchHandler()
     })()
-  }, [user?.id])
+  }, [searchHandler, user?.id])
 
-  // const canSubmit = useMemo(() => deepEqual(initialValues, values), [values])
+  const canSubmit = useMemo(() => {
+    return newPosts === notificationSettings?.favorite_user_posts && newMessages === notificationSettings?.new_user_messages
+  }, [newMessages, newPosts, notificationSettings?.favorite_user_posts, notificationSettings?.new_user_messages])
 
   return (
     <Box className='SettingsNotificationsTab'>
@@ -47,8 +70,8 @@ export const SettingsNotificationsTab = () => {
             label={t('Новые сообщения от пользователей')}
             control={
               <Checkbox
-                checked={isNewMessages}
-                onChange={(_, checked) => setIsNewMessages(checked)}
+                checked={newMessages}
+                onChange={(_, checked) => setNewMessages(checked)}
               />
             }
           />
@@ -56,8 +79,8 @@ export const SettingsNotificationsTab = () => {
             label={t('Новые посты избранных пользователей')}
             control={
               <Checkbox
-                checked={isNewPosts}
-                onChange={(_, checked) => setIsNewPosts(checked)}
+                checked={newPosts}
+                onChange={(_, checked) => setNewPosts(checked)}
               />
             }
           />
@@ -68,9 +91,11 @@ export const SettingsNotificationsTab = () => {
         fullWidth
         variant='outlined'
         onClick={onSubmit}
-        // disabled={canSubmit}
+        disabled={canSubmit}
       >
-        {t('Сохранить')}
+        {
+          isLoading ? <CircularProgress size={23} /> : t('Сохранить')
+        }
       </Button>
     </Box>
   )

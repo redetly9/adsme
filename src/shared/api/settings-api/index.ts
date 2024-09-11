@@ -1,10 +1,15 @@
+import type { NotificationSettingsType } from '~shared/types/settings'
+
 import { supabase } from '../supabase'
 
-export const getNotificationSettings = async (userId: string) => {
+export const getNotificationSettings = async (userId: string): Promise<{ data: NotificationSettingsType } | {
+  error: any
+}> => {
   const { data, error } = await supabase
     .from('notification_settings')
     .select('*')
-    .eq('user_id', userId) // Убедитесь, что userId передается как строка
+    .eq('user_id', userId)
+    .single()
 
   if (error) {
     console.error('Ошибка при получении настроек уведомлений:', error.message)
@@ -14,18 +19,18 @@ export const getNotificationSettings = async (userId: string) => {
   return { data }
 }
 
-export const updateNotificationSettings = async (
+export const updateNotificationSettings = async (args: {
   userId: string,
   favoriteUserPosts: boolean,
   newUserMessages: boolean
-) => {
+}) => {
   const { error } = await supabase
     .from('notification_settings')
-    .upsert({
-      user_id: userId,
-      favorite_user_posts: favoriteUserPosts,
-      new_user_messages: newUserMessages
-    }, { onConflict: 'user_id' })
+    .update({
+      favorite_user_posts: args.favoriteUserPosts,
+      new_user_messages: args.newUserMessages
+    })
+    .eq('user_id', args.userId)
 
   if (error) {
     console.error('Ошибка при обновлении настроек уведомлений:', error.message)

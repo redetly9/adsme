@@ -16,11 +16,11 @@ import {
   ListItemText,
   Typography
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import type { SubscribePricesCardsIds } from '~pages/subscribe-plans-page/const'
-import { subscribePricesCards } from '~pages/subscribe-plans-page/const'
+import { getTariffs } from '~shared/api/tariffs'
+import type { TariffsType, TariffsTypeNames } from '~shared/types/tariffs'
 import { DrawerBasic } from '~shared/ui/drawer-basic'
 import { PageHeader } from '~shared/ui/page-header'
 
@@ -30,9 +30,19 @@ export const SubscribePlansPage = () => {
   const [isYourFeedVisible, setIsYourFeedVisible] = useState(false)
   const [isStatisticVisible, setIsStatisticVisible] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
+  const [tariffs, setTariffs] = useState<TariffsType[]>([])
 
-  const onPriceButtonClick = (id: SubscribePricesCardsIds) => {
-    console.log('price button click ', id)
+  useEffect(() => {
+    (async () => {
+      const response = await getTariffs()
+      if (response && 'data' in response) {
+        setTariffs(response.data)
+      }
+    })()
+  }, [])
+
+  const onPriceButtonClick = (id: number, name: TariffsTypeNames) => {
+    console.log(`price button click id:${id}, name: ${name}`)
   }
 
   return (
@@ -88,33 +98,36 @@ export const SubscribePlansPage = () => {
          * Cards with price
          */}
         {
-          subscribePricesCards.map(({ id, label, price }) => (
-            <Card
-              key={id}
-              sx={{ width: '80%' }}
-            >
-              <CardContent>
-                <Typography
-                  variant='h6'
-                  component='div'
-                >
-                  {t(label)}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <Button
-                  size='small'
-                  variant='contained'
-                  color='success'
-                  onClick={onPriceButtonClick.bind(null, id)}
-                >
-                  {t('Купить по')}
-                  {' '}
-                  {price}
-                </Button>
-              </CardActions>
-            </Card>
-          ))
+          tariffs.length > 0
+            ? tariffs.map(({ id, name, price }) => (
+              <Card
+                key={id}
+                sx={{ width: '80%' }}
+              >
+                <CardContent>
+                  <Typography
+                    variant='h6'
+                    component='div'
+                  >
+                    {t(name)}
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                  <Button
+                    size='small'
+                    variant='contained'
+                    color='success'
+                    onClick={() => onPriceButtonClick(id, name)}
+                  >
+                    {t('Купить по')}
+                    {' '}
+                    {price}
+                    $
+                  </Button>
+                </CardActions>
+              </Card>
+            ))
+            : null
         }
       </Box>
       {/**
