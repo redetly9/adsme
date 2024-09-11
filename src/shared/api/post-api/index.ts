@@ -92,6 +92,23 @@ export const getPostsByUserId = async (userId: string): Promise<{ data: PostType
   return { data: posts }
 }
 
+export const getPostById = async (postId: string): Promise<{ data: PostType | null } | { error: any }> => {
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select(`
+      *,
+      author: user_profiles (*)
+    `)
+    .eq('id', postId)
+
+  if (error) {
+    console.error('Ошибка при получении поста по id:', error.message)
+    return { error }
+  }
+
+  return { data: posts?.at(0) ?? null }
+}
+
 // Добавление нового поста
 export const createPost = async ({
   title,
@@ -153,7 +170,7 @@ export const addPostView = async (
   return { data: 'ok' }
 }
 
-export const getUniquePostViews = async (postId: number): Promise<{data: number} | {error: any}> => {
+export const getUniquePostViews = async (postId: number): Promise<{ data: number } | { error: any }> => {
   const { data, error } = await supabase
     .from('post_views')
     .select('user_id')
@@ -170,7 +187,7 @@ export const getUniquePostViews = async (postId: number): Promise<{data: number}
   return { data: uniqueUsersArray?.length || 0 }
 }
 
-export const getTotalPostViews = async (postId: number): Promise<{data: number} | {error: any}> => {
+export const getTotalPostViews = async (postId: number): Promise<{ data: number } | { error: any }> => {
   const { data, error } = await supabase
     .from('post_views')
     .select('user_id')
@@ -181,7 +198,6 @@ export const getTotalPostViews = async (postId: number): Promise<{data: number} 
     return { error }
   }
 
-  console.log('data', data)
   const users = data?.map(d => d.user_id)
 
   return { data: users?.length || 0 }

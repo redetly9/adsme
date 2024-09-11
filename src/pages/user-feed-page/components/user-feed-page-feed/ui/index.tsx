@@ -31,13 +31,15 @@ import type { PostType } from '~shared/types/posts'
 
 type UserFeedPageFeedProps = {
   post: PostType,
-  getPosts: () => void,
-  parentRef: MutableRefObject<null>
+  getPosts?: () => void,
+  parentRef?: MutableRefObject<null>,
+  withoutComments?: boolean
 }
 
 export const UserFeedPageFeed = memo(({
   post,
   getPosts,
+  withoutComments,
   parentRef
 }: UserFeedPageFeedProps) => {
   const navigate = useNavigate()
@@ -54,7 +56,7 @@ export const UserFeedPageFeed = memo(({
   /** Отслеживание просмотра поста ЦЕЛИКОМ */
   const { ref } = useInView({
     threshold: 1, // 100% видимость
-    root: parentRef.current,
+    root: parentRef?.current,
     rootMargin: '0px',
     triggerOnce: true,
     onChange: (inView) => {
@@ -102,7 +104,7 @@ export const UserFeedPageFeed = memo(({
     setIsOpenModal(false)
     try {
       await deletePost(post?.id.toString())
-      getPosts()
+      getPosts?.()
     } catch (err) {
       console.error('Ошибка при удалении поста:', err)
     }
@@ -112,6 +114,10 @@ export const UserFeedPageFeed = memo(({
     if (post?.author?.id) {
       navigate(RoutesPath.user_profile.replace(':id', post?.author?.id.toString()))
     }
+  }
+
+  const navigateToComments = () => {
+    navigate(RoutesPath.comments.replace(':id', post.id.toString()))
   }
 
   useEffect(() => {
@@ -195,6 +201,14 @@ export const UserFeedPageFeed = memo(({
               ? <CircularProgress size={18} />
               : (
                 <>
+                  {!withoutComments && <Typography
+                    mr={1}
+                    variant='body2'
+                    sx={{ color: 'text.secondary', textDecoration: 'underline' }}
+                    onClick={navigateToComments}
+                  >
+                    {t('Комментарии')}
+                  </Typography>}
                   <VisibilityIcon fontSize='small' />
                   <Typography
                     variant='body2'

@@ -5,6 +5,7 @@ import { FeedPage } from '~pages/feed-page'
 import { MainPage } from '~pages/main-page'
 import { MessagesPage } from '~pages/messages-page'
 import { PageNotFound } from '~pages/page-not-found'
+import { PostCommentsPage } from '~pages/post-comments-page'
 import { ProfilePage } from '~pages/profile-page'
 import { SettingsPage } from '~pages/settings-page'
 import { SignInPage } from '~pages/sign-in-page'
@@ -31,6 +32,7 @@ export enum AppRoutes {
   CREATE_POST = 'create_post',
   SETTINGS = 'settings',
   SUBSCRIBE_PLANS = 'subscribe_plans',
+  COMMENTS = 'comments',
 
   NOT_FOUND = 'not_found'
 }
@@ -52,6 +54,8 @@ export const RoutesPath: Record<AppRoutes, string> = {
   [AppRoutes.CREATE_POST]: '/create-post',
   [AppRoutes.SETTINGS]: '/settings',
   [AppRoutes.SUBSCRIBE_PLANS]: '/subscribe_plans',
+
+  [AppRoutes.COMMENTS]: '/comments/:id',
 
   [AppRoutes.NOT_FOUND]: '*'
 }
@@ -114,5 +118,9 @@ export const AppRouterConfig: RouteObject[] = [
   {
     path: RoutesPath[AppRoutes.SUBSCRIBE_PLANS],
     element: <SubscribePlansPage />
+  },
+  {
+    path: RoutesPath[AppRoutes.COMMENTS],
+    element: <PostCommentsPage />
   }
 ]

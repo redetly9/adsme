@@ -1,0 +1,27 @@
+.PostCommentsPage {
+  height: 100%;
+
+  &-content {
+    overflow-y: auto;
+    height: calc(100% - var(--page-header-height) - var(--messages-footer-height));
+
+    &-chat {
+      height: 100%;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1em;
+
+    height: var(--messages-footer-height);
+
+    background-color: var(--background-color-2);
+
+    &-input {
+      padding: 5px 0 5px 12px;
+    }
+  }
+}
