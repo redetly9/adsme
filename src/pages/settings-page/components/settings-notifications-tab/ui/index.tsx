@@ -1,28 +1,37 @@
 import './index.scss'
 
 import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, Typography } from '@mui/material'
-import { useFormik } from 'formik'
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { deepEqual } from '~shared/lib/deep-equal'
-
-const initialValues = {
-  newMessages: false,
-  newPosts: false
-}
+import { useUserStore } from '~model/user-model'
+import { getNotificationSettings } from '~shared/api'
 
 export const SettingsNotificationsTab = () => {
   const { t } = useTranslation()
+  const user = useUserStore(state => state.user)
+  /** States */
+  const [isNewMessages, setIsNewMessages] = useState(false)
+  const [isNewPosts, setIsNewPosts] = useState(false)
 
-  const { values, setFieldValue, handleSubmit } = useFormik({
-    initialValues: initialValues, // TODO: изначальные значения вытянуть с бека
-    onSubmit: formikValues => {
-      console.log(formikValues)
-    }
-  })
+  const onSubmit = () => {
 
-  const canSubmit = useMemo(() => deepEqual(initialValues, values), [values])
+  }
+
+  useEffect(() => {
+    (async () => {
+      if (user?.id) {
+        try {
+          const response = await getNotificationSettings(user.id.toString())
+          console.log('response', response)
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    })()
+  }, [user?.id])
+
+  // const canSubmit = useMemo(() => deepEqual(initialValues, values), [values])
 
   return (
     <Box className='SettingsNotificationsTab'>
@@ -38,8 +47,8 @@ export const SettingsNotificationsTab = () => {
             label={t('Новые сообщения от пользователей')}
             control={
               <Checkbox
-                checked={values.newMessages}
-                onChange={(_, checked) => setFieldValue('newMessages', checked)}
+                checked={isNewMessages}
+                onChange={(_, checked) => setIsNewMessages(checked)}
               />
             }
           />
@@ -47,8 +56,8 @@ export const SettingsNotificationsTab = () => {
             label={t('Новые посты избранных пользователей')}
             control={
               <Checkbox
-                checked={values.newPosts}
-                onChange={(_, checked) => setFieldValue('newPosts', checked)}
+                checked={isNewPosts}
+                onChange={(_, checked) => setIsNewPosts(checked)}
               />
             }
           />
@@ -58,8 +67,8 @@ export const SettingsNotificationsTab = () => {
       <Button
         fullWidth
         variant='outlined'
-        onClick={() => handleSubmit()}
-        disabled={canSubmit}
+        onClick={onSubmit}
+        // disabled={canSubmit}
       >
         {t('Сохранить')}
       </Button>

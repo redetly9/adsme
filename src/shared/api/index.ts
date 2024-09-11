@@ -19,8 +19,10 @@ export {
   getUserChats,
   getChatMessages,
   getChatParticipants
-} from './chats'
+} from './chats-api'
 /** Messages */
-export { sendMessage, useMessagesByLocation } from './messages'
+export { sendMessage, useMessagesByLocation } from './messages-api'
 /** Follower */
 export { useUserFollowings, followUser, unfollowUser } from './followers-api'
+/** Settings */
+export { getNotificationSettings, updateNotificationSettings } from './settings-api'
