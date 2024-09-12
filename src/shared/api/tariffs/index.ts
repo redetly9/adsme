@@ -20,7 +20,7 @@ export const createInvoice = (args: { userId: number, tariffId: number }) => {
   return axios.post<TariffsInvoiceType>('https://eziznurhenjecbvtduub.supabase.co/functions/v1/create-invoice', {
     tariff_id: args.tariffId,
     user_id: args.userId,
-    return_url: 'https://adsme.vercel.app'
+    return_url: 'adsme://payment-return' // Указание deep link
   }, {
     headers: {
       'Content-Type': 'application/json'
