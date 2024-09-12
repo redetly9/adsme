@@ -28,3 +28,5 @@ export { useUserFollowings, followUser, unfollowUser } from './followers-api'
 export { getNotificationSettings, updateNotificationSettings } from './settings-api'
 /** Tariffs */
 export { getTariffs, createInvoice } from './tariffs'
+/** Comments */
+export { getCommentsByPostId } from './comments'

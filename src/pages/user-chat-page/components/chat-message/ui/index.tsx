@@ -5,16 +5,15 @@ import moment from 'moment'
 import { useMemo } from 'react'
 
 import { useUserStore } from '~model/user-model'
-import type { ChatMessageType } from '~shared/types/messages'
 
-export const ChatMessage = (props: ChatMessageType) => {
-  const {
-    sender,
-    sender_id,
-    created_at,
-    text
-  } = props
+type ChatMessageProps = {
+  sender_id: number,
+  created_at: string,
+  text: string,
+  name: string | null
+}
 
+export const ChatMessage = ({ text, name, created_at, sender_id }: ChatMessageProps) => {
   const user = useUserStore(state => state.user)
 
   const isYou = useMemo(() => user?.id === sender_id, [sender_id, user?.id])
@@ -27,7 +26,7 @@ export const ChatMessage = (props: ChatMessageType) => {
             className='ChatMessage-name'
             variant='subtitle2'
           >
-            {sender?.name || 'User'}
+            {name || 'User'}
           </Typography>
           <Typography
             className='ChatMessage-time'

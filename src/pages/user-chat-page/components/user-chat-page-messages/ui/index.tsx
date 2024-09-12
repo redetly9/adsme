@@ -42,7 +42,10 @@ export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps
               {chatMessages.map((message: ChatMessageType) => (
                 <ChatMessage
                   key={message.id}
-                  {...message}
+                  created_at={message.created_at}
+                  name={message.sender.name}
+                  sender_id={message.sender_id}
+                  text={message.text}
                 />
               ))}
             </Stack>
