@@ -21,7 +21,6 @@ export const App = () => {
         .channel(`new_message_${user?.id}`)
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
           const message = payload.new
-          console.log('Новое сообщение:', message)
         })
         .subscribe()
     }

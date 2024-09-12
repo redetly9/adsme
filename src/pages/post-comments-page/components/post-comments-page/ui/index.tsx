@@ -2,7 +2,7 @@ import './index.scss'
 
 import SendIcon from '@mui/icons-material/Send'
 import { Box } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ import type { PostType } from '~shared/types/posts'
 import { CustomInput } from '~shared/ui/custom-input'
 import { PageHeader } from '~shared/ui/page-header'
 
-export const PostCommentsPage = () => {
+export const PostCommentsPage = memo(() => {
   const { t } = useTranslation()
   const { id: paramsPostId } = useParams()
 
@@ -42,8 +42,6 @@ export const PostCommentsPage = () => {
       }
     })()
   }, [paramsPostId])
-
-  console.log('post', post)
 
   return (
     <Box className='PostCommentsPage'>
@@ -78,4 +76,4 @@ export const PostCommentsPage = () => {
       </Box>
     </Box>
   )
-}
+})

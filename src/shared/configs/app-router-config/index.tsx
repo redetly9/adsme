@@ -9,8 +9,8 @@ import { PostCommentsPage } from '~pages/post-comments-page'
 import { ProfilePage } from '~pages/profile-page'
 import { SettingsPage } from '~pages/settings-page'
 import { SignInPage } from '~pages/sign-in-page'
-import { SubscribePlansPage } from '~pages/subscribe-plans-page'
 import { SubscribesPage } from '~pages/subscribes-page'
+import { TariffsPage } from '~pages/tariffs-page'
 import { UserChatPage } from '~pages/user-chat-page'
 import { UserFeedPage } from '~pages/user-feed-page'
 import { UserProfilePage } from '~pages/user-profile-page'
@@ -31,7 +31,7 @@ export enum AppRoutes {
   SUBSCRIBERS = 'subscribes',
   CREATE_POST = 'create_post',
   SETTINGS = 'settings',
-  SUBSCRIBE_PLANS = 'subscribe_plans',
+  TARIFFS = 'tariffs',
   COMMENTS = 'comments',
 
   NOT_FOUND = 'not_found'
@@ -53,7 +53,7 @@ export const RoutesPath: Record<AppRoutes, string> = {
   [AppRoutes.SUBSCRIBERS]: '/subscribes-page',
   [AppRoutes.CREATE_POST]: '/create-post',
   [AppRoutes.SETTINGS]: '/settings',
-  [AppRoutes.SUBSCRIBE_PLANS]: '/subscribe_plans',
+  [AppRoutes.TARIFFS]: '/tariffs',
 
   [AppRoutes.COMMENTS]: '/comments/:id',
 
@@ -116,8 +116,8 @@ export const AppRouterConfig: RouteObject[] = [
     element: <CreatePostPage />
   },
   {
-    path: RoutesPath[AppRoutes.SUBSCRIBE_PLANS],
-    element: <SubscribePlansPage />
+    path: RoutesPath[AppRoutes.TARIFFS],
+    element: <TariffsPage />
   },
   {
     path: RoutesPath[AppRoutes.COMMENTS],
