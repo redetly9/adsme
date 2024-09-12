@@ -17,10 +17,11 @@ export const App = () => {
 
   useEffect(() => {
     if (user?.id) {
-      supabase
-        .channel(`new_message_${user?.id}`)
+      supabase // TODO: сокет для сообщений
+        .channel(`new_message_${user.id}`)
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
           const message = payload.new
+          console.log(`новое сообщение ${message}`)
         })
         .subscribe()
     }
