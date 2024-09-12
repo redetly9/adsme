@@ -19,18 +19,22 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { getTariffs } from '~shared/api/tariffs'
+import { useUserStore } from '~model/user-model'
+import { createInvoice, getTariffs } from '~shared/api'
 import type { TariffsType, TariffsTypeNames } from '~shared/types/tariffs'
 import { DrawerBasic } from '~shared/ui/drawer-basic'
+import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
 
-export const SubscribePlansPage = () => {
+export const TariffsPage = () => {
   const { t } = useTranslation()
+  const user = useUserStore(state => state.user)
   /** States */
   const [isYourFeedVisible, setIsYourFeedVisible] = useState(false)
   const [isStatisticVisible, setIsStatisticVisible] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
   const [tariffs, setTariffs] = useState<TariffsType[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -41,12 +45,28 @@ export const SubscribePlansPage = () => {
     })()
   }, [])
 
-  const onPriceButtonClick = (id: number, name: TariffsTypeNames) => {
+  const onPriceButtonClick = async (id: number, name: TariffsTypeNames) => {
+    if (!user?.id) return
+
+    try {
+      setIsLoading(true)
+      const { data } = await createInvoice({
+        userId: user.id,
+        tariffId: id
+      })
+      window.location.href = data.confirmation.confirmation_url
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
+
     console.log(`price button click id:${id}, name: ${name}`)
   }
 
   return (
     <Box className='SubscribePlansPage'>
+      {isLoading ? <LoadingOverlay /> : null}
       <PageHeader
         title={t('План подписок')}
         withRightSideAction={false}
@@ -122,7 +142,7 @@ export const SubscribePlansPage = () => {
                     {t('Купить по')}
                     {' '}
                     {price}
-                    $
+                    ₽
                   </Button>
                 </CardActions>
               </Card>

@@ -62,7 +62,6 @@ export const UserFeedPageFeed = memo(({
     onChange: (inView) => {
       if (inView && user && post.author?.id !== user.id) {
         addPostView(post.id, user.id)
-        console.log(`Пост с айди ${post.id}, был просмотрен пользователем с айди ${user?.id}`)
       }
     }
   })

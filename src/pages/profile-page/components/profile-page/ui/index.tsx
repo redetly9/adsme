@@ -54,8 +54,8 @@ export const ProfilePage = () => {
     }
   }
 
-  const navigateToSubscription = () => {
-    navigate(RoutesPath.subscribe_plans)
+  const navigateToTariffs = () => {
+    navigate(RoutesPath.tariffs)
   }
 
   return (
@@ -145,7 +145,7 @@ export const ProfilePage = () => {
           fullWidth
           color='warning' //TODO: заменить на success, если у пользователя есть подписка
           variant='contained'
-          onClick={navigateToSubscription}
+          onClick={navigateToTariffs}
         >
           {/* TODO: Писать пользователю о времени подписки */}
           {t('Нет подписки')}

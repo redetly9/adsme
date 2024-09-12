@@ -26,3 +26,7 @@ export { sendMessage, useMessagesByLocation } from './messages-api'
 export { useUserFollowings, followUser, unfollowUser } from './followers-api'
 /** Settings */
 export { getNotificationSettings, updateNotificationSettings } from './settings-api'
+/** Tariffs */
+export { getTariffs, createInvoice } from './tariffs'
+/** Comments */
+export { getCommentsByPostId } from './comments'
