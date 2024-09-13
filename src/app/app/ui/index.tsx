@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { AppRouter } from '~app/app-router'
 import { useUserStore } from '~model/user-model'
 import { supabase } from '~shared/api/supabase'
+import { useAppNotifications } from '~shared/hooks/use-app-notifications'
 import { useAppUrlOpenListener } from '~shared/hooks/use-app-url-open-listener'
 import { useGetUserGeolocation } from '~shared/hooks/use-get-user-geolocation'
 
@@ -26,6 +27,9 @@ export const App = () => {
         .subscribe()
     }
   }, [user?.id])
+
+  /** Кастомный хук на push уведомления */
+  useAppNotifications()
 
   /** Кастомный хук нужный для редиректа обратно в приложение после оплаты подписки */
   useAppUrlOpenListener()

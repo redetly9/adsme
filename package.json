@@ -19,6 +19,7 @@
     "@capacitor/core": "^6.1.1",
     "@capacitor/geolocation": "^6.0.1",
     "@capacitor/ios": "^6.1.1",
+    "@capacitor/push-notifications": "^6.0.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
