@@ -102,7 +102,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
                 </Box>
               </>
               : <Box className='UserChatPage-content-empty'>
-                {t('Чатов нет')}
+                {t('Сообщений нет')}
               </Box>
         }
       </Box>

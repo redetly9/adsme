@@ -1,0 +1,20 @@
+@mixin FlexDefault() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.TechnicalSupportDialog {
+  border: none;
+  margin: 12px 0;
+
+  &-left {
+    @include FlexDefault;
+    gap: 2em;
+
+    &-info {
+      @include FlexDefault;
+    }
+  }
+
+}

@@ -11,6 +11,7 @@ import { SettingsPage } from '~pages/settings-page'
 import { SignInPage } from '~pages/sign-in-page'
 import { SubscribesPage } from '~pages/subscribes-page'
 import { TariffsPage } from '~pages/tariffs-page'
+import { TechnicalSupportPage } from '~pages/technical-support-page'
 import { UserChatPage } from '~pages/user-chat-page'
 import { UserFeedPage } from '~pages/user-feed-page'
 import { UserProfilePage } from '~pages/user-profile-page'
@@ -33,6 +34,7 @@ export enum AppRoutes {
   SETTINGS = 'settings',
   TARIFFS = 'tariffs',
   COMMENTS = 'comments',
+  TECHNICAL_SUPPORT = 'technical_support',
 
   NOT_FOUND = 'not_found'
 }
@@ -54,6 +56,7 @@ export const RoutesPath: Record<AppRoutes, string> = {
   [AppRoutes.CREATE_POST]: '/create-post',
   [AppRoutes.SETTINGS]: '/settings',
   [AppRoutes.TARIFFS]: '/tariffs',
+  [AppRoutes.TECHNICAL_SUPPORT]: '/technical-support',
 
   [AppRoutes.COMMENTS]: '/comments/:id',
 
@@ -122,5 +125,9 @@ export const AppRouterConfig: RouteObject[] = [
   {
     path: RoutesPath[AppRoutes.COMMENTS],
     element: <PostCommentsPage />
+  },
+  {
+    path: RoutesPath[AppRoutes.TECHNICAL_SUPPORT],
+    element: <TechnicalSupportPage />
   }
 ]

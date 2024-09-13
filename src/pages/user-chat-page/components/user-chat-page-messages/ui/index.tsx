@@ -6,9 +6,10 @@ import { useTranslation } from 'react-i18next'
 
 import { ChatMessage } from '~pages/user-chat-page/components/chat-message'
 import type { ChatMessageType } from '~shared/types/messages'
+import type { TechnicalSupportMessage } from '~shared/types/technical-support'
 
 type UserChatPageMessagesProps = {
-  chatMessages: ChatMessageType[] | null
+  chatMessages: ChatMessageType[] | TechnicalSupportMessage[] | null
 }
 
 export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps) => {
@@ -39,12 +40,12 @@ export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps
               className='UserChatPageMessages-content'
               spacing={2}
             >
-              {chatMessages.map((message: ChatMessageType) => (
+              {chatMessages.map((message: ChatMessageType | TechnicalSupportMessage) => (
                 <ChatMessage
                   key={message.id}
                   created_at={message.created_at}
-                  name={message.sender.name}
-                  sender_id={message.sender_id}
+                  name={'sender' in message ? message.sender.name : message.sender_id.name}
+                  sender_id={'sender' in message ? message.sender_id : message.sender_id.id}
                   text={message.text}
                 />
               ))}
