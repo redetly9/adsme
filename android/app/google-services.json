@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "844617634",
+    "project_id": "adsme-5448e",
+    "storage_bucket": "adsme-5448e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844617634:android:47d35ee9e4e41fcbc9c4fb",
+        "android_client_info": {
+          "package_name": "app.adsme.apps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARwREGgVUEvK08Nki2KYH44_FYFDcJkoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
