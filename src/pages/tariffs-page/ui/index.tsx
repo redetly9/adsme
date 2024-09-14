@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useUserStore } from '~model/user-model'
 import { createInvoice, getTariffs } from '~shared/api'
-import type { TariffsType, TariffsTypeNames } from '~shared/types/tariffs'
+import type { TariffsType } from '~shared/types/tariffs'
 import { DrawerBasic } from '~shared/ui/drawer-basic'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
@@ -45,7 +45,7 @@ export const TariffsPage = () => {
     })()
   }, [])
 
-  const onPriceButtonClick = async (id: number, name: TariffsTypeNames) => {
+  const onPriceButtonClick = async (id: number) => {
     if (!user?.id) return
 
     try {
@@ -60,8 +60,6 @@ export const TariffsPage = () => {
     } finally {
       setIsLoading(false)
     }
-
-    console.log(`price button click id:${id}, name: ${name}`)
   }
 
   return (
@@ -137,7 +135,7 @@ export const TariffsPage = () => {
                     size='small'
                     variant='contained'
                     color='success'
-                    onClick={() => onPriceButtonClick(id, name)}
+                    onClick={() => onPriceButtonClick(id)}
                   >
                     {t('Купить по')}
                     {' '}

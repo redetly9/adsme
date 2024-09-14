@@ -136,8 +136,6 @@ export const createPost = async ({
     return { error }
   }
 
-  console.log('newPost', newPost)
-
   return { data: newPost }
 }
 

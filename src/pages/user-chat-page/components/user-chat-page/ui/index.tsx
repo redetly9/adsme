@@ -10,6 +10,8 @@ import { useUserStore } from '~model/user-model'
 import { UserChatPageMessages } from '~pages/user-chat-page/components/user-chat-page-messages'
 import { getChatMessages, getChatParticipants, sendMessage } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { SpecialChatIds } from '~shared/configs/special-chat-ids'
+import { filterMessagesByDate } from '~shared/lib/filter-messages-by-date'
 import type { ChatParticipantsType } from '~shared/types/chats'
 import type { ChatMessageType } from '~shared/types/messages'
 import { CustomInput } from '~shared/ui/custom-input'
@@ -30,8 +32,11 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const [chat, setChat] = useState<ChatParticipantsType[] | null>(null)
   const [textAreaValue, setTextAreaValue] = useState('')
 
-  const chatId = useMemo(() => isGroupChat ? '58' : paramsChatId, [paramsChatId, isGroupChat])
+  const chatId = useMemo(() => isGroupChat ? SpecialChatIds.GENERAL_CHAT_ID : paramsChatId, [paramsChatId, isGroupChat])
   const sender = chat?.find(c => c.user_profile_id !== user?.id)?.user_profiles
+  const isTechnicalSupportChat = useMemo(() => {
+    return !!chatMessages?.some(m => m.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID)
+  }, [chatMessages])
 
   const getChatMessagesApi = useCallback(async (withLoading = true) => {
     if (!user || !chatId) return
@@ -45,7 +50,8 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
 
       const responseMessages = await getChatMessages(chatId)
       if ('data' in responseMessages) {
-        setChatMessages(responseMessages.data || null)
+        const newMessages = isGroupChat ? filterMessagesByDate(responseMessages.data, 3) : responseMessages.data
+        setChatMessages(newMessages || null)
       }
     } catch (err) {
       console.error(err)
@@ -78,8 +84,14 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
         title={isGroupChat ? t('Главный чат') : sender?.name || 'User'}
         withNavigateBack={!isGroupChat}
         avatar={sender?.avatar || ''}
-        pathNavigateAvatar={RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)}
-        pathNavigateTitle={RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)}
+        pathNavigateAvatar={!isTechnicalSupportChat
+          ? RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)
+          : undefined
+        }
+        pathNavigateTitle={!isTechnicalSupportChat
+          ? RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)
+          : undefined
+        }
       />
       <Box className='UserChatPage-content'>
         {

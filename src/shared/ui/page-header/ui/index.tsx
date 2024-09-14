@@ -47,12 +47,12 @@ export const PageHeader = ({
             )
         }
         {
-          avatar && pathNavigateAvatar
+          avatar
             ? (
               <Avatar
                 sx={{ height: '48px', width: '48px' }}
                 src={avatar}
-                onClick={() => navigate(pathNavigateAvatar)}
+                onClick={() => pathNavigateAvatar && navigate(pathNavigateAvatar)}
               />
             )
             : null

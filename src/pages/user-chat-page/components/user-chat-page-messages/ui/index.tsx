@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ChatMessage } from '~pages/user-chat-page/components/chat-message'
+import { SpecialChatIds } from '~shared/configs/special-chat-ids'
 import type { ChatMessageType } from '~shared/types/messages'
 
 type UserChatPageMessagesProps = {
@@ -42,7 +43,7 @@ export const UserChatPageMessages = ({ chatMessages }: UserChatPageMessagesProps
               {chatMessages.map((message: ChatMessageType) => (
                 <ChatMessage
                   key={message.id}
-                  name={message.sender.name}
+                  name={message.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID ? t('Техническая поддержка') : message.sender.name}
                   {...message}
                 />
               ))}

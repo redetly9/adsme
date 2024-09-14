@@ -102,6 +102,7 @@ export const UserProfilePage = () => {
             src={userProfileData?.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
           />
           <Typography
+            sx={{ width: '100%' }}
             fontSize={16}
             fontWeight={400}
             color='var(--text-color-2)'
@@ -109,6 +110,7 @@ export const UserProfilePage = () => {
             {getUserName(userProfileData)}
           </Typography>
           <Button
+            sx={{ minWidth: '90px' }}
             variant='contained'
             onClick={onFollowHandler}
             disabled={isChatLoading || isFollowLoading}
