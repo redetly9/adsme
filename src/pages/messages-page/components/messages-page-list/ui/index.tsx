@@ -4,7 +4,6 @@ import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { useUserStore } from '~model/user-model'
-import { TechnicalSupportDialog } from '~pages/technical-support-page'
 import { getUserChats } from '~shared/api'
 import { sortChatsByLastMessage } from '~shared/lib/sort-chat-by-last-message'
 import type { ChatType } from '~shared/types/chats'
@@ -43,7 +42,6 @@ export const MessagesPageList = () => {
 
   return (
     <Box className='MessagesPageList'>
-      <TechnicalSupportDialog />
       {
         chats?.map(chat => (
           <MessagesPageListItem

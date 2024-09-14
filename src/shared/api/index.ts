@@ -30,5 +30,3 @@ export { getNotificationSettings, updateNotificationSettings } from './settings-
 export { getTariffs, createInvoice } from './tariffs'
 /** Comments */
 export { getCommentsByPostId } from './comments'
-/** Technical support */
-export { getTechnicalSupportMessages, sendTechnicalSupportMessage } from './technical-support'

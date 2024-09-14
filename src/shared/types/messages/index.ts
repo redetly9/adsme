@@ -15,7 +15,7 @@ export type ChatMessageType = {
   created_at: string,
   location: null,
   sender: {
-    name: string,
-    avatar: string
+    name: string | null,
+    avatar: string | null
   }
 }

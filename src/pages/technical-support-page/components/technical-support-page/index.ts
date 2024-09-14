@@ -1,1 +1,0 @@
-export { TechnicalSupportPage } from './ui'
