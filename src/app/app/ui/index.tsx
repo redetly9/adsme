@@ -8,6 +8,7 @@ import { useUserStore } from '~model/user-model'
 import { supabase } from '~shared/api/supabase'
 import { useAppNotifications } from '~shared/hooks/use-app-notifications'
 import { useAppUrlOpenListener } from '~shared/hooks/use-app-url-open-listener'
+import { useDeviceInfo } from '~shared/hooks/use-device-Info'
 import { useGetUserGeolocation } from '~shared/hooks/use-get-user-geolocation'
 
 export const App = () => {
@@ -36,6 +37,9 @@ export const App = () => {
 
   /** Кастомный хук запроса на геолокации пользователя */
   useGetUserGeolocation()
+
+  /** Кастомный хук запроса на информацию о телефоне и пользователе */
+  useDeviceInfo()
 
   return (
     <Box className='App'>

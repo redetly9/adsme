@@ -26,7 +26,7 @@ export const MessagesPageList = () => {
           if ('data' in response) {
             const formatedChatsData = response.data
               ?.filter(c => c.id.toString() !== SpecialChatIds.GENERAL_CHAT_ID)
-              .filter(c => c.messages.length > 0) // просто созданные чаты нет смысла сохранять
+              // .filter(c => c.messages.length > 0) // просто созданные чаты нет смысла сохранять todo пересмотреть эту херню
               .reverse()
 
             const sortedChats = sortChatsByLastMessage(formatedChatsData)
