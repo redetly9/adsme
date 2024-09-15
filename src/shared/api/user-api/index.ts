@@ -194,3 +194,13 @@ export const getTotalUserPostsViews = async (
 
   return { data: users?.length || 0 }
 }
+
+export const addUserDevice = async (user_id, device_id, platform) => {
+  const { data: newUser } = await supabase
+  .from('notification_manager')
+  .insert([{ 
+    user_id, device_id, platform
+   }])
+
+   return newUser
+}
