@@ -1,4 +1,5 @@
 import { Device } from '@capacitor/device'
+import { FirebaseMessaging } from '@capacitor-firebase/messaging'
 import { useEffect } from 'react'
 
 import { useUserStore } from '~model/user-model'
@@ -14,10 +15,12 @@ export const useDeviceInfo = () => {
 
       const deviceInfo = await Device.getInfo()
       const deviceId = await Device.getId()
+      const { token } = await FirebaseMessaging.getToken()
       addUserDevice({
         user_id: user.id.toString(),
         device_id: deviceId.identifier, //на ios это по сути uuid, на андроиде по разному
-        platform: deviceInfo.platform
+        platform: deviceInfo.platform,
+        token
       })
     })()
 
