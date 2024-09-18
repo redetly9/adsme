@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>adsme</string>
+	<string>app.adsme</string>
 	<key>PROJECT_ID</key>
 	<string>adsme-5448e</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:844617634:ios:fbc674d65a18a1f6c9c4fb</string>
+	<string>1:844617634:ios:077d45f3567cc593c9c4fb</string>
 </dict>
 </plist>

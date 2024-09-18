@@ -7,7 +7,7 @@ export const useAppNotifications = () => {
     PushNotifications.requestPermissions().then(result => {
       if (result.receive === 'granted') {
         // Разрешение дано
-        PushNotifications.register()
+        PushNotifications.register().then(() => console.log('Подключен к firebase'))
       } else {
         // Разрешение не дано
         console.log('Push notification permission not granted')
@@ -22,6 +22,17 @@ export const useAppNotifications = () => {
     // Подписываемся на событие взаимодействия с уведомлением
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('Push action performed: ', notification)
+    })
+
+    // Логируем полученный токен
+    PushNotifications.addListener('registration', (token) => {
+      console.log('token', token)
+      console.log('FCM Token получен:', token.value)
+    })
+
+    // Обрабатываем ошибку при регистрации
+    PushNotifications.addListener('registrationError', (error) => {
+      console.error('Ошибка при регистрации:', error)
     })
   }, [])
 }
