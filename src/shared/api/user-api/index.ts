@@ -86,7 +86,7 @@ export const getAllUsers = async () => {
 export const getUserById = async (userId: string): Promise<{ data: UserType } | { error: any }> => {
   const { data: user, error } = await supabase
     .from('user_profiles')
-    .select('*')
+    .select('*, user_subscriptions(*)')
     .eq('id', userId)
     .single()
 
