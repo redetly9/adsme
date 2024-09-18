@@ -203,7 +203,7 @@
 
 "@capacitor/android@^6.1.2":
   version "6.1.2"
-  resolved "https://registry.npmjs.org/@capacitor/android/-/android-6.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-6.1.2.tgz#7c767af5d8f708f19a1abcd9db38b458a76adb14"
   integrity sha512-Yh0gQDY1bgRrL25J6ecIlvvs2kF8iNSwIPXjyw6Yz9mnwYxBazF5KZbjpKtGPnJgicJhFkYGsqOkEtxrve0EoQ==
 
 "@capacitor/app@^6.0.1":
@@ -216,9 +216,9 @@
   resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-6.0.2.tgz#29fe5ff31f9e9277e8643d2f01df497dd2575f5f"
   integrity sha512-mJjdKbpdCAaaDVZD/vjzpJJxL1VvwsGTcEGn+4PpCQyPu3+yNQO7vgjwBV7ZYS6+mZIKeYn5swWq0BFuAcDqFg==
 
-"@capacitor/cli@^6.1.1":
+"@capacitor/cli@^6.1.2":
   version "6.1.2"
-  resolved "https://registry.npmjs.org/@capacitor/cli/-/cli-6.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-6.1.2.tgz#b464c28f535cb4dcdf55de139cc07f302b2c98c1"
   integrity sha512-HKCNGE0RP8U7aiEF2vg5wTivJROS8BVfu8a3yYJb1mRQvzv+czpmtHNsTWS/WukvwoxUjyjRmsNQSAACHfMTmQ==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.5"
@@ -240,9 +240,9 @@
     tslib "^2.4.0"
     xml2js "^0.5.0"
 
-"@capacitor/core@^6.1.1":
+"@capacitor/core@^6.1.2":
   version "6.1.2"
-  resolved "https://registry.npmjs.org/@capacitor/core/-/core-6.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-6.1.2.tgz#a072e78b46693a6a47047cfc90d5f7cc48299fe9"
   integrity sha512-xFy1/4qLFLp5WCIzIhtwUuVNNoz36+V7/BzHmLqgVJcvotc4MMjswW/TshnPQaLLujEOaLkA4h8ZJ0uoK3ImGg==
   dependencies:
     tslib "^2.1.0"
@@ -254,12 +254,12 @@
 
 "@capacitor/geolocation@^6.0.1":
   version "6.0.1"
-  resolved "https://registry.npmjs.org/@capacitor/geolocation/-/geolocation-6.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/@capacitor/geolocation/-/geolocation-6.0.1.tgz#b74acdef224321462abe0116fd87cf743b7fb4e5"
   integrity sha512-QOkIrSzG6E0vD2MF3gZmtuILQiuVro4LGPjqrUjCzhX10zl/4lx6bq4T+hj2YLUmMUnCiV1hWTOJHcpdVRMz7w==
 
-"@capacitor/ios@^6.1.1":
+"@capacitor/ios@^6.1.2":
   version "6.1.2"
-  resolved "https://registry.npmjs.org/@capacitor/ios/-/ios-6.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-6.1.2.tgz#568e8b904ad0a6d42fb1b2cc239eab2735ccd5e5"
   integrity sha512-HaeW68KisBd/7TmavzPDlL2bpoDK5AjR2ZYrqU4TlGwM88GtQfvduBCAlSCj20X0w/4+rWMkseD9dAAkacjiyQ==
 
 "@capacitor/push-notifications@^6.0.2":
