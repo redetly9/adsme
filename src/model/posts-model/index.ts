@@ -1,0 +1,1 @@
+export { usePostsStore } from './store'

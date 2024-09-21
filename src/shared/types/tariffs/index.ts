@@ -5,6 +5,12 @@ export enum TariffsTypeNames {
   ONE_YEAR = '12month'
 }
 
+export enum SubscriptionStatus {
+  ACTIVE = 'active',
+  NOT_ACTIVE = 'not_active'
+  // todo добавить статусы
+}
+
 export type TariffsType = {
   id: number,
   created_at: string,
@@ -34,4 +40,12 @@ export type TariffsInvoiceType = {
   paid: boolean,
   refundable: boolean,
   metadata: unknown
+}
+
+export type UserSubscriptionsType = {
+  id: number,
+  status: SubscriptionStatus,
+  user_id: number,
+  end_date: string,
+  created_at: string
 }

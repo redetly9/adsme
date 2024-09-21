@@ -5,6 +5,7 @@ import {
   USER_LOCALE_STORAGE_KEY,
   USER_PHONE_LOCALE_STORAGE_KEY,
   USER_RADIUS_LOCALE_STORAGE_KEY,
+  USER_SUBSCRIPTION_LOCALE_STORAGE_KEY,
   USER_TOKEN_LOCALE_STORAGE_KEY
 } from '~model/user-model/const'
 
@@ -16,6 +17,7 @@ export const useUserStore = create<UserStore>()(immer((set) => ({
   userPhone: localStorage.getItem(USER_PHONE_LOCALE_STORAGE_KEY) || null,
   userGeo: null,
   userRadius: Number(localStorage.getItem(USER_RADIUS_LOCALE_STORAGE_KEY)) || 1000,
+  userSubscription: localStorage.getItem(USER_SUBSCRIPTION_LOCALE_STORAGE_KEY) ? JSON.parse(localStorage.getItem(USER_SUBSCRIPTION_LOCALE_STORAGE_KEY)!) : null,
   setUserInfo: (data) => {
     set(({
       user: data.user,
@@ -30,24 +32,30 @@ export const useUserStore = create<UserStore>()(immer((set) => ({
     set(({ user }))
     localStorage.setItem(USER_LOCALE_STORAGE_KEY, JSON.stringify(user))
   },
-  removeUserInfo: () => {
-    set({
-      user: null,
-      userToken: null,
-      userPhone: null,
-      userGeo: null,
-      userRadius: 1000
-    })
-    localStorage.removeItem(USER_LOCALE_STORAGE_KEY)
-    localStorage.removeItem(USER_TOKEN_LOCALE_STORAGE_KEY)
-    localStorage.removeItem(USER_PHONE_LOCALE_STORAGE_KEY)
-    localStorage.removeItem(USER_RADIUS_LOCALE_STORAGE_KEY)
-  },
   setUserGeo: (userGeo) => {
     set({ userGeo })
   },
   setUserRadius: (radius) => {
     set({ userRadius: radius })
     localStorage.setItem(USER_RADIUS_LOCALE_STORAGE_KEY, radius.toString())
+  },
+  setUserSubscription: (subscription) => {
+    set({ userSubscription: subscription })
+    localStorage.setItem(USER_SUBSCRIPTION_LOCALE_STORAGE_KEY, JSON.stringify(subscription))
+  },
+  removeUserInfo: () => {
+    set({
+      user: null,
+      userToken: null,
+      userPhone: null,
+      userGeo: null,
+      userRadius: 1000,
+      userSubscription: null
+    })
+    localStorage.removeItem(USER_LOCALE_STORAGE_KEY)
+    localStorage.removeItem(USER_TOKEN_LOCALE_STORAGE_KEY)
+    localStorage.removeItem(USER_PHONE_LOCALE_STORAGE_KEY)
+    localStorage.removeItem(USER_RADIUS_LOCALE_STORAGE_KEY)
+    localStorage.removeItem(USER_SUBSCRIPTION_LOCALE_STORAGE_KEY)
   }
 })))

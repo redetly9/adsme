@@ -21,6 +21,7 @@ import { useInView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
 
 import { ConfirmModal } from '~components/confirm-modal'
+import { usePostsStore } from '~model/posts-model'
 import { useUserStore } from '~model/user-model'
 import { deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
 import { addPostView, getTotalPostViews } from '~shared/api/post-api'
@@ -33,19 +34,24 @@ type UserFeedPageFeedProps = {
   post: PostType,
   getPosts?: () => void,
   parentRef?: MutableRefObject<null>,
-  withoutComments?: boolean
+  withoutComments?: boolean,
+  withoutViewsFunc?: boolean
 }
 
 export const UserFeedPageFeed = memo(({
   post,
   getPosts,
   withoutComments,
-  parentRef
+  parentRef,
+  withoutViewsFunc = false
 }: UserFeedPageFeedProps) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
+  const viewedPosts = usePostsStore(state => state.viewedPosts)
+  const addViewedPost = usePostsStore(state => state.addViewedPost)
+
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [views, setViews] = useState(0)
   const [isLoadingPostViews, setIsLoadingPostViews] = useState(false)
@@ -60,8 +66,11 @@ export const UserFeedPageFeed = memo(({
     rootMargin: '0px',
     triggerOnce: true,
     onChange: (inView) => {
-      if (inView && user && post.author?.id !== user.id) {
+      const wasViewBefore = viewedPosts.includes(post.id) // сделано для срабатывания только 1 раз за сессию пользователя
+      if (inView && !wasViewBefore && user && post.author?.id !== user.id && !withoutViewsFunc) {
         addPostView(post.id, user.id)
+        addViewedPost(post.id)
+        getPostView(false) // обновляем просмотры
       }
     }
   })
@@ -83,9 +92,9 @@ export const UserFeedPageFeed = memo(({
     refetch()
   }
 
-  const getPostView = useCallback(async () => {
+  const getPostView = useCallback(async (withLoading: boolean = true) => {
     try {
-      setIsLoadingPostViews(true)
+      withLoading && setIsLoadingPostViews(true)
       const response = await getTotalPostViews(post.id)
       if (response && 'data' in response) {
         setViews(response.data)
@@ -172,13 +181,9 @@ export const UserFeedPageFeed = memo(({
         component='img'
         height='194'
         image={post.images}
-        alt='User post images'
       />
       <CardContent>
-        <Typography
-          variant='body2'
-          sx={{ color: 'text.secondary' }}
-        >
+        <Typography variant='body2'>
           {post.title}
         </Typography>
         <Box className='UserFeedPageFeed-tags'>

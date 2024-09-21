@@ -2,6 +2,7 @@ import './index.scss'
 
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Avatar, Box, Button, CircularProgress, Divider, Typography } from '@mui/material'
+import moment from 'moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -20,6 +21,7 @@ export const ProfilePage = () => {
   const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
+  const userSubscription = useUserStore(state => state.userSubscription)
   const updateUserInfo = useUserStore(state => state.updateUserInfo)
 
   const [isLoadingImg, setIsLoadingImg] = useState(false)
@@ -86,7 +88,7 @@ export const ProfilePage = () => {
                 ? <CircularProgress sx={{ height: '100%', width: '100%' }} />
                 : (
                   <Avatar
-                    sx={{ height: '100%', width: '100%' }}
+                    sx={{ height: '100%', width: '100%', border: userSubscription ? '4px solid green' : 'none' }}
                     src={user?.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
                   />
                 )
@@ -143,12 +145,11 @@ export const ProfilePage = () => {
         </Typography>
         <Button
           fullWidth
-          color='warning' //TODO: заменить на success, если у пользователя есть подписка
+          color={userSubscription ? 'success' : 'warning'}
           variant='contained'
           onClick={navigateToTariffs}
         >
-          {/* TODO: Писать пользователю о времени подписки */}
-          {t('Нет подписки')}
+          {userSubscription ? `${t('Подписка активна до')}: ${moment(userSubscription.end_date).format('YYYY-MM-DD')}` : t('Нет подписки')}
         </Button>
         <Divider sx={{ my: 2 }} />
       </Box>

@@ -1,6 +1,7 @@
 // users
 
 import type { RequestErrorType } from '~shared/types/errors'
+import type { UserSubscriptionsType } from '~shared/types/tariffs'
 
 import type { UserType, VerifyUserType } from '../../types/user'
 import { supabase } from '../supabase'
@@ -83,7 +84,9 @@ export const getAllUsers = async () => {
   return { data: users }
 }
 
-export const getUserById = async (userId: string): Promise<{ data: UserType } | { error: any }> => {
+export const getUserById = async (userId: string): Promise<{
+  data: UserType & { user_subscriptions: UserSubscriptionsType[] }
+} | { error: any }> => {
   const { data: user, error } = await supabase
     .from('user_profiles')
     .select('*, user_subscriptions(*)')

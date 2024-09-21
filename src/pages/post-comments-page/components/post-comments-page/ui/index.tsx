@@ -101,6 +101,7 @@ export const PostCommentsPage = memo(() => {
               <UserFeedPageFeed
                 withoutComments
                 post={post}
+                withoutViewsFunc
               />
             )
             : <UserFeedPageSkeleton />

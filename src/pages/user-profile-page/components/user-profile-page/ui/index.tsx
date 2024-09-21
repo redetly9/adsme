@@ -11,6 +11,7 @@ import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
 import { getUserName } from '~shared/lib/get-user-name'
+import { SubscriptionStatus } from '~shared/types/tariffs'
 import type { UserType } from '~shared/types/user'
 import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
@@ -26,6 +27,7 @@ export const UserProfilePage = () => {
   const [isLoadingProfile, setIsLoadingProfile] = useState(false)
   const [isFollowLoading, setIsFollowLoading] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(false)
+  const [withSubscription, setWithSubscription] = useState(false)
 
   const { data: followers, refetch } = useUserFollowings(user?.id.toString())
   const isFollowed = followers?.find(f => f.follow_user_id.toString() === paramsUserId)
@@ -43,7 +45,10 @@ export const UserProfilePage = () => {
           setIsLoadingProfile(true)
           const response = await getUserById(paramsUserId)
           if (response && 'data' in response) {
-            setUserProfileData(response.data)
+            const { user_subscriptions, ...userInfo } = response.data
+            const isUserWithSubscriptions = user_subscriptions.some(s => s.status === SubscriptionStatus.ACTIVE)
+            setUserProfileData(userInfo)
+            setWithSubscription(isUserWithSubscriptions)
           }
         } catch (e) {
           console.error('Error fetching user data:', e)
@@ -98,7 +103,7 @@ export const UserProfilePage = () => {
       <Box className='UserProfilePage-content'>
         <Box className='UserProfilePage-main-info'>
           <Avatar
-            sx={{ height: '75px', width: '75px' }}
+            sx={{ height: '75px', width: '75px', border: withSubscription ? '4px solid green' : 'none' }}
             src={userProfileData?.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
           />
           <Typography
