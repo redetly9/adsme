@@ -6,14 +6,12 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
+import { useMessagesStore } from '~model/messages-model'
 import { useUserStore } from '~model/user-model'
 import { UserChatPageMessages } from '~pages/user-chat-page/components/user-chat-page-messages'
-import { getChatMessages, getChatParticipants, sendMessage } from '~shared/api'
+import { sendMessage } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { SpecialChatIds } from '~shared/configs/special-chat-ids'
-import { filterMessagesByDate } from '~shared/lib/filter-messages-by-date'
-import type { ChatParticipantsType } from '~shared/types/chats'
-import type { ChatMessageType } from '~shared/types/messages'
 import { CustomInput } from '~shared/ui/custom-input'
 import { PageHeader } from '~shared/ui/page-header'
 
@@ -24,54 +22,62 @@ type UserChatPageProps = {
 export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const { id: paramsChatId } = useParams()
   const { t } = useTranslation()
-
+  /**
+   * User store
+   * */
   const user = useUserStore(state => state.user)
-
+  /**
+   * Messages store
+   * */
+  const chatMessages = useMessagesStore(state => state.chatMessages)
+  const chat = useMessagesStore(state => state.chat)
+  const getChatMessages = useMessagesStore(state => state.getChatMessages)
+  const getChat = useMessagesStore(state => state.getChat)
+  /**
+   * States
+   * */
   const [isLoading, setIsLoading] = useState(false)
-  const [chatMessages, setChatMessages] = useState<ChatMessageType[] | null>(null)
-  const [chat, setChat] = useState<ChatParticipantsType[] | null>(null)
   const [textAreaValue, setTextAreaValue] = useState('')
-
+  const [isPostingMessage, setPostingMessage] = useState(false)
+  /**
+   * Constants
+   * */
   const chatId = useMemo(() => isGroupChat ? SpecialChatIds.GENERAL_CHAT_ID : paramsChatId, [paramsChatId, isGroupChat])
   const sender = chat?.find(c => c.user_profile_id !== user?.id)?.user_profiles
   const isTechnicalSupportChat = useMemo(() => {
     return !!chatMessages?.some(m => m.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID)
   }, [chatMessages])
 
-  const getChatMessagesApi = useCallback(async (withLoading = true) => {
+  const getChatMessagesApi = useCallback(async () => {
     if (!user || !chatId) return
 
-    if (withLoading) {
-      setIsLoading(true)
-    }
+    setIsLoading(true)
     try {
-      const responseChat = await getChatParticipants(chatId)
-      setChat(responseChat.data)
-
-      const responseMessages = await getChatMessages(chatId)
-      if ('data' in responseMessages) {
-        const newMessages = isGroupChat ? filterMessagesByDate(responseMessages.data, 3) : responseMessages.data
-        setChatMessages(newMessages || null)
-      }
+      await getChat(chatId)
+      await getChatMessages({ chatId, isGroupChat })
     } catch (err) {
       console.error(err)
     } finally {
-      if (withLoading) {
-        setIsLoading(false)
-      }
+      setIsLoading(false)
     }
-  }, [chatId, user])
+  }, [chatId, getChat, getChatMessages, isGroupChat, user])
 
   const onSendMessage = async () => {
-    if (!user || !chatId) return
+    try {
+      if (!user || !chatId) return
 
-    await sendMessage(
-      chatId,
-      user.id.toString(),
-      textAreaValue
-    )
-    getChatMessagesApi(false)
-    setTextAreaValue('')
+      setPostingMessage(true)
+      await sendMessage(
+        chatId,
+        user.id.toString(),
+        textAreaValue
+      )
+      setTextAreaValue('')
+    } catch (err) {
+      console.error('Ошибка при отправке сообщения:', err)
+    } finally {
+      setPostingMessage(false)
+    }
   }
 
   useEffect(() => {
@@ -110,6 +116,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
                     onChange={(event) => setTextAreaValue(event.target.value)}
                     iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
                     onRightIconClick={onSendMessage}
+                    disableRButton={isPostingMessage}
                   />
                 </Box>
               </>

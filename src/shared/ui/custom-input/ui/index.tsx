@@ -9,7 +9,8 @@ type CustomInputProps = {
   iconLeft?: ReactNode,
   onLeftIconClick?: () => void,
   iconRight?: ReactNode,
-  onRightIconClick?: () => void
+  onRightIconClick?: () => void,
+  disableRButton?: boolean
 } & InputBaseProps
 
 export const CustomInput = ({
@@ -18,6 +19,7 @@ export const CustomInput = ({
   onLeftIconClick,
   iconRight,
   onRightIconClick,
+  disableRButton,
   ...inputProps
 }: CustomInputProps) => {
   return (
@@ -44,6 +46,7 @@ export const CustomInput = ({
             <IconButton
               sx={{ p: '10px' }}
               onClick={onRightIconClick}
+              disabled={disableRButton}
             >
               {iconRight}
             </IconButton>

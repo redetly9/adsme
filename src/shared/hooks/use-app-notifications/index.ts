@@ -14,11 +14,6 @@ export const useAppNotifications = () => {
       }
     })
 
-    // Подписываемся на событие получения пуш-уведомления
-    PushNotifications.addListener('pushNotificationReceived', (notification) => {
-      console.log('Push received: ', notification)
-    })
-
     // Подписываемся на событие взаимодействия с уведомлением
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('Push action performed: ', notification)

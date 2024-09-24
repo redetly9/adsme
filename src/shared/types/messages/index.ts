@@ -7,13 +7,7 @@ export type MessageType = {
   created_at: string
 }
 
-export type ChatMessageType = {
-  id: number,
-  chat_id: number,
-  sender_id: number,
-  text: string,
-  created_at: string,
-  location: null,
+export type ChatMessageType = MessageType & {
   sender: {
     name: string | null,
     avatar: string | null
