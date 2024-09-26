@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 import type { MessagesStore } from '~model/messages-model/types'
-import { getChatMessages, getChatParticipants } from '~shared/api'
+import { getChatMessages, getChatParticipants, getMessagesByLocation } from '~shared/api'
 import { filterMessagesByDate } from '~shared/lib/filter-messages-by-date'
 
 export const useMessagesStore = create<MessagesStore>()(immer((set, get) => ({
@@ -20,21 +20,30 @@ export const useMessagesStore = create<MessagesStore>()(immer((set, get) => ({
       console.error(err)
     }
   },
-  getChatMessages: async ({ chatId, isGroupChat }) => {
+  getChatMessages: async ({ chatId, isGroupChat, userGeo, userRadius }) => {
     if (!chatId) return
     try {
-      const responseMessages = await getChatMessages(chatId)
-      if ('data' in responseMessages) {
-        const newMessages = isGroupChat ? filterMessagesByDate(responseMessages.data, 3) : responseMessages.data
+      let responseMessages
+      if (isGroupChat) {
+        responseMessages = await getMessagesByLocation({
+          longitude: userGeo?.longitude || 0,
+          latitude: userGeo?.latitude || 0,
+          radius: userRadius
+        })
+      } else {
+        responseMessages = await getChatMessages(chatId)
+      }
+      if ('data' in responseMessages || (responseMessages.length > 0 && isGroupChat)) {
+        const newMessages = isGroupChat ? filterMessagesByDate(responseMessages, 24) : responseMessages.data
         set({ chatMessages: newMessages || null })
       }
     } catch (err) {
       console.error(err)
     }
   },
-  addNewMessage: (message) => {
+  addNewMessage: (message, isGroupChat = false) => {
     const chat = get().chat?.at(0)
-    if (chat && chat.chat_id === message.chat_id) {
+    if ((chat && chat.chat_id === message.chat_id) || isGroupChat) {
       set((state: MessagesStore) => {
         state.chatMessages?.push(message)
         return state

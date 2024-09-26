@@ -131,7 +131,7 @@ export const ProfilePage = () => {
           {t('Номер телефона')}
         </Typography>
         <Typography>
-          {user?.phone ? formatPhoneNumber(user.phone) : 'Телефон не указан'}
+          {user?.phone ? formatPhoneNumber(user.phone) : t('Телефон не указан')}
         </Typography>
         <Divider sx={{ my: 2 }} />
         <ProfilePageStatistic />

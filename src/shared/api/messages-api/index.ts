@@ -1,41 +1,31 @@
-import { useQuery } from 'react-query'
-
 import { supabase } from '../supabase'
 
-export const useMessagesByLocation = (
-  longitude: number,
-  latitude: number,
+export const getMessagesByLocation = async ({
+  longitude,
+  latitude,
   radius = 1000
-) => {
-  return useQuery(
-    ['messagesByLocation', { longitude, latitude, radius }],
-    async () => {
-      const { data: messages, error } = await supabase.rpc(
-        'get_messages_by_location',
-        { long: longitude, lat: latitude, rad: radius }
-      )
-
-      if (error) {
-        throw new Error(error.message)
-      }
-
-      return messages?.map((m: any) => ({
-        id: m.id,
-        chat_id: m.chat_id,
-        text: m.text,
-        created_at: m.created_at,
-        sender_id: m.sender_id,
-        sender: {
-          id: m.sender_id,
-          name: m.sender_name,
-          avatar: m.sender_avatar
-        }
-      }))
-    },
-    {
-      refetchInterval: 5000
-    }
+}: { longitude: number, latitude: number, radius?: number }) => {
+  const { data: messages, error } = await supabase.rpc(
+    'get_messages_by_location',
+    { long: longitude, lat: latitude, rad: radius }
   )
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return messages?.map((m: any) => ({
+    id: m.id,
+    chat_id: m.chat_id,
+    text: m.text,
+    created_at: m.created_at,
+    sender_id: m.sender_id,
+    sender: {
+      id: m.sender_id,
+      name: m.sender_name,
+      avatar: m.sender_avatar
+    }
+  }))
 }
 
 // Функция для отправки сообщения в чат

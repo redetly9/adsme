@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useUserStore } from '~model/user-model'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { useUserSettings } from '~shared/hooks/use-user-settings'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
 import { getUserName } from '~shared/lib/get-user-name'
@@ -24,6 +25,7 @@ export const SubscribeListItem = (props: UserType) => {
 
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { userSettings } = useUserSettings(id.toString())
 
   const user = useUserStore(state => state.user)
   const [isChatLoading, setIsChatLoading] = useState(false)
@@ -55,9 +57,15 @@ export const SubscribeListItem = (props: UserType) => {
           <Typography className='SubscribeListItem-title'>
             {getUserName(props)}
           </Typography>
-          <Typography className='SubscribeListItem-title'>
-            {formatPhoneNumber(phone)}
-          </Typography>
+          {
+            userSettings?.hide_phone
+              ? null
+              : (
+                <Typography className='SubscribeListItem-title'>
+                  {phone ? formatPhoneNumber(phone) : t('Номер не указан')}
+                </Typography>
+              )
+          }
         </Box>
       </Box>
       <Box className='SubscribeListItem-right'>

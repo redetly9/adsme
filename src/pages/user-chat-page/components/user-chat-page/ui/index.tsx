@@ -26,6 +26,8 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
    * User store
    * */
   const user = useUserStore(state => state.user)
+  const userGeo = useUserStore(state => state.userGeo)
+  const userRadius = useUserStore(state => state.userRadius)
   /**
    * Messages store
    * */
@@ -54,24 +56,34 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
     setIsLoading(true)
     try {
       await getChat(chatId)
-      await getChatMessages({ chatId, isGroupChat })
+      await getChatMessages({ chatId, isGroupChat, userGeo, userRadius })
     } catch (err) {
       console.error(err)
     } finally {
       setIsLoading(false)
     }
-  }, [chatId, getChat, getChatMessages, isGroupChat, user])
+  }, [chatId, getChat, getChatMessages, isGroupChat, user, userGeo, userRadius])
 
   const onSendMessage = async () => {
     try {
       if (!user || !chatId) return
 
       setPostingMessage(true)
-      await sendMessage(
-        chatId,
-        user.id.toString(),
-        textAreaValue
-      )
+      if (isGroupChat) {
+        await sendMessage(
+          chatId,
+          user.id.toString(),
+          textAreaValue,
+          userGeo?.longitude,
+          userGeo?.latitude
+        )
+      } else {
+        await sendMessage(
+          chatId,
+          user.id.toString(),
+          textAreaValue
+        )
+      }
       setTextAreaValue('')
     } catch (err) {
       console.error('Ошибка при отправке сообщения:', err)
@@ -105,24 +117,20 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
             ? <Box className='UserChatPage-content-loading'>
               <CircularProgress />
             </Box>
-            : chatMessages
-              ? <>
-                <UserChatPageMessages chatMessages={chatMessages} />
-                <Box className='UserChatPage-content-footer'>
-                  <CustomInput
-                    className='UserChatPage-content-footer-input'
-                    placeholder={t('Сообщение')}
-                    value={textAreaValue}
-                    onChange={(event) => setTextAreaValue(event.target.value)}
-                    iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
-                    onRightIconClick={onSendMessage}
-                    disableRButton={isPostingMessage}
-                  />
-                </Box>
-              </>
-              : <Box className='UserChatPage-content-empty'>
-                {t('Сообщений нет')}
+            : <>
+              <UserChatPageMessages chatMessages={chatMessages} />
+              <Box className='UserChatPage-content-footer'>
+                <CustomInput
+                  className='UserChatPage-content-footer-input'
+                  placeholder={t('Сообщение')}
+                  value={textAreaValue}
+                  onChange={(event) => setTextAreaValue(event.target.value)}
+                  iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
+                  onRightIconClick={onSendMessage}
+                  disableRButton={isPostingMessage}
+                />
               </Box>
+            </>
         }
       </Box>
     </Box>

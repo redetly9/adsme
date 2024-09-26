@@ -8,7 +8,7 @@ import { PhoneMaskInput } from '~shared/ui/phone-mask-input'
 
 type PhoneInputProps = {
   name?: string,
-  value: string,
+  value: string | null,
   onChange: FormikValues['handleChange']
 }
 

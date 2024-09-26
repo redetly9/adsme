@@ -31,7 +31,6 @@ export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
     return chat.messages.some(m => m.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID)
   }, [chat.messages])
 
-  console.log(lastMessages)
   const lastMessage = lastMessages.find(m => m.chat_id === chat.id)
 
   const navigateToChat = (selectedChatId: string) => {

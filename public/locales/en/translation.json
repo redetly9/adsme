@@ -84,5 +84,10 @@
   "Комментарий": "Comment",
   "Комментариев нет": "No comments",
   "Техническая поддержка": "Technical support",
-  "Подписка активна до": "Subscription is active until"
+  "Подписка активна до": "Subscription is active until",
+  "Почта": "Email",
+  "Неверный формат почты": "Invalid email format",
+  "Требуется электронная почта": "Email is required",
+  "Номер не указан": "Phone not specified",
+  "Скрыть номер телефона": "Hide phone number"
 }

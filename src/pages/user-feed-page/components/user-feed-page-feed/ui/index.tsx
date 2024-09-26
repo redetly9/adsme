@@ -176,12 +176,19 @@ export const UserFeedPageFeed = memo(({
         title={getUserName(post?.author)}
         subheader={moment(post.created_at).fromNow()}
       />
-      <CardMedia
-        className='UserFeedPageFeed-img'
-        component='img'
-        height='194'
-        image={post.images}
-      />
+      {
+        post.images // бесполезная проверка, просто потому что так захотел клиент
+          ? (
+            <CardMedia
+              className='UserFeedPageFeed-img'
+              component='img'
+              height='194'
+              image={post.images}
+            />
+          )
+          : null
+      }
+
       <CardContent>
         <Typography variant='body2'>
           {post.title}
