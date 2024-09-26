@@ -58,7 +58,7 @@ export const SubscribeListItem = (props: UserType) => {
             {getUserName(props)}
           </Typography>
           {
-            userSettings?.hide_phone
+            userSettings === null || userSettings?.hide_phone
               ? null
               : (
                 <Typography className='SubscribeListItem-title'>

@@ -126,7 +126,7 @@ export const UserProfilePage = () => {
           </Button>
         </Box>
         {
-          userSettings?.hide_phone
+          userSettings === null || userSettings?.hide_phone
             ? null
             : (
               <Box className='UserProfilePage-secondary-info'>
