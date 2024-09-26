@@ -24,7 +24,7 @@ export const SignInPage = memo(() => {
   const { values, handleSubmit, handleChange } = useFormik<InitialValuesSignInPageType>({
     initialValues: initialValuesSignInPage,
     onSubmit: async (formValues) => {
-      const userPhone = formValues.phone.replace(/[^0-9]/g, '')
+      const userPhone = formValues.phone
 
       if (stage === SignInStages.SUBMIT_PHONE) {
         await registerUser(userPhone)

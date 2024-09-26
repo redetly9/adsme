@@ -7,12 +7,12 @@ import type { UserType, VerifyUserType } from '../../types/user'
 import { supabase } from '../supabase'
 
 // Функция регистрации пользователя
-export const registerUser = async (phone: string) => {
+export const registerUser = async (email: string) => {
   // Проверяем, существует ли пользователь
   const { data: existingUser, error: findError } = await supabase
     .from('user_profiles')
     .select('*')
-    .eq('phone', phone)
+    .eq('email', email)
     .maybeSingle()
 
   if (findError && findError.message !== 'Item not found') {
@@ -31,7 +31,7 @@ export const registerUser = async (phone: string) => {
   // Создаем нового пользователя
   const { data: newUser, error: createError } = await supabase
     .from('user_profiles')
-    .insert([{ phone }])
+    .insert([{ email }])
 
   if (createError) {
     console.error('Ошибка при создании пользователя:', createError.message)
@@ -42,7 +42,7 @@ export const registerUser = async (phone: string) => {
 }
 
 // Функция для верификации пользователя
-export const verifyUser = async (phone: string, code: string): Promise<VerifyUserType | RequestErrorType> => {
+export const verifyUser = async (email: string, code: string): Promise<VerifyUserType | RequestErrorType> => {
   if (code !== '1111') {
     // Здесь можно заменить на проверку с реальным кодом, если необходимо
     throw console.error()
@@ -53,7 +53,7 @@ export const verifyUser = async (phone: string, code: string): Promise<VerifyUse
   const { data: user, error: findError } = await supabase
     .from('user_profiles')
     .select('*')
-    .eq('phone', phone)
+    .eq('email', email)
     .single()
 
   if (findError) {

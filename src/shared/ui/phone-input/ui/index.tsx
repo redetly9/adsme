@@ -26,7 +26,7 @@ export const PhoneInput = memo(({ name = 'phone', value, onChange }: PhoneInputP
         name={name}
         placeholder='+7 (___) ___ ____'
         fullWidth
-        inputComponent={PhoneMaskInput as any}
+        // inputComponent={PhoneMaskInput as any}
       />
     </Box>
   )
