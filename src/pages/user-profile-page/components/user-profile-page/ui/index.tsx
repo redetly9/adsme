@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useUserStore } from '~model/user-model'
 import { followUser, getUserById, unfollowUser, useUserFollowings } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { useUserSettings } from '~shared/hooks/use-user-settings'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
 import { getUserName } from '~shared/lib/get-user-name'
@@ -21,6 +22,7 @@ export const UserProfilePage = () => {
   const { id: paramsUserId } = useParams()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { userSettings } = useUserSettings(paramsUserId)
 
   const user = useUserStore(state => state.user)
   const [userProfileData, setUserProfileData] = useState<UserType | null>(null)
@@ -123,18 +125,24 @@ export const UserProfilePage = () => {
             {isFollowed ? t('Отписаться') : t('Подписаться')}
           </Button>
         </Box>
-        <Box className='UserProfilePage-secondary-info'>
-          <Typography
-            fontSize={16}
-            fontWeight={400}
-            color='var(--text-color-2)'
-          >
-            Номер телефона
-          </Typography>
-          <Typography mt='6px'>
-            {userProfileData?.phone ? formatPhoneNumber(userProfileData?.phone) : t('Телефон не указан')}
-          </Typography>
-        </Box>
+        {
+          userSettings === null || userSettings?.hide_phone
+            ? null
+            : (
+              <Box className='UserProfilePage-secondary-info'>
+                <Typography
+                  fontSize={16}
+                  fontWeight={400}
+                  color='var(--text-color-2)'
+                >
+                  Номер телефона
+                </Typography>
+                <Typography mt='6px'>
+                  {userProfileData?.phone ? formatPhoneNumber(userProfileData?.phone) : t('Телефон не указан')}
+                </Typography>
+              </Box>
+            )
+        }
         <Box className='UserProfilePage-actions'>
           <Button
             fullWidth

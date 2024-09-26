@@ -56,7 +56,7 @@ export const TariffsPage = () => {
       })
       window.location.href = data.confirmation.confirmation_url
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
     }

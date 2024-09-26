@@ -21,11 +21,11 @@ export {
   getChatParticipants
 } from './chats-api'
 /** Messages */
-export { sendMessage, useMessagesByLocation } from './messages-api'
+export { sendMessage, getMessagesByLocation } from './messages-api'
 /** Follower */
 export { useUserFollowings, followUser, unfollowUser } from './followers-api'
 /** Settings */
-export { getNotificationSettings, updateNotificationSettings } from './settings-api'
+export { getSettingsApi, updateSettingsApi, getNotificationSettings, updateNotificationSettings } from './settings-api'
 /** Tariffs */
 export { getTariffs, createInvoice } from './tariffs'
 /** Comments */

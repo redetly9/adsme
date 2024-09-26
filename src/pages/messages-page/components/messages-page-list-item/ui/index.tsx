@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { useMessagesStore } from '~model/messages-model'
 import { useUserStore } from '~model/user-model'
 import { getChatParticipants } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
@@ -23,12 +24,14 @@ export const MessagesPageListItem = ({ chat }: MessagesPageListItemProps) => {
   const { t } = useTranslation()
 
   const user = useUserStore(state => state.user)
+  const lastMessages = useMessagesStore(state => state.lastMessages)
   const [senderData, setSenderData] = useState<ChatParticipantsType | null>(null)
 
   const isTechnicalSupportChat = useMemo(() => {
     return chat.messages.some(m => m.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID)
   }, [chat.messages])
-  const lastMessage = chat.messages?.at(-1)
+
+  const lastMessage = lastMessages.find(m => m.chat_id === chat.id)
 
   const navigateToChat = (selectedChatId: string) => {
     navigate(RoutesPath.user_chat.replace(':id', selectedChatId.toString()))

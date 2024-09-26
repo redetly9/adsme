@@ -26,7 +26,7 @@ export const useUserStore = create<UserStore>()(immer((set) => ({
     }))
     localStorage.setItem(USER_LOCALE_STORAGE_KEY, JSON.stringify(data.user))
     localStorage.setItem(USER_TOKEN_LOCALE_STORAGE_KEY, data.token)
-    localStorage.setItem(USER_PHONE_LOCALE_STORAGE_KEY, data.user.phone)
+    localStorage.setItem(USER_PHONE_LOCALE_STORAGE_KEY, JSON.stringify(data.user.phone))
   },
   updateUserInfo: (user) => {
     set(({ user }))

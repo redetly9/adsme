@@ -3,6 +3,7 @@ import './index.scss'
 import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+import { useMessagesStore } from '~model/messages-model'
 import { useUserStore } from '~model/user-model'
 import { getUserChats } from '~shared/api'
 import { SpecialChatIds } from '~shared/configs/special-chat-ids'
@@ -14,6 +15,7 @@ import { MessagesPageListItem } from '../../messages-page-list-item'
 
 export const MessagesPageList = () => {
   const user = useUserStore(state => state.user)
+  const setLastMessage = useMessagesStore(state => state.setLastMessage)
   const [chats, setChats] = useState<ChatType[] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -31,6 +33,13 @@ export const MessagesPageList = () => {
 
             const sortedChats = sortChatsByLastMessage(formatedChatsData)
 
+            if (sortedChats) {
+              sortedChats.forEach(c => {
+                const lastMessage = c.messages.at(-1)
+                lastMessage && setLastMessage(lastMessage)
+              })
+            }
+
             setChats(sortedChats)
           }
         } catch (e) {
@@ -40,7 +49,7 @@ export const MessagesPageList = () => {
         }
       })()
     }
-  }, [user])
+  }, [setLastMessage, user])
 
   if (isLoading) return (
     <LoadingOverlay noFull={80} />

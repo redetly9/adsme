@@ -5,31 +5,16 @@ import { useEffect } from 'react'
 
 import { AppRouter } from '~app/app-router'
 import { useUserStore } from '~model/user-model'
-import { supabase } from '~shared/api/supabase'
 import { useAppNotifications } from '~shared/hooks/use-app-notifications'
 import { useAppUrlOpenListener } from '~shared/hooks/use-app-url-open-listener'
 import { useDeviceInfo } from '~shared/hooks/use-device-Info'
 import { useGetUserGeolocation } from '~shared/hooks/use-get-user-geolocation'
+import { useMessagesSocket } from '~shared/hooks/use-messages-socket'
 import { useUpdateUserInfo } from '~shared/hooks/use-update-user-info'
+import { getWebGeolocation } from '~shared/lib/get-web-geolocation'
 
 export const App = () => {
-  const user = useUserStore(state => state.user)
-
-  /**
-   * Подключение сокета
-   * */
-  useEffect(() => {
-    if (user?.id) {
-      supabase // TODO: сокет для сообщений
-        .channel(`new_message_${user.id}`)
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-          const message = payload.new
-          console.log(`новое сообщение ${message}`)
-        })
-        .subscribe()
-    }
-  }, [user?.id])
-
+  const setUserGeo = useUserStore(state => state.setUserGeo)
   /** Кастомный хук - разрешения push уведомлений */
   useAppNotifications()
 
@@ -44,6 +29,16 @@ export const App = () => {
 
   /** Кастомный хук - обновления информации о пользователе и его подписке, при заходе в приложение */
   useUpdateUserInfo()
+
+  /** Кастомный хук - подключение сокета для сообщений */
+  useMessagesSocket()
+
+  /** Для работы с геопозицией в браузере */
+  useEffect(() => {
+    getWebGeolocation().then(response => {
+      setUserGeo(response as any)
+    })
+  }, [setUserGeo])
 
   return (
     <Box className='App'>
