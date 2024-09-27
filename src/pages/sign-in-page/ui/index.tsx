@@ -1,36 +1,48 @@
 import './index.scss'
 
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
 
 import { useUserStore } from '~model/user-model'
 import { initialValuesSignInPage, SignInStages } from '~pages/sign-in-page/const'
 import type { InitialValuesSignInPageType } from '~pages/sign-in-page/type'
 import { registerUser, verifyUser } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
+import { emailRegex } from '~shared/const/email'
 import { CodeInput } from '~shared/ui/code-input'
-import { PhoneInput } from '~shared/ui/phone-input'
 
 export const SignInPage = memo(() => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   const setUserInfo = useUserStore(state => state.setUserInfo)
-  const [stage, setStage] = useState<SignInStages>(SignInStages.SUBMIT_PHONE)
+  const [stage, setStage] = useState<SignInStages>(SignInStages.SUBMIT_EMAIL)
 
-  const { values, handleSubmit, handleChange } = useFormik<InitialValuesSignInPageType>({
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    touched,
+    errors,
+    handleBlur
+  } = useFormik<InitialValuesSignInPageType>({
     initialValues: initialValuesSignInPage,
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email(t('Неверный формат почты'))
+        .matches(emailRegex, t('Неверный формат почты'))
+        .required(t('Требуется электронная почта'))
+    }),
     onSubmit: async (formValues) => {
-      const userPhone = formValues.phone
-
-      if (stage === SignInStages.SUBMIT_PHONE) {
-        await registerUser(userPhone)
+      if (stage === SignInStages.SUBMIT_EMAIL) {
+        await registerUser(formValues.email)
         setStage(SignInStages.SUBMIT_CODE)
       } else {
-        const response = await verifyUser(userPhone, formValues.code)
+        const response = await verifyUser(formValues.email, formValues.code)
         if ('error' in response) {
           console.error(response.error)
         } else {
@@ -40,6 +52,14 @@ export const SignInPage = memo(() => {
       }
     }
   })
+
+  const disableSubmitButton = useMemo(() => {
+    if (stage === SignInStages.SUBMIT_EMAIL) {
+      return Object.values(errors).length > 0 || values.email.length === 0
+    }
+    return values.code.length === 0
+
+  }, [stage, errors, values])
 
   return (
     <Box className='SignInPage'>
@@ -51,11 +71,17 @@ export const SignInPage = memo(() => {
         {t('Вход')}
       </Typography>
       {
-        stage === SignInStages.SUBMIT_PHONE
+        stage === SignInStages.SUBMIT_EMAIL
           ? (
-            <PhoneInput
-              value={values.phone}
+            <TextField
+              fullWidth
+              label={t('Почта')}
+              name='email'
+              value={values.email}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.email ? Boolean(errors.email) : undefined}
+              helperText={touched.email ? errors.email : null}
             />
           )
           : (
@@ -69,8 +95,9 @@ export const SignInPage = memo(() => {
         fullWidth
         variant='contained'
         onClick={() => handleSubmit()}
+        disabled={disableSubmitButton}
       >
-        {stage === SignInStages.SUBMIT_PHONE ? t('Вход') : t('Подтвердить')}
+        {stage === SignInStages.SUBMIT_EMAIL ? t('Вход') : t('Подтвердить')}
       </Button>
       <Typography
         variant='caption'
