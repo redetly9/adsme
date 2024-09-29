@@ -15,6 +15,8 @@ PODS:
     - Capacitor
   - CapacitorPushNotifications (6.0.2):
     - Capacitor
+  - CapacitorSplashScreen (6.0.2):
+    - Capacitor
   - Firebase/CoreOnly (10.29.0):
     - FirebaseCore (= 10.29.0)
   - Firebase/Messaging (10.29.0):
@@ -85,6 +87,7 @@ DEPENDENCIES:
   - "CapacitorFirebaseMessaging (from `../../node_modules/@capacitor-firebase/messaging`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - Firebase/Messaging
 
 SPEC REPOS:
@@ -116,6 +119,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/geolocation"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
@@ -126,6 +131,7 @@ SPEC CHECKSUMS:
   CapacitorFirebaseMessaging: 116031aec3ed6d61a14f58cd6bd4b3a51e6a82c8
   CapacitorGeolocation: 39dca51d755f08ed1d43e51be55291a402cdc64f
   CapacitorPushNotifications: ccd797926c030acad3d5498ef452c735c90a2c89
+  CapacitorSplashScreen: 250df9ef8014fac5c7c1fd231f0f8b1d8f0b5624
   Firebase: cec914dab6fd7b1bd8ab56ea07ce4e03dd251c2d
   FirebaseCore: 30e9c1cbe3d38f5f5e75f48bfcea87d7c358ec16
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
@@ -136,6 +142,6 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 188a5c2c7a74f217d572044b936ded6401dcb71a
+PODFILE CHECKSUM: 7a071549d2a16dc0f390588d726790e0cb705a70
 
 COCOAPODS: 1.15.2

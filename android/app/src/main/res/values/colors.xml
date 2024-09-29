@@ -2,4 +2,6 @@
 <resources>
     <!-- Другие определения цветов -->
     <color name="push_icon_color">#FFFFFF</color> <!-- Или любой другой цвет -->
+    <!-- Фон для Splash Screen -->
+    <color name="splashscreen_background">#FFFFFF</color>
 </resources>

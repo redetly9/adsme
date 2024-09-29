@@ -1,5 +1,6 @@
 import './index.scss'
 
+import { SplashScreen } from '@capacitor/splash-screen'
 import { Box } from '@mui/material'
 
 import { AppRouter } from '~app/app-router'
@@ -9,6 +10,17 @@ import { useDeviceInfo } from '~shared/hooks/use-device-Info'
 import { useGetUserGeolocation } from '~shared/hooks/use-get-user-geolocation'
 import { useMessagesSocket } from '~shared/hooks/use-messages-socket'
 import { useUpdateUserInfo } from '~shared/hooks/use-update-user-info'
+
+(async () => {
+  // Hide the splash (you should do this on app launch)
+  await SplashScreen.hide()
+
+  // Show the splash for two seconds and then automatically hide it:
+  await SplashScreen.show({
+    showDuration: 2000,
+    autoHide: true
+  })
+})()
 
 export const App = () => {
   /** Кастомный хук - разрешения push уведомлений */
