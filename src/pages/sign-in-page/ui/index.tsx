@@ -39,10 +39,10 @@ export const SignInPage = memo(() => {
     }),
     onSubmit: async (formValues) => {
       if (stage === SignInStages.SUBMIT_EMAIL) {
-        await registerUser(formValues.email)
+        await registerUser(formValues.email.toLowerCase())
         setStage(SignInStages.SUBMIT_CODE)
       } else {
-        const response = await verifyUser(formValues.email, formValues.code)
+        const response = await verifyUser(formValues.email.toLowerCase(), formValues.code)
         if ('error' in response) {
           console.error(response.error)
         } else {
