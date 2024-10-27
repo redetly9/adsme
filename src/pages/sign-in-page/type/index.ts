@@ -1,4 +1,5 @@
 export type InitialValuesSignInPageType = {
   email: string,
-  code: string
+  code: string,
+  phone: string
 }

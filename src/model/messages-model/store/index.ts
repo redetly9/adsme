@@ -2,8 +2,7 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 import type { MessagesStore } from '~model/messages-model/types'
-import { getChatMessages, getChatParticipants, getMessagesByLocation } from '~shared/api'
-import { filterMessagesByDate } from '~shared/lib/filter-messages-by-date'
+import { getChatMessages, getChatParticipants } from '~shared/api'
 
 export const useMessagesStore = create<MessagesStore>()(immer((set, get) => ({
   totalUnreadMessages: 0, // TODO: непрочитанные сообщения
@@ -20,22 +19,12 @@ export const useMessagesStore = create<MessagesStore>()(immer((set, get) => ({
       console.error(err)
     }
   },
-  getChatMessages: async ({ chatId, isGroupChat, userGeo, userRadius }) => {
+  getChatMessages: async ({ chatId }) => {
     if (!chatId) return
     try {
-      let responseMessages
-      if (isGroupChat) {
-        responseMessages = await getMessagesByLocation({
-          longitude: userGeo?.longitude || 0,
-          latitude: userGeo?.latitude || 0,
-          radius: userRadius
-        })
-      } else {
-        responseMessages = await getChatMessages(chatId)
-      }
-      if ('data' in responseMessages || (responseMessages.length > 0 && isGroupChat)) {
-        const newMessages = isGroupChat ? filterMessagesByDate(responseMessages, 24) : responseMessages.data
-        set({ chatMessages: newMessages || null })
+      const responseMessages = await getChatMessages(chatId)
+      if ('data' in responseMessages) {
+        set({ chatMessages: responseMessages.data || null })
       }
     } catch (err) {
       console.error(err)

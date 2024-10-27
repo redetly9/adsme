@@ -1,3 +1,5 @@
+import { useQuery } from 'react-query'
+
 import { supabase } from '../supabase'
 
 export const getMessagesByLocation = async ({
@@ -26,6 +28,32 @@ export const getMessagesByLocation = async ({
       avatar: m.sender_avatar
     }
   }))
+}
+
+export const useMessagesByLocation = (
+  longitude: number | undefined,
+  latitude: number | undefined,
+  radius = 1000,
+  isGroupChat: boolean
+) => {
+  return useQuery(
+    [
+      'postsByLocation',
+      {
+        longitude,
+        latitude,
+        radius
+      }
+    ],
+    () => {
+      if (longitude && latitude && isGroupChat) {
+        return getMessagesByLocation({ longitude, latitude, radius })
+      }
+    },
+    {
+      refetchInterval: 2000 // запрос каждые 2 секунды
+    }
+  )
 }
 
 // Функция для отправки сообщения в чат

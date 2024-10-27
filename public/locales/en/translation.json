@@ -89,5 +89,8 @@
   "Неверный формат почты": "Invalid email format",
   "Требуется электронная почта": "Email is required",
   "Номер не указан": "Phone not specified",
-  "Скрыть номер телефона": "Hide phone number"
+  "Скрыть номер телефона": "Hide phone number",
+  "Телефон": "Phone",
+  "Требуется ввод номера телефона": "Phone number required",
+  "Нет доступа к геолокации": "No access to geolocation"
 }

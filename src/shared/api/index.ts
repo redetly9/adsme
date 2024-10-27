@@ -21,7 +21,7 @@ export {
   getChatParticipants
 } from './chats-api'
 /** Messages */
-export { sendMessage, getMessagesByLocation } from './messages-api'
+export { sendMessage, getMessagesByLocation, useMessagesByLocation } from './messages-api'
 /** Follower */
 export { useUserFollowings, followUser, unfollowUser } from './followers-api'
 /** Settings */

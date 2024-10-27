@@ -1,15 +1,11 @@
-import { useEffect, useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 
 import { useMessagesStore } from '~model/messages-model'
 import { useUserStore } from '~model/user-model'
 import { supabase } from '~shared/api/supabase'
-import { RoutesPath } from '~shared/configs/app-router-config'
 import type { ChatMessageType, MessageType } from '~shared/types/messages'
 
 export const useMessagesSocket = () => {
-  const location = useLocation()
-  const isGroupChat = useMemo(() => location.pathname === RoutesPath.group_chat, [location.pathname])
   /** user store */
   const user = useUserStore(state => state.user)
   const addNewMessage = useMessagesStore(state => state.addNewMessage)
@@ -44,11 +40,11 @@ export const useMessagesSocket = () => {
           } as ChatMessageType
 
           console.log('Новое сообщение:', enrichedMessage)
-          addNewMessage(enrichedMessage, isGroupChat)
+          addNewMessage(enrichedMessage)
           setLastMessage(message)
         })
         .subscribe()
 
     }
-  }, [addNewMessage, isGroupChat, setLastMessage, user?.id])
+  }, [addNewMessage, setLastMessage, user?.id])
 }

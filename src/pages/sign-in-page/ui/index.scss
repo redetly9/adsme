@@ -10,4 +10,9 @@
   gap: 2rem;
 
   background-color: #F0F4F8FF;
+
+  &-submit-btn {
+    width: 100%;
+    display: flex;
+  }
 }

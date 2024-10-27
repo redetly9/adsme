@@ -1,18 +1,21 @@
 import './index.scss'
 
 import SendIcon from '@mui/icons-material/Send'
-import { Box, CircularProgress } from '@mui/material'
+import TuneIcon from '@mui/icons-material/TuneRounded'
+import { Box, Button, CircularProgress, Slider, Typography } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { useMessagesStore } from '~model/messages-model'
 import { useUserStore } from '~model/user-model'
+import { marks } from '~pages/feed-page/const/marks.ts'
 import { UserChatPageMessages } from '~pages/user-chat-page/components/user-chat-page-messages'
-import { sendMessage } from '~shared/api'
+import { sendMessage, useMessagesByLocation } from '~shared/api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { SpecialChatIds } from '~shared/configs/special-chat-ids'
 import { CustomInput } from '~shared/ui/custom-input'
+import { DrawerBasic } from '~shared/ui/drawer-basic'
 import { PageHeader } from '~shared/ui/page-header'
 
 type UserChatPageProps = {
@@ -28,6 +31,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const user = useUserStore(state => state.user)
   const userGeo = useUserStore(state => state.userGeo)
   const userRadius = useUserStore(state => state.userRadius)
+  const setUserRadius = useUserStore(state => state.setUserRadius)
   /**
    * Messages store
    * */
@@ -41,6 +45,8 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [textAreaValue, setTextAreaValue] = useState('')
   const [isPostingMessage, setPostingMessage] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [sliderValue, setSliderValue] = useState(userRadius)
   /**
    * Constants
    * */
@@ -50,19 +56,22 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
     return !!chatMessages?.some(m => m.sender_id.toString() === SpecialChatIds.TECHNICAL_SUPPORT_ID)
   }, [chatMessages])
 
+  /** Получаем сообщения для группового чата */
+  const groupMessages = useMessagesByLocation(userGeo?.longitude, userGeo?.latitude, userRadius, isGroupChat)
+
   const getChatMessagesApi = useCallback(async () => {
     if (!user || !chatId) return
 
     setIsLoading(true)
     try {
       await getChat(chatId)
-      await getChatMessages({ chatId, isGroupChat, userGeo, userRadius })
+      await getChatMessages({ chatId })
     } catch (err) {
       console.error(err)
     } finally {
       setIsLoading(false)
     }
-  }, [chatId, getChat, getChatMessages, isGroupChat, user, userGeo, userRadius])
+  }, [chatId, getChat, getChatMessages, user])
 
   const onSendMessage = async () => {
     try {
@@ -101,6 +110,24 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
       <PageHeader
         title={isGroupChat ? t('Главный чат') : sender?.name || 'User'}
         withNavigateBack={!isGroupChat}
+        rightSideButton={isGroupChat
+          ? (
+            <Button
+              variant='outlined'
+              color='inherit'
+              onClick={() => setIsFilterOpen(p => !p)}
+            >
+              <TuneIcon />
+              <Typography
+                variant='body2'
+                sx={{ color: 'text.secondary' }}
+              >
+                {userRadius.valueOf()}
+              </Typography>
+            </Button>
+          )
+          : null
+        }
         avatar={sender?.avatar || ''}
         pathNavigateAvatar={!isTechnicalSupportChat
           ? RoutesPath.user_profile.replace(':id', sender?.id.toString() || RoutesPath.main)
@@ -118,7 +145,7 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
               <CircularProgress />
             </Box>
             : <>
-              <UserChatPageMessages chatMessages={chatMessages} />
+              <UserChatPageMessages chatMessages={isGroupChat ? groupMessages.data : chatMessages} />
               <Box className='UserChatPage-content-footer'>
                 <CustomInput
                   className='UserChatPage-content-footer-input'
@@ -133,6 +160,23 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
             </>
         }
       </Box>
+      <DrawerBasic
+        open={isFilterOpen}
+        setOpen={setIsFilterOpen}
+        hideBackdrop={true}
+      >
+        <Slider
+          sx={{ width: '98%', margin: '0px auto' }}
+          max={1000}
+          step={10}
+          marks={marks}
+          valueLabelDisplay='auto'
+          getAriaValueText={v => v.toString()}
+          value={sliderValue}
+          onChange={(_, newValue) => setSliderValue(newValue as number)}
+          onChangeCommitted={(_, newValue) => setUserRadius(newValue as number)}
+        />
+      </DrawerBasic>
     </Box>
   )
 })
