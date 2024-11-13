@@ -53,8 +53,6 @@ export const SignInPage = memo(() => {
       ? values.email.toLowerCase()
       : values.phone.replace(/[^0-9]/g, '')
 
-    console.log('login', login)
-
     if (stage === SignInStages.SUBMIT_EMAIL) {
       await registerUser(login)
       setStage(SignInStages.SUBMIT_CODE)
