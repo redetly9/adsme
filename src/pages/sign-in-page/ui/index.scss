@@ -1,5 +1,5 @@
 .SignInPage {
-  height: 100vh;
+  height: calc(100vh - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
   width: 100vw;
   padding: 1rem;
 
