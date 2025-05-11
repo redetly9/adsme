@@ -1,11 +1,12 @@
 import './index.scss'
 
+import CloseIcon from '@mui/icons-material/Close'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { Box, Button, Chip, CircularProgress } from '@mui/material'
+import { Box, Button, Chip, CircularProgress, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -23,7 +24,7 @@ import { useNavigate } from 'react-router-dom'
 import { ConfirmModal } from '~components/confirm-modal'
 import { usePostsStore } from '~model/posts-model'
 import { useUserStore } from '~model/user-model'
-import { deletePost, followUser, unfollowUser, useUserFollowings } from '~shared/api'
+import { deletePost, followUser, reportUser, unfollowUser, useUserFollowings } from '~shared/api'
 import { addPostView, getTotalPostViews } from '~shared/api/post-api'
 import { RoutesPath } from '~shared/configs/app-router-config'
 import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
@@ -55,8 +56,13 @@ export const UserFeedPageFeed = memo(({
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [views, setViews] = useState(0)
   const [isLoadingPostViews, setIsLoadingPostViews] = useState(false)
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false)
+  const [isOpenSnackbarError, setIsOpenSnackbarError] = useState(false)
 
-  const { data: followers, refetch } = useUserFollowings(user?.id.toString())
+  const {
+    data: followers,
+    refetch
+  } = useUserFollowings(user?.id.toString())
   const isFollowed = useMemo(() => followers?.find(f => f.follow_user_id === post?.author?.id), [followers, post?.author?.id])
 
   /** Отслеживание просмотра поста ЦЕЛИКОМ */
@@ -78,7 +84,11 @@ export const UserFeedPageFeed = memo(({
   const checkAndAddChatHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    checkAndAddChat({ userId: user?.id, otherUserId: post?.author?.id, navigate })
+    checkAndAddChat({
+      userId: user?.id,
+      otherUserId: post?.author?.id,
+      navigate
+    })
   }
 
   const followHandler = async () => {
@@ -128,6 +138,18 @@ export const UserFeedPageFeed = memo(({
     navigate(RoutesPath.comments.replace(':id', post.id.toString()))
   }
 
+  const onComplain = async () => {
+    try {
+      if (post.author?.id) {
+        await reportUser(+post.author.id)
+      }
+      setIsOpenSnackbar(true)
+    } catch (e) {
+      console.error(e)
+      setIsOpenSnackbarError(true)
+    }
+  }
+
   useEffect(() => {
     getPostView()
   }, [getPostView])
@@ -174,7 +196,8 @@ export const UserFeedPageFeed = memo(({
           </Box>
         }
         title={getUserName(post?.author)}
-        subheader={moment(post.created_at).fromNow()}
+        subheader={moment(post.created_at)
+          .fromNow()}
       />
       {
         post.images // бесполезная проверка, просто потому что так захотел клиент
@@ -189,20 +212,21 @@ export const UserFeedPageFeed = memo(({
           : null
       }
 
-      <CardContent>
+      <CardContent sx={{ p: 1 }}>
         <Typography variant='body2'>
           {post.title}
         </Typography>
         <Box className='UserFeedPageFeed-tags'>
           {post?.tags ?
-            post?.tags?.split(' ').map((tag) => (
-              <Chip
-                key={tag + post.id}
-                size='small'
-                sx={{ overflow: 'hidden' }}
-                label={tag}
-              />
-            ))
+            post?.tags?.split(' ')
+              .map((tag) => (
+                <Chip
+                  key={tag + post.id}
+                  size='small'
+                  sx={{ overflow: 'hidden' }}
+                  label={tag}
+                />
+              ))
             : ''
           }
         </Box>
@@ -212,10 +236,26 @@ export const UserFeedPageFeed = memo(({
               ? <CircularProgress size={18} />
               : (
                 <>
+                  {user?.id !== post.author?.id &&
+                    <Typography
+                      mr={1}
+                      variant='body2'
+                      sx={{
+                        mr: 'auto',
+                        color: 'text.secondary',
+                        textDecoration: 'underline'
+                      }}
+                      onClick={onComplain}
+                    >
+                      {t('Пожаловаться')}
+                    </Typography>}
                   {!withoutComments && <Typography
                     mr={1}
                     variant='body2'
-                    sx={{ color: 'text.secondary', textDecoration: 'underline' }}
+                    sx={{
+                      color: 'text.secondary',
+                      textDecoration: 'underline'
+                    }}
                     onClick={navigateToComments}
                   >
                     {t('Комментарии')}
@@ -238,6 +278,43 @@ export const UserFeedPageFeed = memo(({
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
         confirmHandler={deletePostHandler}
+      />
+      <Snackbar
+        open={isOpenSnackbar}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        autoHideDuration={1000}
+        onClose={() => setIsOpenSnackbar(false)}
+        message={t('Жалоба отправлена')}
+        action={<IconButton
+          size='small'
+          aria-label='close'
+          color='inherit'
+          onClick={() => setIsOpenSnackbar(false)}
+        >
+          <CloseIcon fontSize='small' />
+        </IconButton>}
+      />
+      <Snackbar
+        open={isOpenSnackbarError}
+        color='error'
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        autoHideDuration={1000}
+        onClose={() => setIsOpenSnackbarError(false)}
+        message={t('Ошибка!')}
+        action={<IconButton
+          size='small'
+          aria-label='close'
+          color='inherit'
+          onClick={() => setIsOpenSnackbarError(false)}
+        >
+          <CloseIcon fontSize='small' />
+        </IconButton>}
       />
     </Card>
   )

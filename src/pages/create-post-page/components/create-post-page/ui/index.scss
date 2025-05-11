@@ -16,6 +16,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
 
       input {
         z-index: 10;

@@ -9,7 +9,10 @@ import { supabase } from '../supabase'
 // Функция регистрации пользователя
 export const registerUser = async (email: string) => {
   // Проверяем, существует ли пользователь
-  const { data: existingUser, error: findError } = await supabase
+  const {
+    data: existingUser,
+    error: findError
+  } = await supabase
     .from('user_profiles')
     .select('*')
     .eq('email', email)
@@ -29,7 +32,10 @@ export const registerUser = async (email: string) => {
   }
 
   // Создаем нового пользователя
-  const { data: newUser, error: createError } = await supabase
+  const {
+    data: newUser,
+    error: createError
+  } = await supabase
     .from('user_profiles')
     .insert([{ email }])
 
@@ -50,7 +56,10 @@ export const verifyUser = async (email: string, code: string): Promise<VerifyUse
     return { error: { message: 'Неверный код верификации.' } }
   }
 
-  const { data: user, error: findError } = await supabase
+  const {
+    data: user,
+    error: findError
+  } = await supabase
     .from('user_profiles')
     .select('*')
     .eq('email', email)
@@ -68,11 +77,19 @@ export const verifyUser = async (email: string, code: string): Promise<VerifyUse
   // Симуляция создания токена (в реальном проекте нужен сервер для безопасности)
   const fakeToken = `fake-jwt-token-for-${user.id}`
 
-  return { data: { token: fakeToken, user } }
+  return {
+    data: {
+      token: fakeToken,
+      user
+    }
+  }
 }
 
 export const getAllUsers = async () => {
-  const { data: users, error } = await supabase
+  const {
+    data: users,
+    error
+  } = await supabase
     .from('user_profiles')
     .select('*')
 
@@ -87,7 +104,10 @@ export const getAllUsers = async () => {
 export const getUserById = async (userId: string): Promise<{
   data: UserType & { user_subscriptions: UserSubscriptionsType[] }
 } | { error: any }> => {
-  const { data: user, error } = await supabase
+  const {
+    data: user,
+    error
+  } = await supabase
     .from('user_profiles')
     .select('*, user_subscriptions(*)')
     .eq('id', userId)
@@ -105,7 +125,10 @@ export const updateUser = async (
   userId: string,
   updateData: Omit<UserType, 'id'>
 ) => {
-  const { data: updatedUser, error } = await supabase
+  const {
+    data: updatedUser,
+    error
+  } = await supabase
     .from('user_profiles')
     .update(updateData)
     .eq('id', userId)
@@ -148,7 +171,10 @@ export const getUniqueUserPostsViews = async (
 
   const myPostsIds = myPosts?.map((mp) => mp.id)
 
-  const { data, error } = await supabase
+  const {
+    data,
+    error
+  } = await supabase
     .from('post_views')
     .select('user_id')
     .in('post_id', myPostsIds ?? [])
@@ -181,7 +207,10 @@ export const getTotalUserPostsViews = async (
 
   const myPostsIds = myPosts?.map((mp) => mp.id)
 
-  const { data, error } = await supabase
+  const {
+    data,
+    error
+  } = await supabase
     .from('post_views')
     .select('user_id')
     .in('post_id', myPostsIds ?? [])
@@ -198,7 +227,12 @@ export const getTotalUserPostsViews = async (
   return { data: users?.length || 0 }
 }
 
-export const addUserDevice = async ({ device_id, user_id, platform, token }: {
+export const addUserDevice = async ({
+  device_id,
+  user_id,
+  platform,
+  token
+}: {
   user_id: string,
   device_id: string,
   platform: string,
@@ -207,8 +241,25 @@ export const addUserDevice = async ({ device_id, user_id, platform, token }: {
   const { data: newUser } = await supabase
     .from('notification_manager')
     .insert([{
-      user_id, device_id, platform, token
+      user_id,
+      device_id,
+      platform,
+      token
     }])
 
   return newUser
+}
+
+export const reportUser = async (userId: number) => {
+  const {
+    data,
+    error
+  } = await supabase.rpc('report_user', { user_id: userId })
+
+  if (error) {
+    console.error('Ошибка жалобы на пользователя', error.message)
+    return { error }
+  }
+
+  return data
 }

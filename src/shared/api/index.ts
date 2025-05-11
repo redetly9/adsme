@@ -11,7 +11,8 @@ export {
   registerUser,
   getAllUsers,
   getUserById,
-  updateUser
+  updateUser,
+  reportUser
 } from './user-api'
 /** Chats */
 export {

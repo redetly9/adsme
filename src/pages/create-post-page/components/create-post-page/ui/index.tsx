@@ -1,5 +1,6 @@
 import './index.scss'
 
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
 import { Box, Button, CircularProgress, Divider, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,6 +42,8 @@ export const CreatePostPage = () => {
     setDescription(e.target.value)
   }
 
+  console.log('userGeo', userGeo)
+
   const UploadPosts = async () => {
     if (!lon && !lat && userGeo === null || !user) return
 
@@ -58,7 +61,11 @@ export const CreatePostPage = () => {
     }
   }
 
-  const onLocationSelected = ({ address, lat, lng }: any) => {
+  const onLocationSelected = ({
+    address,
+    lat,
+    lng
+  }: any) => {
     setLat(lat)
     setLon(lng)
     setValue(address)
@@ -78,11 +85,7 @@ export const CreatePostPage = () => {
             accept='image/*'
           />
           {!imageUrl && !loading && (
-            <img
-              src='https://pixelroyals.com/assets/img/Placeholder.png?h=ca3b2018af8371e9070c2a8095bd60b6'
-              alt=''
-              style={{ width: '100%', height: 'auto' }}
-            />
+            <CenterFocusWeakIcon fontSize='large' />
           )}
           {loading ? <CircularProgress /> : null}
           {imageUrl
@@ -90,7 +93,11 @@ export const CreatePostPage = () => {
               <img
                 src={imageUrl}
                 alt='Загруженное изображение'
-                style={{ minWidth: '100%', maxWidth: '100%', height: 'auto' }}
+                style={{
+                  minWidth: '100%',
+                  maxWidth: '100%',
+                  height: 'auto'
+                }}
               />
             )
             : null}
@@ -103,7 +110,14 @@ export const CreatePostPage = () => {
           sx={{ mt: 2 }}
         />
         <Divider sx={{ my: 2 }} />
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: '5px', mb: 2 }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          gap: '5px',
+          mb: 2
+        }}
+        >
           <Typography
             sx={{ mb: 0.5 }}
           >
@@ -123,7 +137,13 @@ export const CreatePostPage = () => {
         {
           value
             ? (
-              <Box sx={{ width: '100%', padding: '8px', boxSizing: 'border-box', border: '2px solid #ccc' }}>
+              <Box sx={{
+                width: '100%',
+                padding: '8px',
+                boxSizing: 'border-box',
+                border: '2px solid #ccc'
+              }}
+              >
                 <Typography fontSize={12}>
                   {value}
                 </Typography>
