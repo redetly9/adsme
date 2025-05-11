@@ -26,7 +26,10 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
   /** formik */
   const user = useUserStore(state => state.user)
 
-  const { data: followers, refetch } = useUserFollowings(user?.id.toString())
+  const {
+    data: followers,
+    refetch
+  } = useUserFollowings(user?.id.toString())
 
   /** constants */
   const isFollowed = followers?.find(f => f.follow_user_id === post?.author?.id)
@@ -34,7 +37,11 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
   const checkAndAddChatHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    checkAndAddChat({ userId: user?.id, otherUserId: post?.author?.id, navigate })
+    checkAndAddChat({
+      userId: user?.id,
+      otherUserId: post?.author?.id,
+      navigate
+    })
   }
 
   const followHandler = async () => {
@@ -89,7 +96,8 @@ export const FeedPageListItem = ({ post }: FeedPageListItemProps) => {
             className='FeedPageListItem-right-time'
             variant='subtitle2'
           >
-            {moment(post.created_at).fromNow()}
+            {moment(post.created_at)
+              .fromNow()}
           </Typography>
           <Box className='FeedPageListItem-right-action'>
             {

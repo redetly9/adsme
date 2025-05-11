@@ -22,15 +22,19 @@
     display: flex;
     gap: 0.5em;
     flex-wrap: wrap;
+    margin-bottom: 14px;
   }
 
   &-views {
-    position: absolute;
-    right: 0.5em;
-    bottom: 0.5em;
-
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .MuiCardContent-root {
+    &:last-child {
+      padding-bottom: 8px;
+    }
   }
 }
