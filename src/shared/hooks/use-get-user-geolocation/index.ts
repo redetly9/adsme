@@ -16,10 +16,6 @@ export const useGetUserGeolocation = () => {
         // Проверка статуса разрешения
         if (permission.location === 'granted') {
           const position = await Geolocation.getCurrentPosition()
-          console.log({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          })
           setUserGeo({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
