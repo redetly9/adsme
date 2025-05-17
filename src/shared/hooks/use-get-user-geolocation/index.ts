@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useUserStore } from '~model/user-model'
 
 export const useGetUserGeolocation = () => {
+  const user = useUserStore((state) => state.user)
   const setUserGeo = useUserStore((state) => state.setUserGeo)
 
   useEffect(() => {
@@ -15,6 +16,10 @@ export const useGetUserGeolocation = () => {
         // Проверка статуса разрешения
         if (permission.location === 'granted') {
           const position = await Geolocation.getCurrentPosition()
+          console.log({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
           setUserGeo({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -26,5 +31,5 @@ export const useGetUserGeolocation = () => {
         console.error('Error getting location', e)
       }
     })()
-  }, [setUserGeo])
+  }, [user, setUserGeo])
 }
