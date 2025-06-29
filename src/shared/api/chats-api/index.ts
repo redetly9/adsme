@@ -176,9 +176,15 @@ export const getChatMessages = async (chatId: string): Promise<{ data: ChatMessa
     .from('messages')
     .select(`
       *,
-      sender: user_profiles (name, avatar)
+      sender: user_profiles (name, avatar),
+      reply_to_message: messages!reply_to_message_id (
+        id,
+        text,
+        sender: user_profiles (name, avatar)
+      )
     `)
     .eq('chat_id', chatId)
+    .order('created_at', { ascending: true })
 
   if (error) {
     console.error('Ошибка при получении сообщений:', error.message)
