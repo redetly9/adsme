@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { Box, Button, Checkbox, CircularProgress, Divider, FormControlLabel, FormGroup, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, Typography } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -86,16 +86,21 @@ export const SettingsNotificationsTab = () => {
           />
         </FormGroup>
       </Box>
-      <Divider sx={{ width: '100%', my: 2 }} />
+      <Divider sx={{
+        width: '100%',
+        my: 2
+      }}
+      />
       <Button
         fullWidth
         variant='outlined'
         onClick={onSubmit}
         disabled={canSubmit}
       >
-        {
-          isLoading ? <CircularProgress size={23} /> : t('Сохранить')
-        }
+        {/*{*/}
+        {/*  isLoading ? <CircularProgress size={23} /> : */}
+        t('Сохранить')
+        {/*}*/}
       </Button>
     </Box>
   )

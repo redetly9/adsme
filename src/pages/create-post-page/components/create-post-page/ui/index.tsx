@@ -1,7 +1,7 @@
 import './index.scss'
 
 import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
-import { Box, Button, CircularProgress, Divider, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -87,7 +87,7 @@ export const CreatePostPage = () => {
           {!imageUrl && !loading && (
             <CenterFocusWeakIcon fontSize='large' />
           )}
-          {loading ? <CircularProgress /> : null}
+          {/*{loading ? <CircularProgress /> : null}*/}
           {imageUrl
             ? (
               <img

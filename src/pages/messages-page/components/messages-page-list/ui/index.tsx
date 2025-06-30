@@ -9,7 +9,6 @@ import { getUserChats } from '~shared/api'
 import { SpecialChatIds } from '~shared/configs/special-chat-ids'
 import { sortChatsByLastMessage } from '~shared/lib/sort-chat-by-last-message'
 import type { ChatType } from '~shared/types/chats'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 
 import { MessagesPageListItem } from '../../messages-page-list-item'
 
@@ -51,9 +50,9 @@ export const MessagesPageList = () => {
     }
   }, [setLastMessage, user])
 
-  if (isLoading) return (
-    <LoadingOverlay noFull={80} />
-  )
+  // if (isLoading) return (
+  //   <LoadingOverlay noFull={80} />
+  // )
 
   return (
     <Box className='MessagesPageList'>

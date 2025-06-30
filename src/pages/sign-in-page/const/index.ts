@@ -5,13 +5,7 @@ export enum SignInStages {
   SUBMIT_CODE = 'submit_code'
 }
 
-export enum SignInTabs {
-  EMAIL = 'email',
-  PHONE = 'phone'
-}
-
 export const initialValuesSignInPage: InitialValuesSignInPageType = {
   email: '',
-  code: '',
-  phone: ''
+  code: ''
 }

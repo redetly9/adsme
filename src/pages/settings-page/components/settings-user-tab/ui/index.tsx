@@ -10,7 +10,6 @@ import { useUserStore } from '~model/user-model'
 import { getUserById, updateUser } from '~shared/api'
 import { emailRegex } from '~shared/const/email'
 import { useUserSettings } from '~shared/hooks/use-user-settings'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PhoneInput } from '~shared/ui/phone-input'
 
 export const SettingsUserTab = () => {
@@ -21,7 +20,11 @@ export const SettingsUserTab = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const { isLoading: isLoadingSettings, userSettings, updateSettings } = useUserSettings(user?.id.toString())
+  const {
+    isLoading: isLoadingSettings,
+    userSettings,
+    updateSettings
+  } = useUserSettings(user?.id.toString())
 
   const {
     values,
@@ -35,8 +38,6 @@ export const SettingsUserTab = () => {
     initialValues: {
       email: user?.email || null,
       name: user?.name || null,
-      surname: user?.surname || null,
-      lastname: user?.lastname || null,
       phone: user?.phone || null,
       hidePhone: userSettings?.hide_phone || false
     },
@@ -48,9 +49,15 @@ export const SettingsUserTab = () => {
         .required(t('Требуется электронная почта'))
     }),
     onSubmit: async (formikValues) => {
-      const { hidePhone, ...userValues } = formikValues
+      const {
+        hidePhone,
+        ...userValues
+      } = formikValues
       if (!user) return
-      const formatedValues = { ...userValues, phone: userValues.phone?.replace(/[^0-9]/g, '') }
+      const formatedValues = {
+        ...userValues,
+        phone: userValues.phone?.replace(/[^0-9]/g, '')
+      }
       try {
         setIsLoading(true)
         await updateUser(user.id.toString(), formatedValues as any)
@@ -81,14 +88,12 @@ export const SettingsUserTab = () => {
 
   const isSameValues = user?.email === values.email // типа все осталось таким же
     && user?.name === values.name
-    && user?.surname === values.surname
-    && user?.lastname === values.lastname
     && user?.phone === formatedPhoneForCheck
     && values.hidePhone === userSettings?.hide_phone
 
   return (
     <Box className='SettingsUserTab'>
-      {isLoading ? <LoadingOverlay /> : null}
+      {/*{isLoading ? <LoadingOverlay /> : null}*/}
       <TextField
         fullWidth
         label={t('Почта')}
@@ -106,27 +111,16 @@ export const SettingsUserTab = () => {
         value={values.name}
         onChange={handleChange}
       />
-      <TextField
-        fullWidth
-        label={t('Фамилия')}
-        name='surname'
-        value={values.surname}
-        onChange={handleChange}
-      />
-      <TextField
-        fullWidth
-        label={t('Отчество')}
-        name='lastname'
-        value={values.lastname}
-        onChange={handleChange}
-      />
       <Box sx={{ width: '100%' }}>
         <PhoneInput
           value={values.phone}
           onChange={handleChange}
         />
         <FormControlLabel
-          sx={{ px: 2, mt: 1 }}
+          sx={{
+            px: 2,
+            mt: 1
+          }}
           label={t('Скрыть номер телефона')}
           disabled={isLoadingSettings}
           control={

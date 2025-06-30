@@ -19,11 +19,12 @@ export const WithGeoCheck = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false)
 
   const shouldNotCheck = [RoutesPath.sign_in, RoutesPath.my_profile, RoutesPath.settings].some(p => location.pathname === p)
-  const isUserGeo = userGeo && Object.values(userGeo).every(v => v)
+  const isUserGeo = userGeo && Object.values(userGeo)
+    .every(v => v)
 
   useEffect(() => {
     if (!isUserGeo && !shouldNotCheck) {
-      navigate(RoutesPath.my_profile)
+      // navigate(RoutesPath.my_profile)
       setOpen(true)
     }
   }, [navigate, isUserGeo, shouldNotCheck])
@@ -52,7 +53,10 @@ export const WithGeoCheck = ({ children }: PropsWithChildren) => {
       {children}
       <Snackbar
         open={open}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
         autoHideDuration={1000}
         onClose={handleClose}
         message={t('Нет доступа к геолокации')}

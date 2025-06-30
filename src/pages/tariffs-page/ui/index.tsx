@@ -3,19 +3,7 @@ import './index.scss'
 import InsertChartIcon from '@mui/icons-material/InsertChart'
 import MarkChatReadIcon from '@mui/icons-material/MarkChatRead'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography
-} from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -23,7 +11,6 @@ import { useUserStore } from '~model/user-model'
 import { createInvoice, getTariffs } from '~shared/api'
 import type { TariffsType } from '~shared/types/tariffs'
 import { DrawerBasic } from '~shared/ui/drawer-basic'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
 
 export const TariffsPage = () => {
@@ -64,7 +51,7 @@ export const TariffsPage = () => {
 
   return (
     <Box className='SubscribePlansPage'>
-      {isLoading ? <LoadingOverlay /> : null}
+      {/*{isLoading ? <LoadingOverlay /> : null}*/}
       <PageHeader
         title={t('План подписок')}
         withRightSideAction={false}
@@ -81,7 +68,11 @@ export const TariffsPage = () => {
             >
               {t('Выберите подписку, которая подходит вам')}
             </Typography>
-            <Typography sx={{ color: 'text.secondary', mt: 1.5 }}>
+            <Typography sx={{
+              color: 'text.secondary',
+              mt: 1.5
+            }}
+            >
               {t('Что дает подписка и почему она вам нужна')}
             </Typography>
             <List>
@@ -117,7 +108,11 @@ export const TariffsPage = () => {
          */}
         {
           tariffs.length > 0
-            ? tariffs.map(({ id, name, price }) => (
+            ? tariffs.map(({
+              id,
+              name,
+              price
+            }) => (
               <Card
                 key={id}
                 sx={{ width: '80%' }}
@@ -163,7 +158,10 @@ export const TariffsPage = () => {
           <VisibilityIcon
             fontSize='large'
             color='primary'
-            sx={{ mr: 1, mb: 0.4 }}
+            sx={{
+              mr: 1,
+              mb: 0.4
+            }}
           />
           {t('Ваши посты становятся видимы другим, что позволяет расширить круг общения и делиться моментами с более широкой аудиторией.')}
         </Typography>
@@ -180,7 +178,10 @@ export const TariffsPage = () => {
           <InsertChartIcon
             fontSize='large'
             color='success'
-            sx={{ mr: 1, mb: 0.4 }}
+            sx={{
+              mr: 1,
+              mb: 0.4
+            }}
           />
           {t('Вы сможете видеть, сколько людей просматривают ваши публикации, что поможет вам лучше понимать вашу аудиторию и повышать популярность своих постов.')}
         </Typography>
@@ -197,7 +198,10 @@ export const TariffsPage = () => {
           <MarkChatReadIcon
             fontSize='large'
             color='warning'
-            sx={{ mr: 1, mb: 0.4 }}
+            sx={{
+              mr: 1,
+              mb: 0.4
+            }}
           />
           {t('Присоединяйтесь к живым обсуждениям с другими пользователями, делитесь впечатлениями, новостями и узнавайте первыми о том, что происходит вокруг.')}
         </Typography>

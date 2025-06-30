@@ -8,7 +8,10 @@ export const getPostsByLocation = async (
   latitude: number,
   radius: number = 1000
 ): Promise<{ data: PostType[] } | { error: any }> => {
-  const { data: posts, error } = await supabase.rpc('get_posts_by_location2', {
+  const {
+    data: posts,
+    error
+  } = await supabase.rpc('get_posts_by_location2', {
     p_long: longitude,
     p_lat: latitude,
     p_rad: radius
@@ -31,9 +34,9 @@ export const getPostsByLocation = async (
     author: {
       id: p.author_id,
       name: p.author_name,
-      avatar: p.avatar,
-      surname: p.author_surname,
-      lastname: p.author_lastname
+      avatar: p.avatar
+      // surname: p.author_surname,
+      // lastname: p.author_lastname
     }
   }))
 
@@ -59,7 +62,10 @@ export const usePostsByLocation = (
 }
 
 export const getPostsByTag = async (tag: string) => {
-  const { data: posts, error } = await supabase
+  const {
+    data: posts,
+    error
+  } = await supabase
     .from('posts')
     .select(`
       *,
@@ -76,7 +82,10 @@ export const getPostsByTag = async (tag: string) => {
 }
 
 export const getPostsByUserId = async (userId: string): Promise<{ data: PostType[] } | { error: any }> => {
-  const { data: posts, error } = await supabase
+  const {
+    data: posts,
+    error
+  } = await supabase
     .from('posts')
     .select(`
       *,
@@ -93,7 +102,10 @@ export const getPostsByUserId = async (userId: string): Promise<{ data: PostType
 }
 
 export const getPostById = async (postId: string): Promise<{ data: PostType | null } | { error: any }> => {
-  const { data: posts, error } = await supabase
+  const {
+    data: posts,
+    error
+  } = await supabase
     .from('posts')
     .select(`
       *,
@@ -118,7 +130,10 @@ export const createPost = async ({
   latitude,
   author
 }: Omit<CreatePostType, 'id'>) => {
-  const { data: newPost, error } = await supabase
+  const {
+    data: newPost,
+    error
+  } = await supabase
     .from('posts')
     .insert([
       {
@@ -141,7 +156,10 @@ export const createPost = async ({
 
 // Удаление поста
 export const deletePost = async (postId: string) => {
-  const { data: deletedPost, error } = await supabase
+  const {
+    data: deletedPost,
+    error
+  } = await supabase
     .from('posts')
     .delete()
     .match({ id: postId })
@@ -160,7 +178,10 @@ export const addPostView = async (
 ) => {
   const { error } = await supabase
     .from('post_views')
-    .insert([{ post_id: postId, user_id: userId }])
+    .insert([{
+      post_id: postId,
+      user_id: userId
+    }])
 
   if (error) {
     console.error('Ошибка при добавлении просмотра поста:', error.message)
@@ -171,7 +192,10 @@ export const addPostView = async (
 }
 
 export const getUniquePostViews = async (postId: number): Promise<{ data: number } | { error: any }> => {
-  const { data, error } = await supabase
+  const {
+    data,
+    error
+  } = await supabase
     .from('post_views')
     .select('user_id')
     .eq('post_id', postId)
@@ -188,7 +212,10 @@ export const getUniquePostViews = async (postId: number): Promise<{ data: number
 }
 
 export const getTotalPostViews = async (postId: number): Promise<{ data: number } | { error: any }> => {
-  const { data, error } = await supabase
+  const {
+    data,
+    error
+  } = await supabase
     .from('post_views')
     .select('user_id')
     .eq('post_id', postId)

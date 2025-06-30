@@ -2,7 +2,7 @@ import './index.scss'
 
 import SendIcon from '@mui/icons-material/Send'
 import TuneIcon from '@mui/icons-material/TuneRounded'
-import { Box, Button, CircularProgress, Slider, Typography } from '@mui/material'
+import { Box, Button, Slider, Typography } from '@mui/material'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -139,26 +139,26 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
         }
       />
       <Box className='UserChatPage-content'>
-        {
-          isLoading
-            ? <Box className='UserChatPage-content-loading'>
-              <CircularProgress />
-            </Box>
-            : <>
-              <UserChatPageMessages chatMessages={isGroupChat ? groupMessages.data : chatMessages} />
-              <Box className='UserChatPage-content-footer'>
-                <CustomInput
-                  className='UserChatPage-content-footer-input'
-                  placeholder={t('Сообщение')}
-                  value={textAreaValue}
-                  onChange={(event) => setTextAreaValue(event.target.value)}
-                  iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
-                  onRightIconClick={onSendMessage}
-                  disableRButton={isPostingMessage}
-                />
-              </Box>
-            </>
-        }
+        {/*{*/}
+        {/*  isLoading*/}
+        {/*    ? <Box className='UserChatPage-content-loading'>*/}
+        {/*      <CircularProgress />*/}
+        {/*    </Box>*/}
+        {/*    : <>*/}
+        <UserChatPageMessages chatMessages={isGroupChat ? groupMessages.data : chatMessages} />
+        <Box className='UserChatPage-content-footer'>
+          <CustomInput
+            className='UserChatPage-content-footer-input'
+            placeholder={t('Сообщение')}
+            value={textAreaValue}
+            onChange={(event) => setTextAreaValue(event.target.value)}
+            iconRight={textAreaValue ? <SendIcon sx={{ color: '#0b6bcb' }} /> : null}
+            onRightIconClick={onSendMessage}
+            disableRButton={isPostingMessage}
+          />
+        </Box>
+        {/*</>*/}
+        {/*}*/}
       </Box>
       <DrawerBasic
         open={isFilterOpen}
@@ -166,7 +166,10 @@ export const UserChatPage = memo(({ isGroupChat }: UserChatPageProps) => {
         hideBackdrop={true}
       >
         <Slider
-          sx={{ width: '98%', margin: '0px auto' }}
+          sx={{
+            width: '98%',
+            margin: '0px auto'
+          }}
           max={1000}
           step={10}
           marks={marks}

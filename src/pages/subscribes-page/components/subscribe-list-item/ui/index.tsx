@@ -13,7 +13,6 @@ import { checkAndAddChat } from '~shared/lib/check-and-add-chat'
 import { formatPhoneNumber } from '~shared/lib/format-phone-number'
 import { getUserName } from '~shared/lib/get-user-name'
 import type { UserType } from '~shared/types/user'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 
 export const SubscribeListItem = (props: UserType) => {
   const {
@@ -37,13 +36,17 @@ export const SubscribeListItem = (props: UserType) => {
   const checkAndAddChatHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsChatLoading(true)
-    await checkAndAddChat({ userId: user?.id, otherUserId: id, navigate })
+    await checkAndAddChat({
+      userId: user?.id,
+      otherUserId: id,
+      navigate
+    })
     setIsChatLoading(false)
   }
 
   return (
     <Box className='SubscribeListItem'>
-      {isChatLoading ? <LoadingOverlay /> : null}
+      {/*{isChatLoading ? <LoadingOverlay /> : null}*/}
       <Box className='SubscribeListItem-left'>
         <Avatar
           src={avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JYrktZNYfJ7k1QFk-hL3v6J9fiTAvsZeWRTybV0hSv_-wwPli_IJBB16Y8Tepi5U0Qg&usqp=CAU'}

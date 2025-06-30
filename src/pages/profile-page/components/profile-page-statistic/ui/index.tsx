@@ -1,7 +1,7 @@
 import './index.scss'
 
 import { BarChart, TrendingUp } from '@mui/icons-material'
-import { Avatar, Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import moment from 'moment'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -29,7 +29,8 @@ export const ProfilePageStatistic = () => {
     (async () => {
       try {
         setIsLoading(true)
-        const formatedDateStart = startDate ?? moment().subtract(1, 'years')
+        const formatedDateStart = startDate ?? moment()
+          .subtract(1, 'years')
         const formatedDateEnd = endDate ?? moment()
 
         // получение всех просмотров
@@ -74,40 +75,40 @@ export const ProfilePageStatistic = () => {
           }
         </Button>
       </Box>
-      {
-        isLoading
-          ? <CircularProgress />
-          : (
-            <Box className='ProfilePageStatistic'>
-              <Box className='ProfilePageStatistic-row'>
-                <Box className='ProfilePageStatistic-row-label'>
-                  <Avatar>
-                    <BarChart />
-                  </Avatar>
-                  <Typography>
-                    {t('Всего просмотров постов')}
-                  </Typography>
-                </Box>
-                <Typography>
-                  {allViews}
-                </Typography>
-              </Box>
-              <Box className='ProfilePageStatistic-row'>
-                <Box className='ProfilePageStatistic-row-label'>
-                  <Avatar>
-                    <TrendingUp />
-                  </Avatar>
-                  <Typography>
-                    {t('Всего уникальных просмотров постов')}
-                  </Typography>
-                </Box>
-                <Typography>
-                  {uniqueViews}
-                </Typography>
-              </Box>
-            </Box>
-          )
-      }
+      {/*{*/}
+      {/*  isLoading*/}
+      {/*    ? <CircularProgress />*/}
+      {/*    : (*/}
+      <Box className='ProfilePageStatistic'>
+        <Box className='ProfilePageStatistic-row'>
+          <Box className='ProfilePageStatistic-row-label'>
+            <Avatar>
+              <BarChart />
+            </Avatar>
+            <Typography>
+              {t('Всего просмотров постов')}
+            </Typography>
+          </Box>
+          <Typography>
+            {allViews}
+          </Typography>
+        </Box>
+        <Box className='ProfilePageStatistic-row'>
+          <Box className='ProfilePageStatistic-row-label'>
+            <Avatar>
+              <TrendingUp />
+            </Avatar>
+            <Typography>
+              {t('Всего уникальных просмотров постов')}
+            </Typography>
+          </Box>
+          <Typography>
+            {uniqueViews}
+          </Typography>
+        </Box>
+      </Box>
+      {/*)*/}
+      {/*}*/}
       {/** Блок с модальным окном */}
       <ProfilePageTimeRangeModal
         isModalOpen={isModalOpen}

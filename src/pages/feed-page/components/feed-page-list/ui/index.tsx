@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { Box, CircularProgress } from '@mui/material'
+import { Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import { FeedPageListItem } from '~pages/feed-page/components/feed-page-list-item'
@@ -11,18 +11,21 @@ type FeedPageListProps = {
   filteredPosts: PostType[] | null
 }
 
-export const FeedPageList = ({ isLoading, filteredPosts }: FeedPageListProps) => {
+export const FeedPageList = ({
+  isLoading,
+  filteredPosts
+}: FeedPageListProps) => {
   const { t } = useTranslation()
 
-  if (isLoading) {
-    return (
-      <Box className='FeedPageList'>
-        <Box className='FeedPageList-block'>
-          <CircularProgress />
-        </Box>
-      </Box>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box className='FeedPageList'>
+  //       <Box className='FeedPageList-block'>
+  //         <CircularProgress />
+  //       </Box>
+  //     </Box>
+  //   )
+  // }
 
   return (
     <Box className='FeedPageList'>

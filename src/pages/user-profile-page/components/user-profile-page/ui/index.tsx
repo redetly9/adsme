@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { Avatar, Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -14,7 +14,6 @@ import { formatPhoneNumber } from '~shared/lib/format-phone-number'
 import { getUserName } from '~shared/lib/get-user-name'
 import { SubscriptionStatus } from '~shared/types/tariffs'
 import type { UserType } from '~shared/types/user'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
 import { ShareButton } from '~shared/ui/share-button'
 
@@ -31,7 +30,10 @@ export const UserProfilePage = () => {
   const [isChatLoading, setIsChatLoading] = useState(false)
   const [withSubscription, setWithSubscription] = useState(false)
 
-  const { data: followers, refetch } = useUserFollowings(user?.id.toString())
+  const {
+    data: followers,
+    refetch
+  } = useUserFollowings(user?.id.toString())
   const isFollowed = followers?.find(f => f.follow_user_id.toString() === paramsUserId)
 
   useLayoutEffect(() => {
@@ -47,7 +49,10 @@ export const UserProfilePage = () => {
           setIsLoadingProfile(true)
           const response = await getUserById(paramsUserId)
           if (response && 'data' in response) {
-            const { user_subscriptions, ...userInfo } = response.data
+            const {
+              user_subscriptions,
+              ...userInfo
+            } = response.data
             const isUserWithSubscriptions = user_subscriptions.some(s => s.status === SubscriptionStatus.ACTIVE)
             setUserProfileData(userInfo)
             setWithSubscription(isUserWithSubscriptions)
@@ -85,7 +90,11 @@ export const UserProfilePage = () => {
     event.stopPropagation()
 
     setIsChatLoading(true)
-    await checkAndAddChat({ userId: user?.id, otherUserId: userProfileData?.id, navigate })
+    await checkAndAddChat({
+      userId: user?.id,
+      otherUserId: userProfileData?.id,
+      navigate
+    })
     setIsChatLoading(false)
   }
 
@@ -97,7 +106,7 @@ export const UserProfilePage = () => {
 
   return (
     <Box className='UserProfilePage'>
-      {isLoadingProfile ? <LoadingOverlay /> : null}
+      {/*{isLoadingProfile ? <LoadingOverlay /> : null}*/}
       <PageHeader
         withRightSideAction={false}
         withNavigateBack={!isChatLoading}
@@ -105,7 +114,11 @@ export const UserProfilePage = () => {
       <Box className='UserProfilePage-content'>
         <Box className='UserProfilePage-main-info'>
           <Avatar
-            sx={{ height: '75px', width: '75px', border: withSubscription ? '4px solid green' : 'none' }}
+            sx={{
+              height: '75px',
+              width: '75px',
+              border: withSubscription ? '4px solid green' : 'none'
+            }}
             src={userProfileData?.avatar || 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg'}
           />
           <Typography
@@ -150,7 +163,10 @@ export const UserProfilePage = () => {
             onClick={checkAndAddChatHandler}
             disabled={isChatLoading}
           >
-            {isChatLoading ? <CircularProgress size={24.5} /> : t('Написать')}
+            {/*{isChatLoading */}
+            {/*  ? <CircularProgress size={24.5} /> : */}
+            t('Написать')
+            {/*}*/}
           </Button>
           <Button
             fullWidth

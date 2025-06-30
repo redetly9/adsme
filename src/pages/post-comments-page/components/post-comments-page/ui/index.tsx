@@ -15,7 +15,6 @@ import { getPostById } from '~shared/api/post-api'
 import type { CommentWithUser } from '~shared/types/comments'
 import type { PostType } from '~shared/types/posts'
 import { CustomInput } from '~shared/ui/custom-input'
-import { LoadingOverlay } from '~shared/ui/loading-overlay'
 import { PageHeader } from '~shared/ui/page-header'
 
 export const PostCommentsPage = memo(() => {
@@ -89,7 +88,7 @@ export const PostCommentsPage = memo(() => {
 
   return (
     <Box className='PostCommentsPage'>
-      {isInitialLoading ? <LoadingOverlay /> : null}
+      {/*{isInitialLoading ? <LoadingOverlay /> : null}*/}
       <PageHeader
         title={t('Комментарии')}
         withRightSideAction={false}

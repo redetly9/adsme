@@ -6,7 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { Box, Button, Chip, CircularProgress, Snackbar } from '@mui/material'
+import { Box, Button, Chip, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -231,46 +231,46 @@ export const UserFeedPageFeed = memo(({
           }
         </Box>
         <Box className='UserFeedPageFeed-views'>
-          {
-            isLoadingPostViews
-              ? <CircularProgress size={18} />
-              : (
-                <>
-                  {user?.id !== post.author?.id &&
-                    <Typography
-                      mr={1}
-                      variant='body2'
-                      sx={{
-                        mr: 'auto',
-                        color: 'text.secondary',
-                        textDecoration: 'underline'
-                      }}
-                      onClick={onComplain}
-                    >
-                      {t('Пожаловаться')}
-                    </Typography>}
-                  {!withoutComments && <Typography
-                    mr={1}
-                    variant='body2'
-                    sx={{
-                      color: 'text.secondary',
-                      textDecoration: 'underline'
-                    }}
-                    onClick={navigateToComments}
-                  >
-                    {t('Комментарии')}
-                  </Typography>}
-                  <VisibilityIcon fontSize='small' />
-                  <Typography
-                    variant='body2'
-                    sx={{ color: 'text.secondary' }}
-                    ml={0.5}
-                  >
-                    {views}
-                  </Typography>
-                </>
-              )
-          }
+          {/*{*/}
+          {/*  isLoadingPostViews*/}
+          {/*    ? <CircularProgress size={18} />*/}
+          {/*    : (*/}
+          <>
+            {user?.id !== post.author?.id &&
+              <Typography
+                mr={1}
+                variant='body2'
+                sx={{
+                  mr: 'auto',
+                  color: 'text.secondary',
+                  textDecoration: 'underline'
+                }}
+                onClick={onComplain}
+              >
+                {t('Пожаловаться')}
+              </Typography>}
+            {!withoutComments && <Typography
+              mr={1}
+              variant='body2'
+              sx={{
+                color: 'text.secondary',
+                textDecoration: 'underline'
+              }}
+              onClick={navigateToComments}
+            >
+              {t('Комментарии')}
+            </Typography>}
+            <VisibilityIcon fontSize='small' />
+            <Typography
+              variant='body2'
+              sx={{ color: 'text.secondary' }}
+              ml={0.5}
+            >
+              {views}
+            </Typography>
+          </>
+          {/*)*/}
+          {/*}*/}
         </Box>
       </CardContent>
       <ConfirmModal

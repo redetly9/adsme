@@ -13,9 +13,9 @@ export type PostType = {
 export type PostTypeAuthor = {
   id: number,
   name: string,
-  avatar: string,
-  surname: string,
-  lastname: string
+  avatar: string
+  // surname: string,
+  // lastname: string
 }
 
 export type CreatePostType = {
